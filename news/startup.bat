@@ -1,0 +1,4 @@
+@echo off
+cd /d "%~dp0"
+"%LocalAppData%\Programs\Python\Python312\python.exe" main.py
+start index.html
