@@ -24,6 +24,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -51,7 +54,7 @@ jobs:
           find . -maxdepth 1 -type f \( -name 'index.html' -o -name 'archive-*.html' -o -name 'archive-index.json' -o -name 'data*.json' -o -name 'raw-data*.json' \) -exec cp {} _site/ \;
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: '_site'
 
