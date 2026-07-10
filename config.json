@@ -1,0 +1,79 @@
+{
+  "feeds": [
+    {
+      "category": "IT/Tech",
+      "name": "TechCrunch",
+      "url": "https://techcrunch.com/feed/"
+    },
+    {
+      "category": "IT/Tech",
+      "name": "The Verge",
+      "url": "https://www.theverge.com/rss/index.xml"
+    },
+    {
+      "category": "IT/Tech",
+      "name": "ZDNet Korea",
+      "url": "https://feeds.feedburner.com/zdkorea"
+    },
+    {
+      "category": "IT/Tech",
+      "name": "ITmedia",
+      "url": "https://rss.itmedia.co.jp/rss/2.0/news_bursts.xml"
+    },
+    {
+      "category": "AI",
+      "name": "MIT Tech Review AI",
+      "url": "https://www.technologyreview.com/topic/artificial-intelligence/feed"
+    },
+    {
+      "category": "AI",
+      "name": "AI Times (KR)",
+      "url": "https://www.aitimes.com/rss/allArticle.xml"
+    },
+    {
+      "category": "AI",
+      "name": "Google AI Blog",
+      "url": "https://blog.google/technology/ai/rss/"
+    },
+    {
+      "category": "CG/Blender",
+      "name": "BlenderNation",
+      "url": "https://www.blendernation.com/feed/"
+    },
+    {
+      "category": "CG/Blender",
+      "name": "Blender.org News",
+      "url": "https://www.blender.org/feed/"
+    },
+    {
+      "category": "CG/Blender",
+      "name": "ModelingHappy (JP)",
+      "url": "https://modelinghappy.com/feed"
+    },
+    {
+      "category": "Game",
+      "name": "IGN Games",
+      "url": "https://feeds.ign.com/ign/games-all"
+    },
+    {
+      "category": "Game",
+      "name": "Polygon",
+      "url": "https://www.polygon.com/rss/index.xml"
+    },
+    {
+      "category": "Game",
+      "name": "Automaton (JP)",
+      "url": "https://automaton-media.com/feed/"
+    },
+    {
+      "category": "Anime",
+      "name": "Anime News Network",
+      "url": "https://www.animenewsnetwork.com/news/rss.xml"
+    },
+    {
+      "category": "Anime",
+      "name": "Crunchyroll News",
+      "url": "https://cr-news-api-service.prd.crunchyrollsvc.com/v1/en-US/rss"
+    }
+  ]
+}

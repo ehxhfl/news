@@ -1,8 +1,9 @@
 @echo off
+set PYTHONUTF8=1
 echo Installing dependencies...
-pip install -r requirements.txt
+pip install -r requirements.txt || exit /b 1
 echo Running News Crawler...
-python main.py
+python main.py || exit /b 1
 echo Opening index.html...
 start index.html
 pause

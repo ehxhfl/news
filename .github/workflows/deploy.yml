@@ -1,0 +1,60 @@
+name: Daily News Curator
+
+on:
+  schedule:
+    - cron: '0 1 * * *' # Runs every day at 01:00 UTC (10:00 KST/JST)
+  workflow_dispatch: # Allows manual trigger
+
+concurrency:
+  group: daily-news-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Curator
+        env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          GROQ_MODEL: openai/gpt-oss-120b
+        run: python main.py
+        
+      - name: Commit generated archives and data
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-generate news and update archives"
+          file_pattern: "index.html archive-*.html archive-index.json data*.json raw-data*.json"
+
+      - name: Prepare public site files
+        run: |
+          mkdir -p _site
+          find . -maxdepth 1 -type f \( -name 'index.html' -o -name 'archive-*.html' -o -name 'archive-index.json' -o -name 'data*.json' -o -name 'raw-data*.json' \) -exec cp {} _site/ \;
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '_site'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

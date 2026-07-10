@@ -1,0 +1,1438 @@
+
+<!DOCTYPE html>
+<html lang="ko" data-theme="system">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Tech Magazine</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        :root {
+            /* Light Theme */
+            --bg-color: #ffffff;
+            --text-main: #111111;
+            --text-muted: #666666;
+            --border-color: #eaeaea;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --accent: #000000;
+            --hover-bg: #f9f9f9;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Premium Muted Dark Mode */
+                --bg-color: #0d0d0d;
+                --text-main: #f0f0f0;
+                --text-muted: #a0a0a0;
+                --border-color: #222222;
+                --nav-bg: rgba(13, 13, 13, 0.95);
+                --accent: #ffffff;
+                --hover-bg: #161616;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Pretendard', 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Top Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        
+        /* Category Filter */
+        .category-toggle {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cat-btn {
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            font-family: inherit;
+            padding: 0.2rem 0.5rem;
+        }
+        .cat-btn.active, .cat-btn:hover {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .lang-btn {
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+        }
+        .lang-btn:hover { color: var(--text-main); }
+        .lang-btn.active { color: var(--text-main); font-weight: 700; }
+
+        .archive-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        
+        .archive-dropdown select {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 0.35rem;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            cursor: pointer;
+            outline: none;
+            padding: 0.4rem 1.8rem 0.4rem 0.6rem;
+        }
+
+        .archive-dropdown select:focus-visible,
+        .issue-link:focus-visible,
+        .cat-btn:focus-visible,
+        .lang-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .issue-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .issue-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 0.35rem 0.7rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            white-space: nowrap;
+            transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .issue-link:hover,
+        .issue-link[aria-current="page"] {
+            color: var(--text-main);
+            border-color: var(--text-muted);
+            background: var(--hover-bg);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Date */
+        .header-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        /* Featured Article */
+        .featured {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .featured-img {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            object-fit: cover;
+            background: var(--hover-bg);
+        }
+
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .meta {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .featured-title {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+        
+        .featured-title a:hover {
+            text-decoration: underline;
+        }
+
+        .featured-summary {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Masonry Grid Layout */
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 2rem;
+            width: 100%;
+        }
+
+        .article-card {
+            break-inside: avoid;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .article-img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+            background: var(--hover-bg);
+        }
+
+        .article-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+        
+        .article-title a:hover {
+            text-decoration: underline;
+        }
+
+        .article-summary {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .empty-state {
+            border: 1px solid var(--border-color);
+            background: var(--hover-bg);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .empty-state h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 1024px) {
+            .masonry-grid { column-count: 2; }
+            .featured { grid-template-columns: 1fr; gap: 2rem; }
+            .featured-img { min-height: 300px; }
+            .featured-title { font-size: 2.5rem; }
+        }
+
+        @media (max-width: 640px) {
+            .masonry-grid { column-count: 1; }
+            .navbar { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav-controls { width: 100%; justify-content: center; gap: 1rem; }
+            .category-toggle { width: 100%; gap: 0.5rem; }
+            .issue-navigation { width: 100%; }
+            .featured-img { min-height: 200px; }
+            .featured-title { font-size: 2rem; }
+            .container { padding: 1rem; }
+        }
+        
+        /* Language System */
+        .lang-content { display: none; }
+        html[lang="en"] .lang-en { display: block; }
+        html[lang="ja"] .lang-ja { display: block; }
+        html[lang="ko"] .lang-ko { display: block; }
+        
+        /* Inline language display for meta */
+        html[lang="en"] span.lang-en { display: inline; }
+        html[lang="ja"] span.lang-ja { display: inline; }
+        html[lang="ko"] span.lang-ko { display: inline; }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">TECH MAG</div>
+        <div class="nav-controls">
+            <div class="category-toggle">
+                <button class="cat-btn active" onclick="setCategory('All')" id="cat-All">All</button>
+                <button class="cat-btn" onclick="setCategory('IT/Tech')" id="cat-IT/Tech">IT/Tech</button>
+                <button class="cat-btn" onclick="setCategory('AI')" id="cat-AI">AI</button>
+                <button class="cat-btn" onclick="setCategory('Game')" id="cat-Game">Game</button>
+                <button class="cat-btn" onclick="setCategory('Anime')" id="cat-Anime">Anime</button>
+                <button class="cat-btn" onclick="setCategory('CG/Blender')" id="cat-CG/Blender">CG/Blender</button>
+            </div>
+            <div class="issue-navigation" aria-label="Issue navigation">
+                <a class="issue-link" href="index.html" >
+                    <span class="lang-content lang-en">Latest</span>
+                    <span class="lang-content lang-ja">最新</span>
+                    <span class="lang-content lang-ko">최신</span>
+                </a>
+                
+                <a class="issue-link" href="archive-2026-07-06.html">
+                    <span aria-hidden="true">&larr;</span>
+                    <span class="lang-content lang-en">Older</span>
+                    <span class="lang-content lang-ja">前の日</span>
+                    <span class="lang-content lang-ko">이전 날짜</span>
+                    <time datetime="2026-07-06">2026-07-06</time>
+                </a>
+                
+                
+                <a class="issue-link" href="archive-2026-07-08.html">
+                    <span class="lang-content lang-en">Newer</span>
+                    <span class="lang-content lang-ja">次の日</span>
+                    <span class="lang-content lang-ko">다음 날짜</span>
+                    <time datetime="2026-07-08">2026-07-08</time>
+                    <span aria-hidden="true">&rarr;</span>
+                </a>
+                
+                <div class="archive-dropdown">
+                    <label for="archive-select">
+                        <span class="lang-content lang-en">Date</span>
+                        <span class="lang-content lang-ja">日付</span>
+                        <span class="lang-content lang-ko">날짜</span>
+                    </label>
+                    <select id="archive-select" onchange="if (this.value) window.location.href=this.value">
+                        <option value="index.html" >Latest / 最新 / 최신</option>
+                        
+                        <option value="archive-2026-07-10.html" >2026-07-10</option>
+                        
+                        <option value="archive-2026-07-09.html" >2026-07-09</option>
+                        
+                        <option value="archive-2026-07-08.html" >2026-07-08</option>
+                        
+                        <option value="archive-2026-07-07.html" selected>2026-07-07</option>
+                        
+                        <option value="archive-2026-07-06.html" >2026-07-06</option>
+                        
+                        <option value="archive-2026-07-03.html" >2026-07-03</option>
+                        
+                        <option value="archive-2026-07-02.html" >2026-07-02</option>
+                        
+                        <option value="archive-2026-07-01.html" >2026-07-01</option>
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+                <button class="lang-btn" onclick="setLanguage('ja')" id="btn-ja">JA</button>
+                <button class="lang-btn active" onclick="setLanguage('ko')" id="btn-ko">KO</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header-date">2026-07-07 EDITORIAL ISSUE</div>
+
+        
+        <article class="featured article-card" data-category="IT/Tech">
+            
+            <img src="https://techcrunch.com/wp-content/uploads/2023/02/GettyImages-1240099721.jpeg?resize=1200,800" alt="Featured Image" class="featured-img" onerror="this.style.display='none'">
+            
+            
+            <div class="featured-content">
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&mdash;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h1 class="featured-title">
+                    <a href="https://techcrunch.com/2026/07/06/netflix-invented-binge-watching-now-it-may-have-outgrown-it/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Netflix&#39;s Binge-Watching Legacy Faces a New Generation Challenge</span>
+                        <span class="lang-content lang-ja">ネトフリの連続視聴文化が自らの限界に直面</span>
+                        <span class="lang-content lang-ko">넷플릭스 연속 시청 문화가 스스로 도태되고 있다</span>
+                    </a>
+                </h1>
+                
+                <div class="featured-summary">
+                    <span class="lang-content lang-en">A fresh report reveals declining Season 2 retention among Netflix viewers. The rise of episodic streaming and shorter attention spans are reshaping content consumption habits, undermining binge-watching’s once-dominant appeal.</span>
+                    <span class="lang-content lang-ja">最新の調査データによると、視聴者がシーズン2まで見続ける割合が低下しています。エピソード単位の視聴や現代人の注意散漫が浸透し、かつての「連続視聴」の強みは今や脅かされています。</span>
+                    <span class="lang-content lang-ko">최신 보고서는 넷플릭스 시청자들이 2시즌까지 이어보기 비율이 감소하고 있음을 보여줍니다. 에피소드별 시청과 짧아진 집중력이 콘텐츠 소비 방식을 재정의하며, 과거의 주력이던 연속 시청의 우위가 약화되고 있습니다.</span>
+                </div>
+            </div>
+        </article>
+        
+
+        
+        <div class="masonry-grid">
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://techcrunch.com/wp-content/uploads/2026/07/Ransomware-attack.png?resize=1200,686" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://techcrunch.com/2026/07/06/the-first-ai-run-ransomware-attack-still-needed-a-human/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">First AI-Powered Ransomware Attack Still Reliant on Human Oversight</span>
+                        <span class="lang-content lang-ja">「世界初」のAIランサムウェア攻撃も人間の介入が必要だった</span>
+                        <span class="lang-content lang-ko">최초의 AI 기반 랜섬웨어 공격조차 인간 개입 필수인 현실</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">While an AI autonomously executed a ransomware attack for the first time, critical decision-making—including target selection and infrastructure setup—remained under human control, revealing hybrid threats in cybersecurity’s AI future.</span>
+                    <span class="lang-content lang-ja">AIエージェントがランサムウェアの技術的実行を完了したが、実際には被害者選定やインフラ構築は人間が担当。このハイブリッド型脅威はサイバーセキュリティの未来を問う</span>
+                    <span class="lang-content lang-ko">AI가 랜섬웨어 공격을 실행했지만, 표적선정과 인프라 구축은 인간이 직접 수행했습니다. 사이버 보안에서 AI의 역할을 재정의하는 혼합형 위협으로 주목받고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://techcrunch.com/wp-content/uploads/2026/07/PHB_1846_16507246419711358101.jpeg?resize=1200,800" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://techcrunch.com/2026/07/06/vercel-ceo-guillermo-rauch-on-the-fight-to-split-off-models-from-agents/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Vercel CEO Guillermo Rauch on Decoupling Models from Agents</span>
+                        <span class="lang-content lang-ja">ベルセルのグイド・ラウフ会長が語る「モデルからエージェントを分離する戦い」</span>
+                        <span class="lang-content lang-ko">버셀 CEO, 모델과 에이전트 분리 논쟁의 핵심 전략 밝혀</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Vercel&#39;s CEO argues that optimizing production systems requires prioritizing cost-efficiency and performance, a strategy reshaping AI infrastructure debates.</span>
+                    <span class="lang-content lang-ja">生産性の最適化では価格と性能のバランスが鍵――ベルセルCEOが技術選定における新たな基準を明らかにする。</span>
+                    <span class="lang-content lang-ko">생산 시스템 최적화는 단가 대비 성능 균형에 달려 있다—버셀 최고 경영 책임자가 인공지능 인프라 혁명의 새로운 패러다임을 제시한다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://techcrunch.com/wp-content/uploads/2024/10/apple-siri-header.jpg?resize=1200,800" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://techcrunch.com/2026/07/06/you-can-now-customize-siris-pace-and-expressivity-in-the-latest-ios-27-beta/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">iOS 27 Beta Adds Expressive Siri Customization</span>
+                        <span class="lang-content lang-ja">iOS 27 β版でSiriの音声表現と速度をカスタマイズ可能に</span>
+                        <span class="lang-content lang-ko">iOS 27 베타, Siri의 음성 표현과 속도 맞춤 조절 가능</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Apple&#39;s latest iOS update introduces personalized voice modulation for Siri, leveraging generative AI to enhance user interaction and natural language expression.</span>
+                    <span class="lang-content lang-ja">生成型AI技術を駆使し、Siriの会話スタイルを独自にカスタマイズできるよう進化したアップルの新機能。</span>
+                    <span class="lang-content lang-ko">발생형 AI 기반으로 자연스러운 사용자 맞춤형 대화 경험을 구현한 애플의 혁신적 기술 확장.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>The Verge</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.theverge.com/gadgets/961895/hoto-pixeldrive-screwdriver-deal-sale" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Hoto’s PixelDrive Hits $60: Essential Tool for Assembled Furniture</span>
+                        <span class="lang-content lang-ja">ホトのピクセルドライブドライバーが60ドルに価格最安</span>
+                        <span class="lang-content lang-ko">호토 픽셀드라이브 드라이버, 60달러 최저가 판매 중</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">This cordless screwdriver&#39;s precision engineering accelerates furniture assembly tasks, proving indispensable for modern home improvement projects.</span>
+                    <span class="lang-content lang-ja">家具の組み立て作業を劇的に効率化するワイヤレスドライバーの最適な購入タイミングとその実力を解説。</span>
+                    <span class="lang-content lang-ko">스마트 홈 구축에 필수적인 무선 드라이버로, 가구 조립 작업을 효율화한 혁신적 도구의 정체.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>The Verge</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.theverge.com/games/961749/xbox-layoffs-compulsion-double-fine-indie" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Xbox Studios Double Fine and Compulsion Transition to Independent Game Developers – Future Projects Unveiled</span>
+                        <span class="lang-content lang-ja">Xboxスタジオ ダブルファインとコンピュランスがインディーゲーム開発へ–今後のプロジェクト発表</span>
+                        <span class="lang-content lang-ko">Xbox 스튜디오 더블파인과 컴피션, 독립 개발사 전환 – 게임 프로젝트 계속 진행</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Microsoft&#39;s restructuring includes spinning off four Xbox studios as independent entities. Double Fine and Compulsion Games confirm their commitment to existing game projects despite the transition.</span>
+                    <span class="lang-content lang-ja">マイクロソフトはXboxスタジオの再編構造を発表、4つのスタジオをスピンオフ。ダブルファインとコンピュランスはゲームプロジェクトを継続する方針です。</span>
+                    <span class="lang-content lang-ko">마이크로소트는 Xbox 스튜디오 재편으로 4곳을 독립시켰으며, 더블파인과 컴피션은 기존 게임 개발을 계속 진행할 계획입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>The Verge</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.theverge.com/column/961707/smart-glasses-ai-wearables-meta-surveillance-privacy" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">How Netflix’s ‘A Man on the Inside’ Exposes Smart Glasses’ Privacy Dilemma</span>
+                        <span class="lang-content lang-ja">『スマートグラスのプライバシー問題：Netflixの『Inside Man』が映し出す将来』</span>
+                        <span class="lang-content lang-ko">“스마트 글라스의 프라이버시 딜레마: 넷플릭스 《인사이드 맨》이 말해주는 미래”</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Hollywood has long shaped our expectations of smart glasses—but Netflix’s ‘A Man on the Inside’ now forces us to confront their unsettling reality. The show’s satirical lens reveals how wearable tech could become both a tool of liberation and a surveillance nightmare.</span>
+                    <span class="lang-content lang-ja">スカーレット・ヨハンソン主演の米ドラマ『インサイド・マン』は、スマートグラスがもたらすプライバシー問題を鋭く描く。人間の監視と自由の限界を、ユーモラスかつ警鐘的な手法で問いかける。</span>
+                    <span class="lang-content lang-ko">헐리우드는 스마트 글라스에 대한 기대와 한계를 동시에 만들었다. 넷플릭스 《인사이드 맨》은 착용형 기기가 자유의 도구가 되거나 감시의 도구가 되는 이중성을 풍자적으로 드러낸다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/07/eca26744d14e270e66d91e2309397591.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260707082200" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Ascent AI Expands into Japanese Market with Bold Sales Targets</span>
+                        <span class="lang-content lang-ja">アセントAI、日本マーケットで年間3億円売上目標</span>
+                        <span class="lang-content lang-ko">어센트 AI, 일본 시장 공략 본격화... 연 3억엔 매출 목표</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Ascent AI is accelerating its foray into Japan&#39;s marketing sector, aiming to generate over 300 million yen in annual revenue by focusing on healthcare and fintech industries. The company showcased its capabilities at Tokyo&#39;s Marketing Week Summer 2026, positioning itself as a strategic partner for Japanese businesses.</span>
+                    <span class="lang-content lang-ja">アセントAIは東京ビッグサイトで開催された「マーケティングウィックスサマ2026」に参加し、日本のヘルスケアとファイナンス業界をターゲットに年間3億円（約28億ウォン）以上の売上を目指しています。会社はAI技術を活用したマーケティングソリューションで日企業界に本格参入を遂げます。</span>
+                    <span class="lang-content lang-ko">어센트 AI는 도쿄 빅사이트에서 열린 마케팅 위크 서머 2026에 참가하여 일본의 헬스케어와 금융 산업군을 중심으로 시장을 확대하고 있으며, 연 매출 3억엔(약 28억원) 이상을 목표로 하고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/07/cover_news078.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/07/news078.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Broadcom Extends Semiconductor Deal with Apple Through 2031, to Supply Custom ASICs for Multiple Generations of Apple Products</span>
+                        <span class="lang-content lang-ja">Broadcom、Appleとの半導体協業を2031年まで延長　カスタムASICの供給とAIサーバチップ開発へ</span>
+                        <span class="lang-content lang-ko">브로드컴, 애플과의 반도체 계약 2031년까지 연장</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Broadcom and Apple have extended their technical collaboration through 2031, with the chipmaker set to supply custom ASICs to multiple generations of Apple devices. The partnership now encompasses Apple&#39;s in-house AI server chip development, supporting the cloud infrastructure of upcoming Apple Intelligence services.</span>
+                    <span class="lang-content lang-ja">BroadcomはAppleとの技術提携を2031年まで延長し、複数世代にわたるカスタムASICを供給する。同社はAIサーバ向けチップの開発にも関わっており、今後のApple Intelligenceのクラウド基盤支援が予想されている。</span>
+                    <span class="lang-content lang-ko">브로드컴이 애플과의 기술 협력을 2031년까지 연장·확대한다고 발표했습니다. 이번 계약을 통해 복수 세대의 애플 제품에 맞춤형 ASIC을 공급키로 한 가운데, 애플이 개발 중인 인공지능 서버용 칩 개발까지 협력이 확장될 전망입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/06/cover_news133.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/06/news133.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Hayabusa2 Captures High-Speed Images of Elongated Asteroid &#39;Trifine&#39; – JAXA&#39;s Flyby Success</span>
+                        <span class="lang-content lang-ja">「はやぶさ2」が秒速5キロで小惑星「トリフネ」を爆速撮影！ 7月5日フライバイ成功</span>
+                        <span class="lang-content lang-ko">화이버사2, &#39;트리포네&#39; 협곡 혜성 초고속 촬영 성공 – 초정밀 탐사 기록</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">JAXA&#39;s Hayabusa2 probe successfully executed a flyby of the 500-meter-long asteroid &#39;Trifine&#39; on July 5, capturing high-speed images at an impressive 5 km per second to study its irregular shape and composition.</span>
+                    <span class="lang-content lang-ja">JAXAの小惑星探査機「はやぶさ2」が7月5日18時30分ごろ、直径約500mの細長な小惑星「トリフネ」を秒速5kmでフライバイし、高精度の観測データを取得しました。</span>
+                    <span class="lang-content lang-ko">일본 우주국(JAXA)이 개발한 탐사기 &#39;화이버사2&#39;가 7월 5일 곡괭이 모양 혜성 &#39;트리포네&#39;를 초속 5km 속도로 비행하며 고해상도 탐사 사진을 촬영했습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/06/cover_news130.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/06/news130.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">JAXA and Idenna Partner to Create &#39;Mission Buddy&#39; – Conversational Interface for Space Probes Inspired by Sci-Fi Films</span>
+                        <span class="lang-content lang-ja">JAXA、SF映画のような「ミッションバディ」を開発 – 宇宙機との対話インタフェース</span>
+                        <span class="lang-content lang-ko">JAXA, SF 영화를 현실로 - &#39;미션 버디&#39; 개발로 탐사기 대화 가능</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">JAXA partners with voice AI developer Idenna to test the &#39;Mission Buddy&#39; concept, an AI interface allowing human-spacecraft dialogue for mission operations, bringing science fiction closer to reality.</span>
+                    <span class="lang-content lang-ja">JAXAは6月から音声AI企業Idennaと共同で、探査機と会話をしながらミッションを遂行する「ミッションバディ」の概念設計を進めていることが7月3日に明らかになりました。</span>
+                    <span class="lang-content lang-ko">일본 우주항공연구기구(JAXA)가 영화 속 드라마처럼 탐사기를 대화하며 가동할 수 있는 &#39;미션 버디&#39; 기술 개발을 6월부터 진행 중인 것으로 드러났습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212455_215717_4132.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212455" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">AI’s Hidden Billing: Environmental Costs Escalate Beyond Data Centers</span>
+                        <span class="lang-content lang-ja">AIによる見えない請求書：データセンターを超えた環境コストの拡大</span>
+                        <span class="lang-content lang-ko">AI 숨은 청구서…데이터센터를 넘어서 급증하는 환경 비용</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Google and Amazon’s latest sustainability reports reveal a 25-16% surge in carbon emissions linked to AI infrastructure expansion—underscoring the growing environmental footprint of AI innovation.</span>
+                    <span class="lang-content lang-ja">グーグルとアマゾンの最新持続可能性報告書がAIインフラ拡大による炭素排出増加（25-16％）を示し、AIの環境負荷が顕在化していることを浮き彫りにしています。</span>
+                    <span class="lang-content lang-ko">구글과 아마존의 지속가능성 보고서가 지난해 AI 인프라 확대로 탄소 배출량이 최대 25% 증가한 사실을 알려, AI 기반 기술의 환경적 부담을 경고했습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212456_215720_222.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212456" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Meta AI Preparing &#39;Scheduled Tasks&#39; — Chatbot to Autonomous Agent Evolution</span>
+                        <span class="lang-content lang-ja">メタAI、スケジュールタスク機能準備…チャットボットからエージェントへ進化</span>
+                        <span class="lang-content lang-ko">메타 AI, &#39;예약 작업&#39; 도입 준비…챗봇 넘어 &#39;에이전트&#39;로 진화</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Meta AI is set to automate repetitive workflows with scheduled tasks, elevating its capabilities from query-based chatbot to proactive AI agent status.</span>
+                    <span class="lang-content lang-ja">メタAIが「予約タスク」機能の導入を確認。単なるチャットボットから仕事の自動化を行えるAIエージェントへ一段ステップアップする動きが進んでいます。</span>
+                    <span class="lang-content lang-ko">메타 AI가 사용자 반복 작업을 자동 처리하는 &#39;예약 작업&#39; 기능을 추가할 예정입니다. 이로 인해 챗봇에서 비동기 업무를 수행하는 에이전트로 한 단계 진화할 것입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212451_215741_288.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212451" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">University Students Head to San Francisco&#39;s &#39;Hacker House&#39; Over Traditional Internships</span>
+                        <span class="lang-content lang-ja">大手テックインターンではなくハッカーハウスへ——米大学生がAI起業を選択</span>
+                        <span class="lang-content lang-ko">일반 인턴 대신 해커 하우스로 직행하는 대학생들..&#34;AI 창업이 대세&#34;</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">As the AI revolution accelerates, top US university students are abandoning Big Tech internships to pursue startup ventures at San Francisco&#39;s Hacker House, prioritizing entrepreneurial opportunities over stable careers.</span>
+                    <span class="lang-content lang-ja">AI時代の到来に伴い、米名門大学の学生たちは従来の安定した大手テックインターンよりもサンフランシスコの「ハッカー・ハウス」での起業挑戦を選んでいる。これは『卒業証明書よりもAI起業』という新しいキャリア意識を示している。</span>
+                    <span class="lang-content lang-ko">미국 명문대 학생들이 AI 시대에 맞춰 빅테크 인턴십보다 샌프란시스코 해커 하우스에서 창업에 주목하는 트렌드가 확산되고 있다. 졸업장보다 AI 스타트업을 선택하는 선택지로 자리 잡고 있다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212452_215714_78.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212452" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Bytedance and Alibaba Halt AI Persona Services Ahead of Chinese Regulatory Crackdown</span>
+                        <span class="lang-content lang-ja">バイトダンスとアリババ、中国政府のAI規制に先駆けてAIペルソナサービスを停止</span>
+                        <span class="lang-content lang-ko">중국 정부 규제 예고에 바이트댄스·알리바바, AI 페르소나 서비스 중단</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Chinese tech giants are preemptively discontinuing personalized AI agent services to comply with impending regulations on AI personification, signaling growing government scrutiny of generative AI.</span>
+                    <span class="lang-content lang-ja">中国のAIペルソナ規制が迫る中、バイトダンス（ByteDance）とアリババはそれぞれのオーダーメイドAIサービスの提供を中止した。中国政府の新たなAI「人格化」規制に備えた先手対応である。</span>
+                    <span class="lang-content lang-ko">바이트댄스와 알리바바가 중국 정부의 &#39;AI 인격화&#39; 규제 대비로 인해 각각의 사용자 맞춤형 AI 서비스를 철수하고 있다. 규제 시행 2주 전 선제적 조치로 분석된다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212458_215722_444.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212458" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">AI Demolishes Startup Barriers: From Stay-at-Home Mom Entrepreneurs to Virtual COO Assistants</span>
+                        <span class="lang-content lang-ja">AIがスタートアップの敷居を下げる…「一人親でも起業」の新時代</span>
+                        <span class="lang-content lang-ko">아이 키우며 창업하는 주부들 등장..&#39;가상 전략가&#39; AI가 이끈다</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Artificial intelligence is reshaping the startup ecosystem by enabling stay-at-home mothers and non-traditional founders to launch businesses with AI-powered strategic advisors and investment pitch tools.</span>
+                    <span class="lang-content lang-ja">AIは専門知識や経験がなくても起業を可能にする画期的なツールとなりつつある。今やAIによる戦略立案・投資交渉の支援がアメリカのスタートアップエコシステムを劇的に変化させている。</span>
+                    <span class="lang-content lang-ko">AI 기반 &#39;가상 경영 자문역&#39;이 창업 전략부터 투자 유치까지 지원하며 주부 같은 비전통적 창업자들도 스타트업에 진출할 수 있게 도와주고 있다. 기술이 창업 생태계를 재정비하고 있다. </span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://www.blendernation.com/wp-content/uploads/2026/07/5.2-cover-BN-800x450.jpg.webp" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>BlenderNation</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.blendernation.com/2026/07/06/blender-5-2-grease-pencil-16-new-features-breakdown/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Blender 5.2 Grease Pencil: A Game-Changer with 16+ Revolutionary Features Unveiled</span>
+                        <span class="lang-content lang-ja">Blender 5.2 Grease Pencil: 3.0以降最大の進化！16以上の新機能を解説</span>
+                        <span class="lang-content lang-ko">블렌더 5.2 글리스 펜슬: 3.0 이후 최대 업데이트 16+ 신기능 분석</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Blender 5.2 Beta delivers its most significant Grease Pencil overhaul since 3.0. Discover 16+ groundbreaking features, including a Delaunay fill solver and optimized rendering for dots and squa...</span>
+                    <span class="lang-content lang-ja">Blender 5.2 BetaのGrease Pencilでは、3.0以来最大級のアップデートが実施されました。新しいドーナン・フィルル・ソルバー、ドットや四角形のマテリアルレンダリングの高速化などが16以上の主な改善内容です。</span>
+                    <span class="lang-content lang-ko">블렌더 5.2 베타 버전에서 3.0 이후 가장 주요한 글리스 펜슬 업데이트가 발표되었습니다. 델라뉴이 채우기 솔버, 점과 사각형의 재질 렌더링 속도 향상 등 16개 이상의 핵심 기능들이 포함됐습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://modelinghappy.com/wp-content/uploads/2026/07/20260706_autoremesehr_01.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>ModelingHappy (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://modelinghappy.com/archives/69329" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">AutoRemesher: Transform Complex Models into Clean Quadrilateral Topologies for Free!</span>
+                        <span class="lang-content lang-ja">AutoRemesher: 3Dスキャンデータを高品質クアッド_topologyに変換する無料ツール</span>
+                        <span class="lang-content lang-ko">AutoRemesher: 3D 모델을 깔끔한 사각형 토폴로지로 변환하는 무료 리토폴로지 도구</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">3DCG developer Jeremy HU has released ``AutoRemesher&#39;&#39;, a standalone tool that automatically converts 3D scan data and sculptural models into high-quality rectangular topology. This tool simplifies the optimization of complex meshes.</span>
+                    <span class="lang-content lang-ja">3DCG開発者Jeremy HU氏が、3Dスキャンデータや彫塑モデルを高品質な四角形トポロジーに自動変換するスタンドアロンツール「AutoRemesher」を公開しました。このツールにより複雑なメッシュの最適化が簡単になります。</span>
+                    <span class="lang-content lang-ko">3D 모델러 제레미 황(Jeremy HU)이 3D 스캔 데이터나 조각 모델을 고해상도 사각형 토폴로지로 변환하는 무료 독립형 소프트웨어 &#39;AutoRemesher&#39;를 공개했습니다. 복잡한 메시 최적화에 혁신을 일으키는 도구입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2026/07/06/mc-1783371325270.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/meccha-chameleon-hits-an-astonishing-15-million-sales-teases-collaboration-with-famous-japanese-star-and-fans-have-theories-for-who-it-might-be" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Meccha Chameleon Surpasses 15 Million Sales, Unveils Mysterious Collaboration Teaser</span>
+                        <span class="lang-content lang-ja">「メッチャカメレオン」が1,500万販売突破、人気スターコラボ企画を謎の公開</span>
+                        <span class="lang-content lang-ko">맥챠 케ameleon, 1500만 판매 돌파… 주요 스타 콜라보 루머 확산 중</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Japanese indie phenomenon Meccha Chameleon shatters the 15 million sales barrier within weeks of its Steam launch. The vibrant multiplayer hit now hints at a groundbreaking collaboration with a renowned Japanese star, with fans speculating wildly about potential candidates.</span>
+                    <span class="lang-content lang-ja">人気インディーゲーム「メッチャカメレオン」がSteamリリースわずか1か月半で1,500万本を達成。新作発表に先立って日本の人気スターとコラボするとの噂が絶えず、ファンの間で熱論が繰り広げられている。</span>
+                    <span class="lang-content lang-ko">일본 인디 게임 떄리기 대작 『맥챠 케ameleon』이 스팀 출시 40일 만에 1500만 판매라는 기록을 세웠습니다. 이와 함께 인기 일본 스타와 협업한다는 소문이 팬들에게 떠돌고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2026/07/06/monsteroo-1783366635356.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/disney-lorcana-tcg-attack-of-the-vine-set-first-impressions" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Disney Lorcana TCG Gets a Lush Expansion with New Pixar Monsters</span>
+                        <span class="lang-content lang-ja">ディズニーロルカナTCG、最新モンスターアイコンが登場 「ヴィーム攻撃」拡張パック初見解説</span>
+                        <span class="lang-content lang-ko">디즈니 로르카나 TCG, &#39;몬스틴 공격!&#39; 확장팩 발표</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Disney Lorcana&#39;s upcoming &#34;Attack of the Vine!&#34; expansion injects fresh energy into the trading card game with an all-new lineup of Pixar Monsters characters, signaling a vibrant chapter for the franchise.</span>
+                    <span class="lang-content lang-ja">ディズニーロルカナのトレーディングカードゲームが、ピクサーのモンスターズ・インクシリーズ新キャラクターを追加する「ヴィーム攻撃！」拡張セットを披露。コレクターの間で注目が高まっている。</span>
+                    <span class="lang-content lang-ko">디즈니 로르카나 수집형 카드 게임의 &#39;몬스터 공격!&#39; 신규 확장팩이 발표되었습니다. 이번 팩에는 모나스터즈 유니버스 신규 등장 캐릭터가 포함되어 컬렉터들의 관심이 집중되고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2026/07/03/discover-pokmon-in-the-real-world-with-pokmon-go-00-02-36-1783093287762.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/pokmon-go-hosting-major-10th-anniversary-broadcast-this-week" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Pokémon Go Preps Secret 10th Anniversary Spectacular</span>
+                        <span class="lang-content lang-ja">ポケモンGO、謎の10周年記念ライブ特典イベント披露</span>
+                        <span class="lang-content lang-ko">포켓몬 GO, 10주년 기념 비밀 방송 돌입… 엄청난 변화 예고</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The Pokémon Go 10th anniversary event takes a mysterious turn as Niantic keeps every detail under wraps—expect surprises that could redefine the real-world game&#39;s future.</span>
+                    <span class="lang-content lang-ja">ニーティックが「ポケモンGO」10周年生放送を控え、視聴者を完全に見据えない謎多きアニュヴァーサリーイベントを構築中。プレイヤー全員が注視する未来の展開が期待される。</span>
+                    <span class="lang-content lang-ko">포켓몬 GO는 오는 7월 9일 10주년 기념 생방송을 진행합니다. 방송 내용은 완전한 비밀이지만, 실제 세계 게임의 향방을 완전히 바꿔줄 기념 이벤트가 될 전망입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2025/07/09/blogroll-esov2-1752053529913.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/the-elder-scrolls-online-has-reportedly-lost-as-much-as-half-of-its-development-team-as-its-roadmap-is-being-re-evaluated" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">The Elder Scrolls Online Faces Major Workforce Reductions as Development Roadmap Undergoes Restructuring</span>
+                        <span class="lang-content lang-ja">『エルダー・スクロールズオンライン』、開発チームが最大半数解雇されたと報道</span>
+                        <span class="lang-content lang-ko">『엘더스 스크롤 온라인』, 개발팀 인력 최대 절반 축소</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The iconic online RPG has reportedly lost up to half of its development team, sparking concerns over the game&#39;s evolving future and strategic direction.</span>
+                    <span class="lang-content lang-ja">人気RPG『エルダー・スクロールズオンライン』の開発チームが約半数のスタッフ削減に直面し、ゲームの今後の方向性に懸念が広がっています。</span>
+                    <span class="lang-content lang-ko">고전 온라인 RPG &#39;엘더스 스크롤 온라인&#39;의 개발 팀이 최대 절반에 달하는 인력 감축을 겪으면서 게임의 미래 전략에 대한 우려가 증폭되고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2024/04/15/fallout-new-vegas-season-2-thumb-1713210577643.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/we-need-to-change-course-bethesda-boss-tells-staff-the-company-must-focus-on-our-strongest-franchises-as-xbox-layoffs-hit-hard" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Bethesda Pivots Strategy: Xbox Layoffs Force Focused Approach to &#39;Strongest Franchises&#39;</span>
+                        <span class="lang-content lang-ja">ベセスダ、Xbox大規模レイオフを受けブランド集中戦略を強制</span>
+                        <span class="lang-content lang-ko">베데서다, 엑스박스 대규모 구조조정에 대응… 핵심 브랜드 집중 전략 발표</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Amid industry-wide cuts, Bethesda&#39;s leadership demands a strategic consolidation to prioritize its most successful game series.</span>
+                    <span class="lang-content lang-ja">Xboxの大幅なリストラに直面し、ベセスダは「最強シリーズ」への集中投資という戦略的転換を従業員に通告しました。</span>
+                    <span class="lang-content lang-ko">엑스박스의 대규모 인력 감축에 맞설 차원에서 베데서다는 주력 게임 브랜드 개발에 집중하는 전략을 발표했습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260707-453518-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/20260707-453518/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Nintendo Adjusts EU Device Standards: Self-Replacable Batteries for Next-Gen Switch Systems</span>
+                        <span class="lang-content lang-ja">任天堂、EU向けSwitch 2シリーズに交換可能なバッテリー新仕様へ。旧世代機は販売終了</span>
+                        <span class="lang-content lang-ko">닌텐도, 유럽 시장 닌텐도 스위치 2에 사용자 교체 배터리 적용</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Europe-bound Nintendo products will gain user-replaceable battery designs, while first-generation Switch systems enter final sales phase.</span>
+                    <span class="lang-content lang-ja">ヨーロッパ市場向けに任天堂が次世代Switchに交換式バッテリーを採用する方針を発表。一方、初世代Switchシリーズは来年2月をもって販売終了となります。</span>
+                    <span class="lang-content lang-ko">유럽 시장에 출시되는 닌텐도 스위치 2 시리즈에 사용자가 직접 배터리 교체가 가능한 설계가 도입될 예정이며, 첫 세대 스위치 시스템은 내년 2월 한정 판매를 마지막으로 단종됩니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/xbox-20260707-453508-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/xbox-20260707-453508/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Xbox Announces Historic Workforce Reduction: 1600 Employees to Be Laid Off in Reorganization Plan</span>
+                        <span class="lang-content lang-ja">Xbox部門が歴史的レイオフ発表 1600人の人材統廃合とスタジオ再編</span>
+                        <span class="lang-content lang-ko">Xbox, 1600명 대규모 희망퇴직 발표… 브랜드 재편속하는 전략</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Microsoft&#39;s Xbox division plans to implement a significant restructuring, cutting 20% of its workforce (1600 employees) this financial year and granting independence to four acquired studios.</span>
+                    <span class="lang-content lang-ja">マイクロソフトXbox部門が会計年度中に3200人規模のレイオフ方針を発表。従業員の20%に当たる1600人の削減に加え、4つの買収スタジオが独立する措置を取る。Xboxブランドの再建に向けた大胆な戦略転換が明らかにされた。</span>
+                    <span class="lang-content lang-ko">마이크로소프트 Xbox 부문이 재편 과정에서 1600명 규모의 대규모 희망퇴직을 발표했습니다. 전체 직원의 20%에 해당하며, 4개 인수 스튜디오를 독립시키는 방안도 함께 내놨습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260706-453491-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/20260706-453491/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Echoes: Language-Deconstruction Visual Novel with Broken Android Girl Debuts on Steam</span>
+                        <span class="lang-content lang-ja">終末世界で壊れゆくアンドロイドとの5日間『エコーズ』Steamで配信開始</span>
+                        <span class="lang-content lang-ko">말이 끊기는 안드로이드와의 만남 &lt;에코즈&gt; 스팀으로 첫 방출</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The post-apocalyptic interactive story &#39;Echoes&#39; will launch on Steam, offering a 5-day emotional journey through dialogue with a deteriorating android companion across multiple timelines.</span>
+                    <span class="lang-content lang-ja">開発者びご氏の新作ADV「エコーズ」がSteamストアで7月4日に掲載。終末世界を舞台に崩壊寸前のアンドロイドとの言語解読を通じた温かい物語が展開される。</span>
+                    <span class="lang-content lang-ko">폐허 세상을 배경으로 부서지는 안드로이드와 5일간 교감하는 감성 어드벤처 게임 &#39;에코즈&#39;가 스팀에서 공식 출시되었습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260706-453479-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/20260706-453479/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Rhythm Paradise&#39;s Feline Fandom Takes Over: Cats Steal the Spotlight in Online Game Videos</span>
+                        <span class="lang-content lang-ja">『リズム天国』がリアルネコに襲われた？ 動体視力が暴走するもふもふ乱入</span>
+                        <span class="lang-content lang-ko">리듬 하늘에 고양이 팬덤 대격변! 예상 못한 네코 방해로 재미 토론 앵글 탄생</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Viral social media trends show real cats hijacking &#39;Rhythm Paradise&#39; gaming sessions, adding chaotic charm to rhythm gameplay through unexpected feline interruptions.</span>
+                    <span class="lang-content lang-ja">『リズム天国 ミラクルスターズ』の動画投稿が猫と共にSNSで広まり、プレイヤーの反応では「猫がプレイを乗っ取った」など意外な楽しみ方が注目を集めている。</span>
+                    <span class="lang-content lang-ko">『리듬천국』 게임 화면이 고양이에게 장악당한 사례가 SNS에서 급격히 확산되며, 예상 밖으로 &#39;고양이 주인공&#39;의 재미 요소로 입소문 나고 있다. 희고 풍성한 꼬리로 플레이를 방해하는 장면이 인기를 끌고 있다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260706-453470-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/20260706-453470/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Mystery Game &#39;Demon&#39;s Timeline&#39; Hits 10,000 Downloads with Real-Time Social Media Narrative</span>
+                        <span class="lang-content lang-ja">SNS推理ADV『観測者-デーモンズ・タイムライン-』が1万本売上を突破</span>
+                        <span class="lang-content lang-ko">SNS 추리 어드벤처 &#39;데몬즈 타임라인&#39; 1만 다운로드 돌파</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">DigitalCats celebrates 10,000 downloads for its SNS-themed mystery adventure. The game leverages a hyper-realistic social media interface to deliver an immersive real-time detective experience.</span>
+                    <span class="lang-content lang-ja">DigitalCatsは、SNS機能を本質的に活用した推理ゲーム『観測者-デーモンズ・タイムライン-』がリリース3日目に1万ダウンロードを達成したと発表。リアルタイム性を特徴とするこのミステリー作品は話題沸騰中です。</span>
+                    <span class="lang-content lang-ko">DigitalCats는 SNS 기능을 본질적으로 활용한 추리 게임 &#39;관측자-데몬즈 타임라인-&#39;이 릴리스 3일째에 1만 다운로드를 달성했다고 발표. 실시간성을 특징으로 하는 이 미스터리 작품은 화제 비등 중입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gFN/cms/news.9/239248/screenshot-2026-07-03-151059.png.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-06/crunchyroll-co-founder-former-ceo-kun-gao-launches-anibiz-platform-for-anime-licensing/.239248" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Crunchyroll Alum Kun Gao Unveils AniBiz: A Global Anime Industry Hub</span>
+                        <span class="lang-content lang-ja">クラッシュロール共同創設者がアニメライセンス特化型市場『アニビジ』をローンチ</span>
+                        <span class="lang-content lang-ko">크런치롤 창립자, 글로벌 애니메이션 시장 플랫폼 &#39;애니비즈&#39; 출시</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Crunchyroll co-founder and former CEO Kun Gao announces AniBiz, the world&#39;s first B2B marketplace tailored for anime licensing, aiming to streamline global content distribution and partnership opportunities.</span>
+                    <span class="lang-content lang-ja">「グローバルアニメ業界向けに設計された初のB2Bマーケットプレイス」でコンテンツ分野の流通とパートナーシップ機会を刷新。</span>
+                    <span class="lang-content lang-ko">글로벌 애니메이션 콘텐츠 라이선스 거래를 효율화할 첫 B2B 마켓플레이스 &#39;애니비즈&#39;를 론칭하여 산업 활성화에 주목받고 있음.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gHA/cms/news.9/239360/w707.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-06/new-sword-art-online-film-reveals-title-cast-staff-2028-debut/.239360" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en"> Sword Art Online Unveils Next Chapter: 2028 Film Heralds Post-Alicization Saga</span>
+                        <span class="lang-content lang-ja">ソードアートオンライン、新作映画に「 Alicization」後の世界を描く</span>
+                        <span class="lang-content lang-ko">소드 아트 온라인, 2028년 영화로 &#39;앨리시제이션&#39; 시리즈 이어간다</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The new film will explore untapped territories of the SAO universe following the pivotal Alicization arc, with a star-studded cast and industry veterans leading the production.</span>
+                    <span class="lang-content lang-ja">人気ゲームの原作に続く「 Alicization」以降の世界に踏み込む2028年公開の大作。声優陣やスタッフに注目が集まっている。</span>
+                    <span class="lang-content lang-ko">&#39;앨리시제이션&#39; 에피소드 이후 새로운 이야기를 전개하는 2028년 개봉 영화가 제작단계부터 기대를 모으고 있음.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gMF/cms/news.9/239346/star-fox.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-06/japan-video-game-rankings-june-22-28/.239346" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Star Fox Remake Dethrones Rivals in Japan&#39;s July Game Rankings</span>
+                        <span class="lang-content lang-ja">スタークラッシュ：日本週間ゲームランキング第1位を決めるサクセス・リバイバル</span>
+                        <span class="lang-content lang-ko">스타 폭스 리메이크, 일본 7월 게임 랭킹 1위 차지</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">A revitalized reimagining of the classic space shooter captures Japan&#39;s top sales spot this week, signaling a nostalgic resurgence in gaming&#39;s competitive landscape.</span>
+                    <span class="lang-content lang-ja">クラシックスペースシューティングゲームのリメイクが登場し、日本市場の週間セールスを席巣取って注目を集める。</span>
+                    <span class="lang-content lang-ko">클래식 슈팅 게임 &#39;스타 폭스&#39;의 리메이크 버전이 일본 주간 판매 순위 1위에 올리며 흥행 재조명에 성공하고 있음.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gGY/encyc/A454-1482.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-06/japanese-animation-tv-ranking-june-22-28/.239347" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Detective Conan Dominates Weekly Anime Rankings, Outpaces Longtime Rival Sazae-san</span>
+                        <span class="lang-content lang-ja">「名探偵コナン」が40年ぶりに「サザエさん」を抑えてアニメTV人気ランキング1位</span>
+                        <span class="lang-content lang-ko">『명탐정 코난』, 40년 만에 『사자에 씨』 제치고 애니메 주간 순위 1위 기록</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Detective Conan claimed the top spot in Japan&#39;s June 22-28 TV anime rankings, edging out classic staple Sazae-san for the first time in decades, signaling a shift in audience preferences.</span>
+                    <span class="lang-content lang-ja">名探偵コナンが6月22日〜28日の日本アニメTV放送視聴率で30年ぶりにサザエさんを上回り第1位を獲得。伝説的番組の座を危うくした。</span>
+                    <span class="lang-content lang-ko">명탐정 코난이 6월 22일~28일 방송 애니메 순위에서 40년 만에 사자에 씨를 누르고 1위 자리를 차지했습니다. 오랜 습관을 깬 콘텐츠 트렌드 변화</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gL6/cms/news.9/239335/ayaka-fukuhara.jpeg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-06/otakon-2026-hosts-voice-actress-ayaka-fukuhara-i.g-usa-president-maki-terashima-furuta/.239335" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Otakon 2026 Unveils Star-Studded Lineup: Ayaka Fukuhara, Maki Terashima-Furuta, and More to Headline</span>
+                        <span class="lang-content lang-ja">オタコン2026、福原香織＆米倉涼子ほか豪華ゲスト発表 7月31日〜8月2日にワシントンD.C.開催</span>
+                        <span class="lang-content lang-ko">오타콘 2026, 후쿠하라 카오리 &amp; 요네쿠라 료코 외 호화 게스트 발표 7월 31일~8월 2일에 워싱턴 D.C. 개최</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">July 31-August 2&#39;s Otakon 2026 in Washington D.C. will feature voice acting legends Ayaka Fukuhara, Ryotaro Okiayu, and industry executive Maki Terashima-Furuta leading key events.</span>
+                    <span class="lang-content lang-ja">オタコン2026は7月31日から8月2日にかけて、福原香織や米倉涼子など声優・業界人を招いて行われる。ワシントンD.C.でのアニソンイベントが注目</span>
+                    <span class="lang-content lang-ko">오는 7월31일~8월2일 워싱턴 D.C.에서 진행되는 2026 오타콘에 후쿠하라 아야카, 테라시마 품 쿄코 등 주요 인물이 대거 출연한다고 발표했습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/7/kikis-delivery-service-4k-edition-number-8-3rd-weekend-japan-box-office" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">4K Upgrade Revives Classic: Kiki&#39;s Delivery Service Rebounds to No. 8 in Japan Cinema</span>
+                        <span class="lang-content lang-ja">ジブリ4Kリマスターが劇場復活「魔女の宅急便」3週目で8位に復上</span>
+                        <span class="lang-content lang-ko">지브리 4K 리마스터가 극장 부활 &#39;마녀의 택배&#39; 3주차로 8위로 복상</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Studio Ghibli&#39;s Kiki&#39;s Delivery Service 4K re-release climbed to eighth in its third weekend, while Detective Conan: Fallen Angel of the Highway entered Japan&#39;s all-time box office Top 100 at 27th.</span>
+                    <span class="lang-content lang-ja">スタジオジブリ制作「魔女の宅急便」4Kリマスターが3週目で興行収入8位に復上。一方「名探偵コナン 遠走った広域同心」が歴代27位にランクイン</span>
+                    <span class="lang-content lang-ko">지브리 4K 리마스터 &#39;마녀의 성&#39;이 개봉 3주차에 일본 박스오피스 8위로 치고 올라. 쿄오 코난 &#39;고향 이별의 천재&#39; 27위 기록</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/6/sword-art-online-the-movie-integral-domain-anime-film-announced-for-2028" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Integral Domain: Sword Art Online Returns to the Big Screen with 2028 Anime Movie</span>
+                        <span class="lang-content lang-ja">『ソードアートオンライン　インテグラルドメイン』映画、2028年公開が発表</span>
+                        <span class="lang-content lang-ko">소드 아트 온라인, 2028년 애니메어 영화 &lt;인테그럴 도메인&gt; 공개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The sci-fi light novel adaptation reveals main staff, a teaser trailer, and concept art for its upcoming anime film slated for 2028.</span>
+                    <span class="lang-content lang-ja">サイエンスフィクションのライトノベルシリーズを基にした新作映画の主要スタッフ、ティーザートレーラーおよびアートが公開されました。</span>
+                    <span class="lang-content lang-ko">과학 소설 원작의 애니메 영화 주요 제작진과 예고편, 예술 스타일 공개. 2028년 개봉 예정.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/6/daemons-of-the-shadow-realm-anime-cour-2-opening-ending-videos" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Daemons of the Shadow Realm Anime Reboots with Teaser Trailers for Second Season</span>
+                        <span class="lang-content lang-ja">『影の国に還る -デーモンズ・オブ・ザ・シャドウ・レーム-』アニメ2クール目開始</span>
+                        <span class="lang-content lang-ko">다이몬즈 오브 더 쇼어드 레임, 2쿨 개방 영상 발표</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The action-packed return of Hiromu Arakawa&#39;s manga adaption hits Crunchyroll with creditless opening and ending videos for its second cour.</span>
+                    <span class="lang-content lang-ja">人気作『影の国に還る』の第2クールが再び始動。クラシカルなオープニング・エンディング映像が解禁されました。</span>
+                    <span class="lang-content lang-ko">히로무 아라카와의 인기 만화 애니메이션이 두 번째 쿠어로 복귀. 크레딧 없는 오프닝/엔딩 영상 공개.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/6/solo-leveling-karma-original-story-trailer" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Solo Leveling: KARMA Unveils Gaming World with New Original Story Trailer</span>
+                        <span class="lang-content lang-ja">『ソロレベルイング: カーマ』、ゲーム公式ストーリートレーラーを公開</span>
+                        <span class="lang-content lang-ko">솔로 레벨링: 카르마, 새로운 오리지널 스토리 트레일러 공개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">This innovative roguelike action-RPG from the popular Solo Leveling universe debuts its mobile and PC release plans alongside a gripping teaser.</span>
+                    <span class="lang-content lang-ja">人気アニメの新作ゲーム『カーマ』ティーザートレーラー解禁。ローグライクアクションRPGは年末にPC・モバイル向けでリリース予定。</span>
+                    <span class="lang-content lang-ko">인기 애니 &#39;솔로 레벨링&#39; 우주의 카르마 게임이 PC와 모바일로 출시 예정이며, 새로운 트레일러 공개.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/6/jaadugar-a-witch-in-mongolia-anime-creditless-opening-ending-videos" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Jaadugar: A Witch in Mongolia Anime Unveils Official Opening and Ending Themes Without Credits</span>
+                        <span class="lang-content lang-ja">モンゴルの魔女「ジャドガー」が公式オープニングとエンディングテーマを紳士的に配信</span>
+                        <span class="lang-content lang-ko">몽골의 악녀 &#39;자드가&#39; 공식 오프닝 및 엔딩 영상 공개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The animated series &#39;Jaadugar: A Witch in Mongolia&#39; has released uncredited versions of its opening and ending theme videos, now streaming exclusively on Crunchyroll.</span>
+                    <span class="lang-content lang-ja">アニメ『ジャドガー：モンゴルの魔女』は、オープニングとエンディングテーマのクレジットなしバージョンを公開し、現在クランチロールで独占配信中。</span>
+                    <span class="lang-content lang-ko">애니메이션 &#39;자드가: 몽골의 마녀&#39;가 개막 및 종영 테마 영상의 실버 버전을 발표하며 현재 크런치롤에서 독점 스트리밍 중입니다.</span>
+                </div>
+            </article>
+            
+        </div>
+        
+    </div>
+
+    <script>
+        function setCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('cat-' + cat);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            document.querySelectorAll('.article-card').forEach(card => {
+                if (cat === 'All' || card.getAttribute('data-category') === cat) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            localStorage.setItem('preferredCat', cat);
+        }
+
+        function setLanguage(lang) {
+            const supportedLanguages = ['en', 'ja', 'ko'];
+            if (!supportedLanguages.includes(lang)) lang = 'ko';
+            document.documentElement.setAttribute('lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            const activeButton = document.getElementById('btn-' + lang);
+            if (activeButton) activeButton.classList.add('active');
+            localStorage.setItem('preferredLang', lang);
+        }
+
+        // Init language and category
+        const savedLang = localStorage.getItem('preferredLang') || 'ko';
+        setLanguage(savedLang);
+
+        const supportedCategories = ['All', 'IT/Tech', 'AI', 'Game', 'Anime', 'CG/Blender'];
+        const savedCat = localStorage.getItem('preferredCat') || 'All';
+        setCategory(supportedCategories.includes(savedCat) ? savedCat : 'All');
+    </script>
+</body>
+</html>

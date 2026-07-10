@@ -1,0 +1,2572 @@
+
+<!DOCTYPE html>
+<html lang="ko" data-theme="system">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Tech Magazine</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        
+        :root {
+            /* Light Theme */
+            --bg-color: #ffffff;
+            --text-main: #111111;
+            --text-muted: #666666;
+            --border-color: #eaeaea;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --accent: #000000;
+            --hover-bg: #f9f9f9;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                /* Premium Muted Dark Mode */
+                --bg-color: #0d0d0d;
+                --text-main: #f0f0f0;
+                --text-muted: #a0a0a0;
+                --border-color: #222222;
+                --nav-bg: rgba(13, 13, 13, 0.95);
+                --accent: #ffffff;
+                --hover-bg: #161616;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', 'Pretendard', 'Noto Sans JP', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+        
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* Top Navigation */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 1.25rem;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-controls {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+        
+        /* Category Filter */
+        .category-toggle {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cat-btn {
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            font-family: inherit;
+            padding: 0.2rem 0.5rem;
+        }
+        .cat-btn.active, .cat-btn:hover {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        .lang-toggle {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .lang-btn {
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            font-family: inherit;
+            font-weight: inherit;
+            font-size: inherit;
+        }
+        .lang-btn:hover { color: var(--text-main); }
+        .lang-btn.active { color: var(--text-main); font-weight: 700; }
+
+        .archive-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-main);
+        }
+        
+        .archive-dropdown select {
+            background: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 0.35rem;
+            color: var(--text-main);
+            font-family: inherit;
+            font-size: inherit;
+            font-weight: inherit;
+            cursor: pointer;
+            outline: none;
+            padding: 0.4rem 1.8rem 0.4rem 0.6rem;
+        }
+
+        .archive-dropdown select:focus-visible,
+        .issue-link:focus-visible,
+        .cat-btn:focus-visible,
+        .lang-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .issue-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .issue-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            padding: 0.35rem 0.7rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            white-space: nowrap;
+            transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .issue-link:hover,
+        .issue-link[aria-current="page"] {
+            color: var(--text-main);
+            border-color: var(--text-muted);
+            background: var(--hover-bg);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header Date */
+        .header-date {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+        }
+
+        /* Featured Article */
+        .featured {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .featured-img {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            object-fit: cover;
+            background: var(--hover-bg);
+        }
+
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .meta {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .featured-title {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+        }
+        
+        .featured-title a:hover {
+            text-decoration: underline;
+        }
+
+        .featured-summary {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* Masonry Grid Layout */
+        .masonry-grid {
+            column-count: 3;
+            column-gap: 2rem;
+            width: 100%;
+        }
+
+        .article-card {
+            break-inside: avoid;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .article-img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 1rem;
+            background: var(--hover-bg);
+        }
+
+        .article-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 0.75rem;
+        }
+        
+        .article-title a:hover {
+            text-decoration: underline;
+        }
+
+        .article-summary {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .empty-state {
+            border: 1px solid var(--border-color);
+            background: var(--hover-bg);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .empty-state h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .empty-state p {
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 1024px) {
+            .masonry-grid { column-count: 2; }
+            .featured { grid-template-columns: 1fr; gap: 2rem; }
+            .featured-img { min-height: 300px; }
+            .featured-title { font-size: 2.5rem; }
+        }
+
+        @media (max-width: 640px) {
+            .masonry-grid { column-count: 1; }
+            .navbar { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .nav-controls { width: 100%; justify-content: center; gap: 1rem; }
+            .category-toggle { width: 100%; gap: 0.5rem; }
+            .issue-navigation { width: 100%; }
+            .featured-img { min-height: 200px; }
+            .featured-title { font-size: 2rem; }
+            .container { padding: 1rem; }
+        }
+        
+        /* Language System */
+        .lang-content { display: none; }
+        html[lang="en"] .lang-en { display: block; }
+        html[lang="ja"] .lang-ja { display: block; }
+        html[lang="ko"] .lang-ko { display: block; }
+        
+        /* Inline language display for meta */
+        html[lang="en"] span.lang-en { display: inline; }
+        html[lang="ja"] span.lang-ja { display: inline; }
+        html[lang="ko"] span.lang-ko { display: inline; }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">TECH MAG</div>
+        <div class="nav-controls">
+            <div class="category-toggle">
+                <button class="cat-btn active" onclick="setCategory('All')" id="cat-All">All</button>
+                <button class="cat-btn" onclick="setCategory('IT/Tech')" id="cat-IT/Tech">IT/Tech</button>
+                <button class="cat-btn" onclick="setCategory('AI')" id="cat-AI">AI</button>
+                <button class="cat-btn" onclick="setCategory('Game')" id="cat-Game">Game</button>
+                <button class="cat-btn" onclick="setCategory('Anime')" id="cat-Anime">Anime</button>
+                <button class="cat-btn" onclick="setCategory('CG/Blender')" id="cat-CG/Blender">CG/Blender</button>
+            </div>
+            <div class="issue-navigation" aria-label="Issue navigation">
+                <a class="issue-link" href="index.html" >
+                    <span class="lang-content lang-en">Latest</span>
+                    <span class="lang-content lang-ja">最新</span>
+                    <span class="lang-content lang-ko">최신</span>
+                </a>
+                
+                <a class="issue-link" href="archive-2026-07-09.html">
+                    <span aria-hidden="true">&larr;</span>
+                    <span class="lang-content lang-en">Older</span>
+                    <span class="lang-content lang-ja">前の日</span>
+                    <span class="lang-content lang-ko">이전 날짜</span>
+                    <time datetime="2026-07-09">2026-07-09</time>
+                </a>
+                
+                
+                <div class="archive-dropdown">
+                    <label for="archive-select">
+                        <span class="lang-content lang-en">Date</span>
+                        <span class="lang-content lang-ja">日付</span>
+                        <span class="lang-content lang-ko">날짜</span>
+                    </label>
+                    <select id="archive-select" onchange="if (this.value) window.location.href=this.value">
+                        <option value="index.html" >Latest / 最新 / 최신</option>
+                        
+                        <option value="archive-2026-07-10.html" selected>2026-07-10</option>
+                        
+                        <option value="archive-2026-07-09.html" >2026-07-09</option>
+                        
+                        <option value="archive-2026-07-08.html" >2026-07-08</option>
+                        
+                        <option value="archive-2026-07-07.html" >2026-07-07</option>
+                        
+                        <option value="archive-2026-07-06.html" >2026-07-06</option>
+                        
+                        <option value="archive-2026-07-03.html" >2026-07-03</option>
+                        
+                        <option value="archive-2026-07-02.html" >2026-07-02</option>
+                        
+                        <option value="archive-2026-07-01.html" >2026-07-01</option>
+                        
+                    </select>
+                </div>
+            </div>
+            <div class="lang-toggle">
+                <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
+                <button class="lang-btn" onclick="setLanguage('ja')" id="btn-ja">JA</button>
+                <button class="lang-btn active" onclick="setLanguage('ko')" id="btn-ko">KO</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="header-date">2026-07-10 EDITORIAL ISSUE</div>
+
+        
+        <article class="featured article-card" data-category="AI">
+            
+            <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Managed_agents_feature_bundle_l.max-600x600.format-webp.webp" alt="Featured Image" class="featured-img" onerror="this.style.display='none'">
+            
+            
+            <div class="featured-content">
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&mdash;</span>
+                    <span>Google AI Blog</span>
+                </div>
+                
+                <h1 class="featured-title">
+                    <a href="https://blog.google/innovation-and-ai/technology/developers-tools/expanding-managed-agents-gemini-api/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Expanding Managed Agents in Gemini API:  background tasks, remote MCP and more</span>
+                        <span class="lang-content lang-ja">Gemini API の管理対象エージェントの拡張: バックグラウンド タスク、リモート MCP など</span>
+                        <span class="lang-content lang-ko">Gemini API에서 관리형 에이전트 확장: 백그라운드 작업, 원격 MCP 등</span>
+                    </a>
+                </h1>
+                
+                <div class="featured-summary">
+                    <span class="lang-content lang-en">Managed agents feature bundle launch</span>
+                    <span class="lang-content lang-ja">管理対象エージェント機能バンドルの開始</span>
+                    <span class="lang-content lang-ko">관리형 에이전트 기능 번들 출시</span>
+                </div>
+            </div>
+        </article>
+        
+
+        
+        <div class="masonry-grid">
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/260701_ICYMI-June-AI_Thumb.max-600x600.format-webp.webp" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>Google AI Blog</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://blog.google/innovation-and-ai/technology/ai/google-ai-updates-june-2026/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">The latest AI news we announced in June 2026</span>
+                        <span class="lang-content lang-ja">2026 年 6 月に発表された AI の最新ニュース</span>
+                        <span class="lang-content lang-ko">2026년 6월 발표한 AI 최신 소식</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">June Pixel Drop hero</span>
+                    <span class="lang-content lang-ja">6月のピクセルドロップヒーロー</span>
+                    <span class="lang-content lang-ko">6월 픽셀드롭 히어로</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Summit_Photo_1.max-600x600.format-webp.webp" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>Google AI Blog</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://blog.google/products-and-platforms/products/education/nyc-ai-summit/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">New York City educators and industry leaders gathered at Google’s offices to shape the future of AI in classrooms.</span>
+                        <span class="lang-content lang-ja">ニューヨーク市の教育者と業界リーダーが Google のオフィスに集まり、教室における AI の未来を形作りました。</span>
+                        <span class="lang-content lang-ko">뉴욕시 교육자와 업계 리더들이 교실에서 AI의 미래를 만들기 위해 Google 사무실에 모였습니다.</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Google, the New York Jobs CEO Council and Urban Assembly hosted an AI summit for 150 education and industry leaders.</span>
+                    <span class="lang-content lang-ja">Google、New York Jobs CEO Council、Urban Assembly は、教育および業界のリーダー 150 名を対象とした AI サミットを主催しました。</span>
+                    <span class="lang-content lang-ko">Google, New York Jobs CEO Council 및 Urban Assembly는 150명의 교육 및 업계 리더를 대상으로 AI 서밋을 개최했습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_Generated_Image_k2dxu1k2.max-600x600.format-webp.webp" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>Google AI Blog</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://blog.google/company-news/inside-google/around-the-globe/google-europe/united-kingdom/unlocking-britains-next-era-of-productivity-building-a-nation-of-ai-trailblazers/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Unlocking Britain’s next era of productivity: Building a nation of AI trailblazers</span>
+                        <span class="lang-content lang-ja">英国の次の時代の生産性を解き放つ: AI の先駆者たちの国を築く</span>
+                        <span class="lang-content lang-ko">영국의 차세대 생산성 시대를 열다: AI 선구자의 국가 건설</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Four illustrated characters representing different professional roles, including a scientist, technician, explorer, and observer.</span>
+                    <span class="lang-content lang-ja">科学者、技術者、探検家、観察者など、さまざまな専門的役割を表す 4 人のイラスト付きキャラクター。</span>
+                    <span class="lang-content lang-ko">과학자, 기술자, 탐험가, 관찰자를 포함하여 다양한 직업적 역할을 나타내는 4명의 일러스트 캐릭터입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Full_Stack.max-600x600.format-webp.webp" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>Google AI Blog</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://blog.google/innovation-and-ai/technology/ai/full-stack-ai-explainer/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Ask an AI expert: What exactly is the full stack?</span>
+                        <span class="lang-content lang-ja">AI の専門家に聞く: フルスタックとは正確には何ですか?</span>
+                        <span class="lang-content lang-ko">AI 전문가에게 물어보세요: 풀 스택이란 정확히 무엇입니까?</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">An illustration depicting a full-stack AI infrastructure against a dark background</span>
+                    <span class="lang-content lang-ja">暗い背景にフルスタックの AI インフラストラクチャを描いたイラスト</span>
+                    <span class="lang-content lang-ko">어두운 배경을 배경으로 풀스택 AI 인프라를 묘사한 그림</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://www.blender.org/wp-content/uploads/2026/06/siggraph_2026-480x270.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>Blender.org News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.blender.org/events/blender-at-siggraph-2026/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Blender at SIGGRAPH 2026</span>
+                        <span class="lang-content lang-ja">SIGGRAPH 2026 での Blender</span>
+                        <span class="lang-content lang-ko">SIGGRAPH 2026의 블렌더</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The Blender team is back in Los Angeles to present and take part at SIGGRAPH 2026.</span>
+                    <span class="lang-content lang-ja">Blender チームは、SIGGRAPH 2026 で発表および参加するためにロサンゼルスに戻りました。</span>
+                    <span class="lang-content lang-ko">Blender 팀이 SIGGRAPH 2026에 발표하고 참여하기 위해 로스앤젤레스로 돌아왔습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://www.blender.org/wp-content/uploads/2026/07/annecy_2026-480x270.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>Blender.org News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.blender.org/events/blender-in-annecy-2026-recap/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Blender in Annecy 2026 Recap</span>
+                        <span class="lang-content lang-ja">アヌシーのブレンダー 2026 総括</span>
+                        <span class="lang-content lang-ko">안시 2026 요약의 블렌더</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Recap of Blender at the Annecy Animation Film Festival 2026</span>
+                    <span class="lang-content lang-ja">2026 年アヌシー アニメーション映画祭での Blender の概要</span>
+                    <span class="lang-content lang-ko">2026년 안시 애니메이션 영화제의 블렌더 요약</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://www.blender.org/wp-content/uploads/2026/06/annecy_lake-480x270.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>Blender.org News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.blender.org/events/blender-in-annecy-2026/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Blender in Annecy 2026</span>
+                        <span class="lang-content lang-ja">アヌシーのブレンダー 2026</span>
+                        <span class="lang-content lang-ko">안시 2026의 블렌더</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Blender attends the Annecy International Animation Film Festival 2026 and hosts a community meet-up.</span>
+                    <span class="lang-content lang-ja">Blender はアヌシー国際アニメーション映画祭 2026 に参加し、コミュニティ交流会を主催します。</span>
+                    <span class="lang-content lang-ko">Blender는 2026년 안시 국제 애니메이션 영화제에 참석하여 커뮤니티 모임을 주최합니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://www.blender.org/wp-content/uploads/2026/05/blender_roadmap-480x270.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>Blender.org News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.blender.org/news/introducing-the-blender-roadmap/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Introducing the Blender Roadmap</span>
+                        <span class="lang-content lang-ja">Blender ロードマップの紹介</span>
+                        <span class="lang-content lang-ko">블렌더 로드맵 소개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">See where Blender is heading next and how you can get involved.</span>
+                    <span class="lang-content lang-ja">Blender が次にどこに向かっているのか、そしてどのように参加できるのかをご覧ください。</span>
+                    <span class="lang-content lang-ko">Blender가 다음 단계로 향하는 방향과 참여 방법을 알아보세요.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://www.blender.org/wp-content/uploads/2026/05/devfund_ai_policies-480x270.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>Blender.org News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.blender.org/news/upcoming-blender-development-fund-and-ai-policies/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Upcoming Blender Development Fund and AI Policies</span>
+                        <span class="lang-content lang-ja">今後の Blender 開発基金と AI ポリシー</span>
+                        <span class="lang-content lang-ko">다가오는 블렌더 개발 기금 및 AI 정책</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">An update after the latest Development Fund announcement.</span>
+                    <span class="lang-content lang-ja">最新の開発基金の発表後の最新情報。</span>
+                    <span class="lang-content lang-ko">최신 개발 기금 발표 후 업데이트입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://platform.theverge.com/wp-content/uploads/sites/2/2026/04/STKS528_DATA_CENTERS_A.jpg?quality=90&amp;strip=all&amp;crop=0%2C10.732984293194%2C100%2C78.534031413613&amp;w=1200" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>The Verge</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.theverge.com/tech/963728/microsoft-sustainability-report-2026" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Microsoft’s carbon emissions went up 25 percent last year</span>
+                        <span class="lang-content lang-ja">マイクロソフトの二酸化炭素排出量は昨年 25% 増加しました</span>
+                        <span class="lang-content lang-ko">마이크로소프트의 탄소 배출량은 작년에 25% 증가했습니다.</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Microsoft may once again be struggling to keep up with its own climate goals, according to its 2026 sustainability report. As reported by GeekWire, the report states that Microsoft&#39;s carbon emissions increased 25 percent in 2025, totalling 34 million metric tons &#34;without select interventions.&#34; Microsoft says this was &#34;driven primarily by the expansion of our […]</span>
+                    <span class="lang-content lang-ja">2026年の持続可能性報告書によると、マイクロソフトは再び自社の気候変動目標を達成するのに苦戦している可能性があるという。 GeekWire が報じたように、報告書では、「特別な介入がなければ」マイクロソフトの炭素排出量は 2025 年に 25% 増加し、合計 3,400 万トンに達すると述べています。 Microsoft は、これは「主に当社の […]</span>
+                    <span class="lang-content lang-ko">2026년 지속 가능성 보고서에 따르면 마이크로소프트는 다시 한 번 자체 기후 목표를 유지하기 위해 고군분투하고 있을 수 있습니다. GeekWire에서 보고한 바와 같이 보고서에 따르면 Microsoft의 탄소 배출량은 2025년에 25% 증가하여 &#34;선택적인 개입 없이&#34; 총 3,400만 미터톤에 달했습니다. Microsoft는 이것이 &#34;주로 우리의 [...] 확장에 의해 주도되었다고 말합니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/10/6b88c02d7bd397c5254ce2e1f500027b.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260710114357" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Level Infinite ‘Goddess of Victory: Nike’, pop-up store scheduled to open in summer 2026</span>
+                        <span class="lang-content lang-ja">レベルインフィニット「勝利の女神：ニッケ」、2026夏ポップアップストアがオープン予定</span>
+                        <span class="lang-content lang-ko">레벨인피니트 &#39;승리의 여신: 니케&#39;, 2026 여름 팝업스토어 오픈 예정</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">[ZD Net Korea] Level Infinite announced on the 10th that it plans to open a 2026 summer pop-up store for the pretty girl gun shooting RPG ‘Goddess of Victory: Nike’ developed by Shift Up. This summer pop-up store will be operated for two weeks from the 17th to the 30th at Iconic B1, the first basement level of The Hyundai Seoul, located in Yeouido, Seoul. Operating hours are extended from 10:30 a.m. to 7:30 p.m. on weekdays and from 10:30 a.m. to 8:00 p.m. from Friday to Sunday. Advance reservations will be made through Naver advance reservation starting at 6 p.m. today, and only those who apply in advance will be able to enter from the first to third days of the event. Starting on the 20th, the fourth day of opening, advance reservations and on-site waiting registration will be operated together. The company explained that this event venue will embody the summer season worldview in the game into a real space and incorporate various themes such as beaches, jungles, and lighthouses. The main photo zone was created using LED waves and acrylic mirrors, and a floor sheet reminiscent of a sandy beach further enhanced the summer beach atmosphere. Here, you can take commemorative photos with Nikes who are preparing for a summer pictorial. Also, on weekends, ‘Cinderella: Crystal Wave’, ‘Marchana: Marine Stir…’</span>
+                    <span class="lang-content lang-ja">[ジディネットコリア]レベルインフィニットはシフトアップが開発した美少女ガンシューティングRPG「勝利の女神：ニッケ」の2026夏ポップアップストアをオープンする予定だと10日明らかにした。 2週間運営される。運営時間は平日午前10時30分から午後7時30分まで、金曜日から日曜日までは午前10時30分から午後8時まで延長運営される。オープン4日目の20日からは事前予約とともに現場待機受付も一緒に運営される予定だ。 今回のイベント場はゲームの中の夏シーズン世界観を現実空間で具現、ビーチ・ジャングル・灯台など様々なテーマを随所に溶かす予定だと会社側は説明した。メインフォトゾーンはLED波の演出とアクリルミラーを活用して造成され、砂浜を連想させるフロアシートで夏のビーチの雰囲気を一層活かした。ここでは夏のグラビアを準備中のニケたちと記念写真を撮影することができる。 また、週末には「シンデレラ：クリスタルウェーブ」、「マルチャナ：マリンスター…」</span>
+                    <span class="lang-content lang-ko">[지디넷코리아]레벨 인피니트는 시프트업이 개발한 미소녀 건슈팅 RPG ‘승리의 여신: 니케’의 2026 여름 팝업스토어를 오픈할 예정이라고 10일 밝혔다.이번 여름 팝업스토어는 서울 여의도에 위치한 더현대 서울 지하1층 아이코닉 B1에서 오는 17일부터 30일까지 2주간 운영된다. 운영 시간은 평일 오전 10시 30분부터 오후 7시 30분까지, 금요일부터 일요일까지는 오전 10시 30분부터 오후 8시까지 연장 운영된다.사전 예약은 오늘 오후 6시부터 네이버 사전 예약을 통해 진행되며, 행사 첫째 날부터 셋째 날까지는 사전 신청자에 한해 입장이 가능하다. 오픈 나흘차인 20일부터는 사전 예약과 함께 현장 대기 접수도 함께 운영될 예정이다.이번 행사장은 게임 속 여름 시즌 세계관을 현실 공간으로 구현, 해변·정글·등대 등 다양한 테마를 곳곳에 녹여낼 예정이라고 회사 측은 설명했다. 메인 포토존은 LED 파도 연출과 아크릴 거울을 활용해 조성됐으며, 모래사장을 연상시키는 바닥 시트로 여름 해변 분위기를 한층 살렸다. 이곳에서는 여름 화보를 준비 중인 니케들과 함께 기념사진을 촬영할 수 있다.또한 주말에는 ‘신데렐라 : 크리스탈 웨이브’, ‘마르차나 : 마린 스터…</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/09/600a09529b5926779aa69351c5bf1cac.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260709174613" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">[Global security company] Tanium “Real-time identification of unmanaged assets... reputation as an ‘autonomous patch’”</span>
+                        <span class="lang-content lang-ja">[グローバルセキュリティ企業]タニアム「未管理資産のリアルタイム識別... &#39;自律パッチ&#39;で名声」</span>
+                        <span class="lang-content lang-ko">[글로벌 보안기업] 태니엄 &#34;미관리 자산 실시간 식별...&#39;자율패치&#39;로 명성&#34;</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">[ZD Net Korea] &#34;We are leading the integrated endpoint management (XEM) market, from endpoint management, which is the forefront of security, to unmanaged IT assets, response to vulnerabilities, and autonomous patch application.&#34; Park Young-sun, head of Tanium&#39;s Korean branch, said this about Tanium&#39;s future vision in an interview with ZD Net Korea on the 9th. Tanium, a global cybersecurity company, is an endpoint security company established on July 16, 2007. It is headquartered in Kirkland, Washington, USA. It was co-founded by father and son David Hindawi and Orion Hindawi. Before founding Tanium, Hindawi founded BigFix, an infrastructure integration and endpoint management company, and sold it to IBM. Currently, Tanium has established itself as a global leader in the &#39;integrated endpoint management (XEM)&#39; market, including not only endpoint management but also asset identification and vulnerability response. It has more than half of the Fortune 100 companies as customers. It supports the top 10 U.S. banks as well as global companies and public institutions around the world. It is known that the name Tanium is derived from titanium. As of December last year, the number of executives and employees was 2,415...</span>
+                    <span class="lang-content lang-ja">「セキュリティの最も先端であるエンドポイント管理から管理されていないIT資産、脆弱性対応、自律パッチ適用まで、統合エンドポイント管理（XEM）市場をリードしています。」グローバルサイバーセキュリティ企業タニアムは、2007年7月16日に設立されたエンドポイントセキュリティ専門企業です。米国ワシントン州カークランド（Kirkland, Washington）に本社がある。デビッド・ヒンダウィ（David Hindawi）とオリオン・ヒンダウィ（Orion Hindawi）の父子が共同創立した。ヒンダウイは、タニアム設立前にもインフラ統合およびエンドポイント管理企業「ビッグフィックス（BigFix）」を創立し、IBMに売却したことがある。フォーチュン100大企業の半分以上を顧客会社としている。米国１０大銀行はもちろん、世界中のグローバル企業や公共機関を支援する。タニアムの使命はチタン（titanium）に由来することが分かった。昨年12月基準の従業員数は2415人…</span>
+                    <span class="lang-content lang-ko">[ZD넷코리아] &#34;보안의 최전선인 엔드포인트 관리부터 비관리형 IT자산, 취약점 대응, 자율패치 적용까지 통합엔드포인트관리(XEM) 시장을 선도하고 있다&#34; 태니움 한국지사 박영선 대표는 지난 9일 ZD넷코리아와의 인터뷰에서 태니움의 미래 비전에 대해 이렇게 말했다. 글로벌 사이버보안 기업 태니움(Tanium)은 2007년 7월 16일 설립된 엔드포인트 보안 기업이다. 본사는 미국 워싱턴주 커클랜드에 있다. 아버지와 아들 David Hindawi와 Orion Hindawi가 공동 창립했습니다. Tanium을 설립하기 전 Hindawi는 인프라 통합 및 엔드포인트 관리 회사인 BigFix를 설립하여 IBM에 매각했습니다. 현재 태니움은 엔드포인트 관리뿐 아니라 자산 식별, 취약점 대응 등 &#39;통합 엔드포인트 관리(XEM)&#39; 시장에서 글로벌 리더로 자리매김했다. Fortune 100대 기업 중 절반 이상이 고객입니다. 미국 10대 은행은 물론 전 세계 글로벌 기업과 공공기관을 지원합니다. 타늄(Tanium)이라는 이름은 티타늄(Titanium)에서 유래된 것으로 알려져 있습니다. 지난해 12월 기준 임직원 수는 2,415명이다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/10/29fe55e228a71307dc2a87758be33f13.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260710120433" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Collaborating with Korea National Oil Corporation, local governments, and universities to foster future resource development talent</span>
+                        <span class="lang-content lang-ja">石油公社、地自然・大学などと手を取り、未来資源開発人材養成</span>
+                        <span class="lang-content lang-ko">석유공사, 지자연·대학 등과 손잡고 미래 자원개발 인재 양성</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">[ZD Net Korea] Korea National Oil Corporation (CEO Son Joo-seok) announced that it held the ‘2026 Industry-Academia-Research Resource Development Academy’ from the 6th to the 10th in collaboration with the Korea Institute of Geoscience and Mineral Resources and 11 universities. The Academy, now in its third year, was prepared to revitalize the domestic resource development ecosystem and foster next-generation professionals. This year, about 30 undergraduate and graduate students from 11 universities that have signed business agreements with the Korea National Oil Corporation and the Korea Institute of Geoscience and Mineral Resources participated. This year&#39;s academy attracted attention by significantly expanding the number of practical lectures taught by current experts in the field of resource development, comprised of the Korea Oil Corporation, the Korea Institute of Geoscience and Mineral Resources, and university professors, to a total of 12. We shared basic theories in the field of oil exploration and development, as well as vivid practical experience and field data, with future talents in the resource development field. Representatively, Deputy Director Choi Ji-woong of Korea National Oil Corporation, who wrote books such as ‘Empire of Oil’ and ‘The Future of Energy Empire’, lectured on the current status and future prospects of the global oil industry. In addition, lectures on the basics of petroleum engineering, basics of drilling, basics of physical logging, and practical oil exploration were given by professional technicians from Korea Petroleum Corporation. Kim Ki-beom, a professor of geological and environmental sciences at Pusan ​​National University who has emphasized the importance of resource development through various mass media and YouTube channels, gave an in-depth lecture on the topic of the domestic continental shelf sedimentary basin. In addition...</span>
+                    <span class="lang-content lang-ja">韓国石油公社（社長孫主席）は韓国地質資源研究院、11大学と共同で「2026産学研資源開発アカデミー」を去る6日から10日まで開催したと明らかにした。 今年で3回目を迎えたアカデミーは国内資源開発生態系今年は石油公社・地質資源研究院などと業務協約を締結した11の大学所属の学部生と大学院生30人余りが参加した。資源開発分野の未来人材たちに石油探査と開発分野の基礎理論から鮮やかな実務経験と現場データなどを共有した。また、石油工事専門技術陣の石油工学基礎・掘削基礎・物理検層基礎・石油探査実務講義が続いた。いくつかの大衆媒体とYouTubeチャンネルを通じて資源開発の重要性を強調してきたキム・ギボム釜山大地質環境科学科教授は国内大陸棚堆積盆地をテーマに深い講義を繰り広げた。</span>
+                    <span class="lang-content lang-ko">[지디넷코리아]한국석유공사(사장 손주석)는 한국지질자원연구원, 11개 대학과 공동으로 ‘2026 산학연 자원개발 아카데미’를 지난 6일부터 10일까지 개최했다고 밝혔다.올해로 3회차를 맞은 아카데미는 국내 자원개발 생태계 활성화와 차세대 전문인력 육성을 위해 마련됐다. 올해에는 석유공사·지질자원연구원 등과 업무협약을 체결한 11개 대학 소속 학부생과 대학원생 30여 명이 참여했다.올해 아카데미에서는 석유공사와 지질자원연구원, 대학 교수진으로 구성된 자원개발 분야 현직 전문가들이 진행하는 실무 중심 강좌를 총 12개로 대폭 확대해 눈길을 끌었다. 자원개발 분야 미래 인재들에게 석유 탐사와 개발 분야 기초 이론부터 생생한 실무 경험과 현장 데이터 등을 공유했다.대표적으로 ‘석유의 제국’ ‘에너지 제국의 미래’ 등의 저서를 집필한 최지웅 석유공사 차장은 글로벌 석유산업 현황과 향후 전망을 강의했다. 또 석유공사 전문 기술진의 석유공학 기초·시추 기초·물리검층 기초·석유탐사 실무 강의가 이어졌다. 여러 대중매체와 유튜브 채널을 통해 자원개발의 중요성을 강조해 온 김기범 부산대 지질환경과학과 교수는 국내 대륙붕 퇴적분지를 주제로 깊이 있는 강의를 펼쳤다.이 밖에도…</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/10/42dc7b7e788ea363f564152da55888df.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260710075309" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Samsung D exhibits gaming OLED at Bilibili World, a subculture expo... participates for the first time</span>
+                        <span class="lang-content lang-ja">サムスンD、サブカルチャーフェア中ビリビリワールドでのゲームOLED展示...初参加</span>
+                        <span class="lang-content lang-ko">삼성D, 중국 서브컬쳐 박람회 &#39;빌리빌리 월드&#39;에 게이밍 OLED 전시…</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">[GD Net Korea] Samsung Display announced on the 10th that it will exhibit gaming organic light-emitting diodes (OLED) at the subculture expo &#39;Bilibili World 2026&#39; held in Shanghai, China from the 10th to the 12th. Bilibili World is an annual event held by Chinese content platform ‘Bilibili’ since 2017. It has established itself as Asia&#39;s leading animation, comic, and game (ACG) expo. Last year, over 400,000 visitors from over 20 countries participated. This year is the first time that Samsung Display is participating in Bilibili World. Samsung Display prepared an experiential exhibition where you can enjoy Chinese masterpiece games with about 50 IT devices, including smartphones, laptops, and monitors equipped with small and medium-sized red, green-blue (RGB) OLED and large quantum dot (QD)-OLED, in a 90-pyeong booth. In addition to exhibiting the low-gradation expressiveness, response speed, and color characteristics of RGB OLED and QD-OLED, we also prepared events such as cosplay player commemorative photos and stamp rallies in which visitors can participate. Samsung Display collaborates with Tencent, the world&#39;s largest game company, at Bilibili World 2026. The entire booth was designed with the concept of Tencent&#39;s new game &#39;Honor of Kings: World&#39;. &#39;king…</span>
+                    <span class="lang-content lang-ja">サムスンディスプレイが10～12日、中国上海で行われるサブカルチャーフェア「ビリビリワールド（Bilibili World）2026」に参加し、ゲーミング有機発光ダイオード（OLED）を展示すると10日明らかにした。ビリービリーワールドは、中国コンテンツプラットフォーム「ビリービリー」が2017年から開催した年次行事だ。アジアを代表するアニメ・漫画・ゲーム（ACG）博覧会に位置した。昨年には20カ国以上で40万人余りの観覧客が参加した。サムスンディスプレイがビリービリーワールドに参加するのは今年が初めてだ。サムスンディスプレイは90坪規模ブースに中小型赤緑青(RGB)OLEDと大型クォンタムドット(QD)-OLEDを搭載したスマートフォン、ノートパソコン、モニターなど50台余りのIT機器で中国大作ゲームを楽しむ体験型展示を準備した。 RGB OLEDとQD-OLEDの低階調表現力、応答速度、カラー特性展示をはじめ、観覧客が参加できるコスチュームプレーヤー記念撮影、スタンプラリーなどのイベントも準備した。サムスンディスプレイはビリービリーワールド2026で世界最大のゲーム会社テンセントと協力する。ブース全体をテンセント新作ゲーム「王子ヨンヨ:ワールド(Honor of Kings: World)」をコンセプトにデザインした。 &#39;王…</span>
+                    <span class="lang-content lang-ko">[지디넷코리아]삼성디스플레이가 10~12일 중국 상하이에서 열리는 서브컬처 박람회 &#39;빌리빌리 월드(Bilibili World) 2026&#39;에 참가해 게이밍 유기발광다이오드(OLED)를 전시한다고 10일 밝혔다. 빌리빌리 월드는 중국 콘텐츠 플랫폼 &#39;빌리빌리&#39;가 2017년부터 개최한 연례행사다. 아시아를 대표하는 애니메이션·만화·게임(ACG) 박람회로 자리잡았다. 지난해에는 20여 개 국가에서 40만여 명 관람객이 참가했다. 삼성디스플레이가 빌리빌리 월드에 참가하는 것은 올해가 처음이다. 삼성디스플레이는 90평 규모 부스에 중소형 적녹청(RGB) OLED와 대형 퀀텀닷(QD)-OLED를 탑재한 스마트폰, 노트북, 모니터 등 50여 대 IT기기로 중국 대작 게임을 즐기는 체험형 전시를 준비했다. RGB OLED와 QD-OLED의 저계조 표현력, 응답속도, 컬러 특성 전시를 비롯해 관람객이 참여할 수 있는 코스튬 플레이어 기념촬영, 스탬프 랠리 등 이벤트도 준비했다. 삼성디스플레이는 빌리빌리 월드 2026에서 세계 최대 게임업체 텐센트와 협력한다. 부스 전체를 텐센트 신작 게임 &#39;왕자영요:월드(Honor of Kings: World)&#39;를 콘셉트로 디자인했다. &#39;왕…</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/10/8006e8dcd7bc418b7509560c95a80906.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260710110137" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Pearl Abyss &#39;Black Desert Mobile&#39; supports military personnel in celebration of Patriots and Veterans Month</span>
+                        <span class="lang-content lang-ja">パールビス「黒砂漠モバイル」、湖国宝勲の月、国軍将兵支援</span>
+                        <span class="lang-content lang-ko">펄어비스 &#39;검은사막 모바일&#39;, 호국보훈의 달 맞아 국군장병 지원</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">[ZD Net Korea] Pearl Abyss delivered goods such as food trucks, coffee trucks, and protective gear to military service members who devoted themselves to their country. Pearl Abyss announced on the 10th that it supported South Korean military personnel through the ‘Black Desert Mobile’ in-game donation event held in June to commemorate Patriots and Veterans Month. The event was planned to express gratitude and support to military service members who dedicate themselves to the country. Adventurers participated in various events, including in-game server requests, and participated in donations. Pearl Abyss raised 20 million won in support funds as adventurers achieved the donation event goal. It provided food trucks and coffee trucks to South Korean soldiers, and delivered wrist and knee protectors to help with training and service. Supporting messages written by adventurers were also placed in the coffee truck cup holder to express their gratitude. Pearl Abyss plans to continue various in-game events in which adventurers can participate together in Black Desert Mobile.</span>
+                    <span class="lang-content lang-ja">[ジディネットコリア]パールビスが国のために献身する国軍将兵のためにフードトラック、コーヒー車、保護隊など物品を届けた。パール・アビスが6月に護国報勲の月を迎えて進行した「黒砂漠モバイル」のインゲーム寄付イベントを通じて国軍将兵を支援したと10日明らかにした。イベントは国のために献身する国軍将兵に感謝と応援の心を伝えるために企画した。冒険者たちはゲーム内のサーバー依頼など様々なイベントに参加して寄付に参加した。冒険家たちが作成した応援メッセージもコーヒーティーカップホルダーに盛り込んで感謝の気持ちを伝えた。</span>
+                    <span class="lang-content lang-ko">[지디넷코리아]펄어비스가 나라를 위해 헌신하는 국군장병을 위해 푸드트럭·커피차·보호대 등 물품을 전달했다. 펄어비스가 6월 호국보훈의 달을 맞아 진행한 ‘검은사막 모바일’ 인게임 기부 이벤트를 통해 국군장병을 지원했다고 10일 밝혔다.이벤트는 나라를 위해 헌신하는 국군장병에게 감사와 응원의 마음을 전하기 위해 기획했다. 모험가들은 게임 내 서버 의뢰 등 다양한 이벤트에 참여하며 기부에 동참했다.펄어비스는 모험가들이 기부 이벤트 목표를 달성함에 따라 2000만원의 지원금을 마련했다.국군장병들에게 푸드트럭과 커피차를 제공하고, 훈련과 복무에 도움이 되는 손목·무릎 보호대를 전달했다. 모험가들이 작성한 응원 메시지도 커피차 컵홀더에 담아 감사의 마음을 전했다.펄어비스는 검은사막 모바일에서 모험가들이 함께 참여할 수 있는 다양한 인게임 이벤트를 이어갈 계획이다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/10/cover_news090.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/10/news090.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Sony releases &#34;RX10 V&#34; with 25x optical zoom, first new product in 9 years for high magnification model with 1 type sensor</span>
+                        <span class="lang-content lang-ja">ソニー、光学25倍ズーム搭載の「RX10 V」発売　1型センサーの高倍率機に9年ぶり新製品</span>
+                        <span class="lang-content lang-ko">소니, 광학 25배 줌 탑재의 「RX10 V」발매 1형 센서의 고배율기에 9년만 신제품</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">On the 9th, Sony announced the lens-integrated digital camera ``RX10 V&#39;&#39;, which is equipped with a 1.0-inch CMOS sensor and a 25x optical zoom lens that is equivalent to 24-600mm in 35mm format.</span>
+                    <span class="lang-content lang-ja">ソニーは9日、1.0型CMOSセンサーと35mm判換算で24～600mm相当の光学25倍ズームレンズを搭載したレンズ一体型デジタルカメラ「RX10 V」を発表した。</span>
+                    <span class="lang-content lang-ko">소니는 9일 1.0형 CMOS 센서와 35mm 환산으로 24~600mm 상당의 광학 25배 줌 렌즈를 탑재한 렌즈 일체형 디지털 카메라 &#39;RX10 V&#39;를 발표했다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/10/cover_news089.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/10/news089.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">The University of Tokyo elucidates the brain mechanism that makes people dislike others; successfully manipulates the emotions of mice with light; hopes for depression treatment</span>
+                        <span class="lang-content lang-ja">相手を嫌いになる脳の仕組み、東京大が解明　光でマウスの感情操作に成功　うつ病治療に期待</span>
+                        <span class="lang-content lang-ko">상대를 싫어하는 뇌의 구조, 도쿄대가 해명 빛으로 마우스의 감정 조작에 성공 우울증 치료에 기대</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">A research team at the University of Tokyo has revealed through experiments on mice how the brain works to dislike certain people. Using optogenetics technology, which uses light stimulation to manipulate the activity of nerve cells, they succeeded in creating and erasing feelings of dislike toward others. It will be reported on July 10th in the American scientific journal Science.</span>
+                    <span class="lang-content lang-ja">特定の相手を嫌いになる脳の仕組みを、東京大の研究チームがマウス実験で解明した。光の刺激で神経細胞の活動を操作する「光遺伝学」の技術を使い、相手を嫌う感情の生成や消去に成功した。米科学誌Scienceで7月10日に報告する。</span>
+                    <span class="lang-content lang-ko">특정 상대를 싫어하는 뇌의 구조를 도쿄대 연구팀이 마우스 실험으로 해명했다. 빛의 자극으로 신경세포의 활동을 조작하는 &#39;광유전학&#39;의 기술을 사용해 상대를 싫어하는 감정의 생성과 소거에 성공했다. 미 과학지 Science에서 7월 10일에 보고한다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/10/cover_news086.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/10/news086.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Anthropic adds a new feature &#34;reflect&#34; to look back on how to use Claude - to reconsider how you interact with AI</span>
+                        <span class="lang-content lang-ja">Anthropic、Claudeの使い方を振り返る新機能「reflect」（振り返り）追加──AIとの付き合い方を見直すために</span>
+                        <span class="lang-content lang-ko">Anthropic, Claude의 사용법을 되돌아 보는 신기능 「reflect」(반도) 추가──AI와의 사귀는 방법을 재검토하기 위해서</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Anthropic has released a beta version of a new feature called &#34;reflect&#34; (or &#34;reflection&#34; in Japan) that allows users to look back on how they use their AI assistant &#34;Claude.&#34; Visualize past chat activity by topic and usage pattern, allowing you to review whether your use of AI is in line with your goals. It also has features such as nudges to encourage breaks.</span>
+                    <span class="lang-content lang-ja">Anthropicは、AIアシスタント「Claude」の使い方を振り返るための新機能「reflect」(日本では「振り返り」）をβ版で公開した。過去のチャット活動をトピックや利用パターンごとに可視化し、AIの利用が自分の目標に沿っているかを見直せるようにする。休憩を促すナッジなどの機能も備える。</span>
+                    <span class="lang-content lang-ko">Anthropic은, AI 어시스턴트 「Claude」의 사용법을 되돌아보기 위한 신기능 「reflect」(일본에서는 「되돌아 봐」)를 β판으로 공개했다. 과거의 채팅 활동을 주제와 이용 패턴별로 가시화하여 AI의 이용이 자신의 목표를 따르고 있는지를 검토할 수 있도록 한다. 휴식을 촉구하는 너지 등의 기능도 갖추고 있다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/10/cover_news085.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/10/news085.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">``Zentoshin&#39;&#39; goes bankrupt; Keidanren chairman also mentions; emphasizes improvement of environment for card payments; ``Businesses should practice sound management&#39;&#39;</span>
+                        <span class="lang-content lang-ja">「全東信」破産　経団連会長も言及　カード決済の環境整備強調　「事業者は健全経営を」</span>
+                        <span class="lang-content lang-ko">「전동신」파산 경단연 회장도 언급 카드 결제의 환경 정비 강조 「사업자는 건전 경영을」</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Regarding the bankruptcy proceedings of credit card payment agency Zentoshin (Chuo Ward, Osaka), Keidanren Chairman Yoshinobu Tsutsui said at a press conference in Osaka, ``Businesses that handle payments should ensure sound management.&#39;&#39; As cashless payments become more popular, he emphasized the importance of creating an environment where stores and consumers can use them with peace of mind.</span>
+                    <span class="lang-content lang-ja">クレジットカード決済代行会社「全東信」（大阪市中央区）の破産手続きをめぐり、経団連の筒井義信会長は、大阪市内で開いた記者会見で「決済を扱う事業者は健全経営を徹底すべきだ」と述べた。キャッシュレス決済の普及が進む中、店舗や消費者が安心して利用できる環境づくりの重要性も強調した。</span>
+                    <span class="lang-content lang-ko">신용카드 결제대행사 ‘전동신’(오사카시 주오구)의 파산 절차를 둘러싸고, 경단련 츠츠이 요시노부 회장은 오사카 시내에서 열린 기자회견에서 “결제를 다루는 사업자는 건전경영을 철저히 해야 한다”고 말했다. 캐시리스 결제의 보급이 진행되는 가운데, 점포와 소비자가 안심하고 이용할 수 있는 환경 만들기의 중요성도 강조했다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212610_215920_06.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212610" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">OpenAI launches business agent ‘ChatGPT Work’… A ‘super app’ incorporating Codex is also launched.</span>
+                        <span class="lang-content lang-ja">オープンAI、業務用エージェント「チャットGPTワーク」発売…コーデックス統合した「スーパーアプリ」も起動</span>
+                        <span class="lang-content lang-ko">오픈AI, 업무용 에이전트 &#39;챗GPT 워크&#39; 출시…코덱스 통합한 &#39;슈퍼 앱&#39;도 시동</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">OpenAI has launched a new business agent, &#39;ChatGPT Work&#39;, to strengthen its presence in the enterprise AI work automation market. This service, based on the latest AI model, &#39;GPT-5.6&#39;, is designed to create documents, spreadsheets, presentations, and web applications, as well as perform complex tasks consisting of multiple steps autonomously over a long period of time. OpenAI officially announced ChatGPT Work on the 9th (local time) and announced that it will be provided first to Pro, Enterprise, and Edu plan users on web and mobile. Plus and business plans</span>
+                    <span class="lang-content lang-ja">オープンAIが企業向けAI業務自動化市場攻略を強化するため、新しい業務用エージェント「チャットGPTワーク（ChatGPT Work）」を発売した。最新のAIモデル「GPT-5.6」をベースにしたこのサービスは、ドキュメントやスプレッドシート、プレゼンテーション、Webアプリケーションの製作はもちろん、さまざまな段階でなされた複雑な業務を長時間にわたって自律的に遂行できるように設計された。オープンAIは9日(現地時間)チャットGPTワークを公式発表し、ウェブとモバイルではプロ、エンタープライズ、エデュ料金制利用者を対象に優先提供すると明らかにした。プラスとビジネスプランに</span>
+                    <span class="lang-content lang-ko">오픈AI가 기업용 AI 업무 자동화 시장 공략을 강화하기 위해 새로운 업무용 에이전트 &#39;챗GPT 워크(ChatGPT Work)&#39;를 출시했다. 최신 AI 모델인 &#39;GPT-5.6&#39;을 기반으로 한 이 서비스는 문서와 스프레드시트, 프레젠테이션, 웹 애플리케이션 제작은 물론, 여러 단계로 이뤄진 복잡한 업무를 장시간에 걸쳐 자율적으로 수행할 수 있도록 설계됐다. 오픈AI는 9일(현지시간) 챗GPT 워크를 공식 발표하고, 웹과 모바일에서는 프로, 엔터프라이즈, 에듀 요금제 이용자를 대상으로 우선 제공한다고 밝혔다. 플러스와 비즈니스 요금제에</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212609_215918_2046.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212609" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">SK Hynix, &#39;40 trillion won raised&#39;, enters the U.S. stock market with the largest amount ever for a foreign company</span>
+                        <span class="lang-content lang-ja">「40兆調達」SKハイニックス、外国企業史上最大規模で米国証券化</span>
+                        <span class="lang-content lang-ko">&#39;40조 조달&#39; SK하이닉스, 외국 기업 사상 최대 규모로 미국 증시 입성</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">SK Hynix successfully completed an American Depositary Receipt (ADR) offering worth $26.5 billion (approximately KRW 40 trillion) on the U.S. stock market, setting a new record for the largest U.S. listing by a foreign company. According to Bloomberg, SK Hynix announced on the 9th that it raised a total of $26.5 billion by issuing 177.9 million ADR shares at $149 per share. One ADR share is equivalent to one-tenth of a share of Korean common stock. The size of this public offering is the largest ever for a foreign company to debut on the U.S. stock market, surpassing Alibaba&#39;s U.S. listing in 2014, and is the third largest in history based on overall IPOs. The public offering price is the Korean stock market.</span>
+                    <span class="lang-content lang-ja">SKハイニックスが米国証券市場で265億ドル（約40兆ウォン）規模の米国預託証券（ADR）公募を成功裏に終え、外国企業基準史上最大規模の米国上場記録を新しく書いた。ブルームバーグによると、SKハイニックスは9日、ADR 1億7790万株を1株当たり149ドルに発行して合計265億ドルを調達したと明らかにした。今回の公募規模は2014年アリババの米国上場を超え、外国企業の米国証券デビューの中で歴代最大であり、全体IPO基準でも歴史上3番目に大きい規模だ。</span>
+                    <span class="lang-content lang-ko">SK하이닉스가 미국 증시에서 265억달러(약 40조원) 규모의 미국예탁증권(ADR) 공모를 성공적으로 마무리하며 외국 기업 기준 사상 최대 규모의 미국 상장 기록을 새로 썼다. 블룸버그에 따르면, SK하이닉스는 9일 ADR 1억7790만주를 주당 149달러에 발행해 총 265억달러를 조달했다고 밝혔다.ADR 1주는 한국 보통주 10분의 1주에 해당한다. 이번 공모 규모는 2014년 알리바바의 미국 상장을 넘어 외국 기업의 미국 증시 데뷔 가운데 역대 최대이며, 전체 IPO 기준으로도 역사상 세 번째로 큰 규모다.공모가는 한국 증시</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212606_215915_1550.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212606" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Honam AI/semiconductor cluster, power grid is a variable… Wood Mackenzie “Concerns about 2.3GW shortage”</span>
+                        <span class="lang-content lang-ja">湖南AI・半導体クラスタ、電力網が変数…ウッドマッキンジ「2.3GW不足の懸念」</span>
+                        <span class="lang-content lang-ko">호남 AI·반도체 클러스터, 전력망이 변수…우드매킨지 “2.3GW 부족 우려”</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Analysis has shown that Korea&#39;s AI and semiconductor megaprojects may face setbacks depending on the speed of power infrastructure expansion. When large-scale data centers and semiconductor manufacturing facilities are built, electricity demand will increase rapidly, but it is pointed out that it is difficult to stably handle this with the currently planned power generation and transmission system alone. In a report released on the 9th (local time), Wood Mackenzie cited the approximately 800 trillion won semiconductor and AI data center cluster being promoted in the Honam region as a major example. According to the report, when the cluster is completed, the maximum electricity demand in the Honam region will increase from the current 11.8 gigawatts (GW). It can increase to 19.1GW. On the other hand, in 2030</span>
+                    <span class="lang-content lang-ja">韓国のＡＩ・半導体メガプロジェクトが電力インフラの拡充速度によって支障をきたすことができるという分析が出た。大規模データセンターと半導体製造施設が入ると電力需要が急増するが、現在計画された発電・送電体系だけではこれを安定的に余裕が難しいという指摘だ。電力需要は現在11.8ギガワット（GW）から19.1GWに増やすことができる。一方、2030年</span>
+                    <span class="lang-content lang-ko">한국의 AI·반도체 메가프로젝트가 전력 인프라 확충 속도에 따라 차질을 빚을 수 있다는 분석이 나왔다. 대규모 데이터센터와 반도체 제조시설이 들어설 경우 전력 수요가 급증하지만, 현재 계획된 발전·송전 체계만으로는 이를 안정적으로 감당하기 어렵다는 지적이다.우드매킨지는 9일(현지시간) 공개한 보고서에서 호남권에 추진 중인 약 800조원 규모 반도체·AI 데이터센터 클러스터를 주요 사례로 들었다.보고서에 따르면, 클러스터가 완성되면 호남권 최대 전력수요는 현재 11.8기가와트(GW)에서 19.1GW로 늘어날 수 있다. 반면 2030년</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212567_215864_139.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212567" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">India, one-third of new renewable energy, risk of output control due to transmission network constraints</span>
+                        <span class="lang-content lang-ja">インド、新規再生可能エネルギーの3分の1の送電網の制約への出力制御リスク</span>
+                        <span class="lang-content lang-ko">인도, 신규 재생에너지 3분의 1 송전망 제약에 출력제어 위험</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">An analysis found that about one-third of India&#39;s recently completed renewable energy capacity is at risk of output control due to transmission network constraints. This means that transmission network expansion and grid connection, rather than power plant construction, are emerging as key bottlenecks in the expansion of renewable energy in India. According to an analysis by credit rating agency ICRA, as of May 2026, about 33% of the recently completed renewable energy capacity of 54.8 gigawatts (GW) is transmitting power through temporary general network access (T-GNA). T-GNA is a method of temporarily transmitting power before long-term transmission access is confirmed, so the risk of output control may increase if grid congestion occurs.</span>
+                    <span class="lang-content lang-ja">インドで最近竣工された再生エネルギー容量の約3分の1が送電網制約による出力制御リスクに置かれたという分析が出た。発電所建設より送電網の拡充と系統接続がインド再生エネルギー拡大の核心ボトルネックとして浮上しているという意味だ。 T-GNAは長期送電接続が確定する前に一時的に電力を送る方式であり、系統輻輳が生じると出力制御リスクが大きくなることがある。</span>
+                    <span class="lang-content lang-ko">인도에서 최근 준공된 재생에너지 용량의 약 3분의 1이 송전망 제약에 따른 출력제어 위험에 놓였다는 분석이 나왔다. 발전소 건설보다 송전망 확충과 계통 접속이 인도 재생에너지 확대의 핵심 병목으로 떠오르고 있다는 의미다.신용평가사 ICRA 분석에 따르면, 2026년 5월 기준 최근 준공된 재생에너지 용량 54.8기가와트(GW) 가운데 약 33%가 임시 일반망 접속(T-GNA) 방식으로 전력을 송전하고 있다. T-GNA는 장기 송전 접속이 확정되기 전 임시로 전력을 보내는 방식이라, 계통 혼잡이 생기면 출력제어 위험이 커질 수 있다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2026/05/13/edward-kenway-black-flag-blogroll-1778681529123.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/dead-by-daylight-control-and-mcdonalds-are-helping-advertise-assassins-creed-black-flag-resynced" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Dead by Daylight, Control, and McDonald&#39;s Are Helping Advertise Assassin&#39;s Creed Black Flag Resynced</span>
+                        <span class="lang-content lang-ja">Dead by Daylight、Control、マクドナルドがアサシン クリード ブラック フラッグの再同期の宣伝に協力</span>
+                        <span class="lang-content lang-ko">Dead by Daylight, Control 및 McDonald&#39;s가 Assassin&#39;s Creed Black Flag 재동기화 광고를 돕고 있습니다.</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">For whatever reason, a bunch of video game companies are helping advertise Assassin&#39;s Creed Black Flag Resynced.</span>
+                    <span class="lang-content lang-ja">何らかの理由で、多くのビデオゲーム会社が『アサシン クリード ブラック フラッグ リシンクド』の宣伝に協力しています。</span>
+                    <span class="lang-content lang-ko">어떤 이유로든 여러 비디오 게임 회사가 Assassin&#39;s Creed Black Flag Resynced 광고를 돕고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/07/citizen_vigilante.jpg?w=1600&amp;h=900&amp;fit=crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Polygon</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.polygon.com/citizen-vigilante-movie-video-game-ps5-uwe-boll-armie-hammer/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Uwe Boll&#39;s &#39;morally bankrupt&#39; movie Citizen Vigilante gets official game</span>
+                        <span class="lang-content lang-ja">ウーヴェ・ボル監督の「道徳的に破綻した」映画『Citizen Vigilante』が公式ゲーム化</span>
+                        <span class="lang-content lang-ko">우베 볼(Uwe Boll)의 &#39;도덕적으로 파산한&#39; 영화 시민 자경단(Citizen Vigilante)이 공식 게임에 등장합니다.</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Citizen Vigilante star Armie Hammer may regret his role in Uwe Boll&#39;s latest shock flick, now it&#39;s gamers&#39; turn to suffer.</span>
+                    <span class="lang-content lang-ja">Citizen Vigilante のスター、アーミー ハマーは、ウーヴェ ボル監督の最新衝撃作での自分の役割を後悔しているかもしれないが、今度はゲーマーが苦しむ番だ。</span>
+                    <span class="lang-content lang-ko">시민 자경단(Citizen Vigilante) 스타 Armie Hammer는 Uwe Boll의 최근 충격적인 영화에서 자신의 역할을 후회할 수도 있습니다. 이제 게이머들이 고통받을 차례입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://static0.polygonimages.com/wordpress/wp-content/uploads/2024/12/gettyimages-2186493134.jpg?w=1600&amp;h=900&amp;fit=crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Polygon</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.polygon.com/rare-ps1-ps2-games-ps3-store-shutdown/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Rarest PS1 and PS2 games to buy before Sony closes the PlayStation Store</span>
+                        <span class="lang-content lang-ja">ソニーがPlayStation Storeを閉鎖する前に購入すべき最もレアなPS1およびPS2ゲーム</span>
+                        <span class="lang-content lang-ko">Sony가 PlayStation Store를 폐쇄하기 전에 구매해야 할 가장 희귀한 PS1 및 PS2 게임</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Here are 12 PS1 and PS2 games that cost hundreds of dollars used, but you can buy them digitally for a song on the PlayStation Store before it closes.</span>
+                    <span class="lang-content lang-ja">ここでは、中古で数百ドルかかるものの、閉店前に PlayStation Store で 1 曲分のデジタル版を購入できる PS1 および PS2 ゲーム 12 本を紹介します。</span>
+                    <span class="lang-content lang-ko">여기에 수백 달러의 사용 비용이 드는 12개의 PS1 및 PS2 게임이 있지만, 종료되기 전에 PlayStation Store에서 노래 한 곡을 디지털 방식으로 구입할 수 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://static0.polygonimages.com/wordpress/wp-content/uploads/chorus/uploads/chorus_asset/file/13248375/image__2_.jpeg?w=1600&amp;h=900&amp;fit=crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Polygon</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.polygon.com/xbox-layoffs-obsidian-pillars-of-eternity/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Xbox could&#39;ve had the next Baldur&#39;s Gate 3, but just killed its best shot</span>
+                        <span class="lang-content lang-ja">Xbox には次の Baldur&#39;s Gate 3 があったかもしれないが、ベストショットを打ち消してしまった</span>
+                        <span class="lang-content lang-ko">Xbox는 차기 Baldur&#39;s Gate 3를 가질 수도 있었지만 최고의 기회를 놓쳤습니다.</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Obsidian Entertainment had all the tools to make its own answer to Baldur&#39;s Gate 3, but Xbox doesn&#39;t seem eager to capitalize.</span>
+                    <span class="lang-content lang-ja">Obsidian Entertainment は Baldur&#39;s Gate 3 に対する独自の答えを作るためのあらゆるツールを持っていましたが、Xbox はそれを活用することに熱心ではないようです。</span>
+                    <span class="lang-content lang-ko">Obsidian Entertainment는 Baldur&#39;s Gate 3에 대한 자체 답변을 만들 수 있는 모든 도구를 보유하고 있지만 Xbox는 이를 활용하려는 의지가 없는 것 같습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/06/car-meet_fh6.jpg?w=1600&amp;h=900&amp;fit=crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Polygon</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.polygon.com/forza-horizon-6-fh6-evolving-world-car-meet-location/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Hokubu Evolving World Car Meet location in Forza Horizon 6</span>
+                        <span class="lang-content lang-ja">Forza Horizo​​n 6 の北部進化ワールド カー ミートの場所</span>
+                        <span class="lang-content lang-ko">Forza Horizon 6의 Hokubu Evolving World 자동차 모임 장소</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The Evolving World Car Meet is a new location where you can show off your cars and complete challenges in Forza Horizon 6. Here&#39;s where to find it.</span>
+                    <span class="lang-content lang-ja">Evolving World Car Meet は、Forza Horizo​​n 6 で自分の車を披露し、課題を完了できる新しい場所です。場所は次のとおりです。</span>
+                    <span class="lang-content lang-ko">Evolving World Car Meet은 Forza Horizon 6에서 자동차를 선보이고 챌린지를 완료할 수 있는 새로운 장소입니다. 찾을 수 있는 곳은 다음과 같습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://static0.polygonimages.com/wordpress/wp-content/uploads/2026/02/pokemon-wins-waves-starters.png?w=1600&amp;h=900&amp;fit=crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Polygon</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.polygon.com/pokemon-winds-waves-leaks-seed-forms-pokedex-rumors/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Pokémon Winds &amp; Waves&#39; new monster type could change everything</span>
+                        <span class="lang-content lang-ja">Pokémon Winds &amp; Waves の新しいモンスタータイプはすべてを変える可能性があります</span>
+                        <span class="lang-content lang-ko">Pokémon Winds &amp; Waves의 새로운 몬스터 유형은 모든 것을 바꿀 수 있습니다</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The new Seed monster type could impact weather, legendaries, and even the islands according to Pokémon Winds &amp; Waves leakers</span>
+                    <span class="lang-content lang-ja">Pokémon Winds &amp; Waves のリーク者によると、新しいシードモンスターの種類は天候、伝説、さらには島にまで影響を与える可能性がある</span>
+                    <span class="lang-content lang-ko">Pokémon Winds &amp; Waves 유출자에 따르면 새로운 씨앗 몬스터 유형은 날씨, 전설, 심지어 섬에도 영향을 미칠 수 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260710-454330-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/20260710-454330/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">``Nyanko Post Office,&#39;&#39; a world post office sim full of cats, was immediately ``extremely well-received&#39;&#39; for offering a ``relaxing workplace experience.&#39;&#39; Supports cooperative play for up to 4 people. A warm workplace story of a new staff member.</span>
+                        <span class="lang-content lang-ja">ネコだらけ世界郵便局シム『にゃんこ郵便局』、“まったり職場体験”ができるとさっそく「非常に好評」。最大4人協力プレイ対応・新人局員のほんわか職場物語</span>
+                        <span class="lang-content lang-ko">고양이 투성이 세계 우체국 심 “냥코 우체국”, “완전히 직장 체험”을 할 수 있으면 즉시 “매우 호평”. 최대 4명 협력 플레이 대응·신인 국원의 혼와카 직장 이야기</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Gamersky Games released ``Cat Post Office&#39;&#39; by Maracas Studio on July 10th. This work seems to have been well received right away.</span>
+                    <span class="lang-content lang-ja">Gamersky Gamesは7月10日、Maracas Studioが手がける『にゃんこ郵便局』をリリースした。本作はさっそく好評を博しているようだ。</span>
+                    <span class="lang-content lang-ko">Gamersky Games는 7월 10일, Maracas Studio가 다루는 &#39;냥코우체국&#39;을 발표했다. 본작은 바로 호평을 받고 있는 것 같다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260710-454320-header.jpeg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/20260710-454320/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">The domestic PS5 version of the harsh open-world ARPG &#34;Gothic 1 Remake&#34; has been postponed again to November 24th. To ensure all possible preparations for release, including adjusting expressions.</span>
+                        <span class="lang-content lang-ja">過酷オープンワールドARPG『Gothic 1 Remake』国内PS5版、11月24日へ再延期。表現調整をはじめ、発売準備に万全を期すため</span>
+                        <span class="lang-content lang-ko">가혹 오픈 월드 ARPG 「Gothic 1 Remake」 국내 PS5판, 11월 24일에 재연기. 표현 조정을 비롯하여 발매 준비에 만전을 기하기 위해</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">THQ Nordic Japan announced on July 10th that the distribution date of the domestic PS5 version (download version) of &#34;Gothic 1 Remake&#34; will be postponed from July 16th to November 24th.</span>
+                    <span class="lang-content lang-ja">THQ Nordic Japanは7月10日、『Gothic 1 Remake』の国内PS5版（ダウンロード版）について、配信日を7月16日から11月24日へと延期すると発表した。</span>
+                    <span class="lang-content lang-ko">THQ Nordic Japan은 7월 10일, &#39;Gothic 1 Remake&#39;의 국내 PS5판(다운로드판)에 대해 전달일을 7월 16일에서 11월 24일로 연기한다고 발표했다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260710-454297-image1.jpeg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/reportjp/20260710-454297/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">When I examined the ``changes from the beginning&#39;&#39; of the officially released ``Palworld&#39;&#39;, I found almost all of them. The violence of quantity that returns old-timers to “first-time viewing”</span>
+                        <span class="lang-content lang-ja">正式リリースされた『Palworld / パルワールド』の「初期から変わったところ」を検証したら、だいたい全部。古参を“初見”に戻す、物量の暴力</span>
+                        <span class="lang-content lang-ko">정식 발매된 「Palworld / 펄 월드」의 「초기부터 바뀐 곳」을 검증하면 대체로 전부. 고참을 “초보”로 되돌리는 물량의 폭력</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">How has the official release version of &#34;Palworld&#34; changed since the beginning?</span>
+                    <span class="lang-content lang-ja">『Palworld / パルワールド』正式リリース版は初期からどのように変わったのか？</span>
+                    <span class="lang-content lang-ko">『Palworld/팔월드』 정식 릴리스판은 초기부터 어떻게 바뀌었는가?</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260710-454290-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/20260710-454290/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Roguelite colony ship management sim &#34;Rogue Carrier&#34; announced. Survival on a “living planet” with intelligence; if you pollute it, the planet will go crazy and come out to kill you.</span>
+                        <span class="lang-content lang-ja">ローグライト・コロニー船運営シム『ローグ・キャリア』発表。知性をもつ“生きた惑星”で遭難サバイバル、汚染すると惑星がキレて殺しにくる</span>
+                        <span class="lang-content lang-ko">로그 라이트 콜로니 선박 운영 심 &#39;로그 캐리어&#39; 발표. 지성을 가진 &#34;살아있는 행성&#34;으로 조난 서바이벌, 오염하면 행성이 깨끗하게 죽이기</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Hooded Horse announced ``Rogue Carrier&#39;&#39; on July 9th.</span>
+                    <span class="lang-content lang-ja">Hooded Horseは7月9日、『Rogue Carrier ローグ・キャリア』を発表した。</span>
+                    <span class="lang-content lang-ko">Hooded Horse는 7월 9일 &#39;Rogue Carrier 로그 캐리어&#39;를 발표했다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260710-454271-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/reportjp/20260710-454271/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Basic play free ``NTE&#39;&#39; new character ``Shinku&#39;&#39; is strong, fast, and super fast. Runaway Dragon Him Shirt Naive Older Sister</span>
+                        <span class="lang-content lang-ja">基本プレイ無料『NTE』新キャラ「真紅」は強い、速い、超速い。暴走ドラゴン彼シャツナイーブお姉さん</span>
+                        <span class="lang-content lang-ko">기본 플레이 무료 「NTE」신 캐릭터 「진홍」은 강하고, 빠르고, 초빠른. 폭주 드래곤 그 셔츠 나이브 언니</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The new character ``Shinku&#39;&#39; in ``NTE: Neverness to Everness&#39;&#39; is clumsy, but she is a character you want to love.</span>
+                    <span class="lang-content lang-ja">『NTE: Neverness to Everness』の新キャラ「真紅」は、不器用だけど愛してあげたくなるキャラクターであった。</span>
+                    <span class="lang-content lang-ko">&#39;NTE: Neverness to Everness&#39;의 새로운 캐릭터 &#39;진홍&#39;은 서투르지만 사랑해주고 싶어지는 캐릭터였다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gHI/cms/news.9/239363/bootup-wire-9c068aa206c9a72d2b1f-1900x1080.png.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-09/xbox-announces-layoffs-amid-reset-of-video-game-division/.239363" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Xbox Announces Layoffs Amid &#39;Reset&#39; of Video Game Division</span>
+                        <span class="lang-content lang-ja">Xbox、ビデオゲーム部門の「リセット」の最中に人員削減を発表</span>
+                        <span class="lang-content lang-ko">Xbox, 비디오 게임 부문 &#39;재설정&#39; 중 해고 발표</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Compulsion Games, Double Fine Productions, Ninja Theory, Undead Labs to leave Xbox</span>
+                    <span class="lang-content lang-ja">Compulsion Games、Double Fine Productions、Ninja Theory、Undead Labs が Xbox から撤退へ</span>
+                    <span class="lang-content lang-ko">컴펄션 게임즈, 더블 파인 프로덕션, 닌자 씨어리, 언데드 랩스, 엑스박스 떠난다</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gC0/cms/news.7/207928/naruto_gn01_c1.jpeg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-09/live-action-naruto-hollywood-film-launches-global-casting-call-for-3-main-leads/.239468" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Live-Action Naruto Hollywood Film Launches Global Casting Call for 3 Main Leads</span>
+                        <span class="lang-content lang-ja">実写版 NARUTO ハリウッド映画が主要主演 3 名の世界的キャスティング募集を開始</span>
+                        <span class="lang-content lang-ko">실사 나루토 할리우드 영화, 주연 3인의 글로벌 캐스팅 콜 개시</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Casting for other characters to come later</span>
+                    <span class="lang-content lang-ja">他のキャラクターのキャスティングは後ほど</span>
+                    <span class="lang-content lang-ko">차후 다른 캐릭터 캐스팅 중</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://a.storyblok.com/f/178900/960x540/9efd85f88d/trysail-shoukei-mv.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/10/from-overshadowed-to-overpowered-second-reincarnation-of-a-talentless-sage-anime-ending-song-music-video-trysail" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">TrySail Releases From Overshadowed to Overpowered: Second Reincarnation of a Talentless Sage Anime Ending Song Music Video</span>
+                        <span class="lang-content lang-ja">TrySail、『影の薄い者から圧倒的な者へ ～無才賢者の二度目の転生～』アニメエンディングソングミュージックビデオを公開</span>
+                        <span class="lang-content lang-ko">TrySail, Overshadowed에서 Overpowered로 출시: 재능 없는 현자 애니메이션의 두 번째 환생 엔딩 노래 뮤직 비디오</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">EMT Squared-animated new isekai fantasy is available on Crunchyroll</span>
+                    <span class="lang-content lang-ja">EMT Squared がアニメーション化した新しい異世界ファンタジーが Crunchyroll で利用可能になりました</span>
+                    <span class="lang-content lang-ko">EMT Squared 애니메이션의 새로운 isekai 판타지가 Crunchyroll에서 제공됩니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://a.storyblok.com/f/178900/960x540/265df94db8/darwins-game-live-action-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/10/darwins-game-live-action-film-release-march-2027" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Darwin&#39;s Game Live-Action Film Set for Release in March 2027</span>
+                        <span class="lang-content lang-ja">『ダーウィンズゲーム』実写映画が2027年3月に公開決定</span>
+                        <span class="lang-content lang-ko">2027년 3월 개봉 예정인 다윈의 게임 실사 영화 세트</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Fumihiko Sori (Fullmetal Alchemist live-action series) serves as director</span>
+                    <span class="lang-content lang-ja">監督は『鋼の錬金術師』実写シリーズの曽利文彦が務める</span>
+                    <span class="lang-content lang-ko">강철의 연금술사 실사 시리즈의 소리 후미히코가 감독을 맡습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://techcrunch.com/wp-content/uploads/2024/04/GettyImages-2041281128-e1712563728365.jpg?resize=1200,676" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://techcrunch.com/2026/07/09/openai-says-gpt-5-6-is-the-preferred-model-for-microsoft-copilot-amid-breakup-chatter/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">OpenAI Unveils GPT-5.6 as Microsoft Copilot&#39;s Preferred AI Engine Amid Strategic Shifts</span>
+                        <span class="lang-content lang-ja">OpenAI、MicrosoftのCopilot 365向けにGPT-5.6を最適モデルとして提供開始</span>
+                        <span class="lang-content lang-ko">오픈AI, 마이크로소프트 코파일럿 365를 위한 GPT-5.6 공식 모델 발표</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">OpenAI&#39;s latest GPT 5.6 model is now the core of Microsoft&#39;s Copilot 365 suite, powering next-gen productivity tools as the AI giant navigates evolving strategic partnerships.</span>
+                    <span class="lang-content lang-ja">オープンAIはMicrosoftのオフィスアプリケーション向けにGPT 5.6を採用し、人工知能モデルの進化に伴う戦略的調整を強調しています。</span>
+                    <span class="lang-content lang-ko">오픈AI의 최신 GPT 5.6 모델은 마이크로소프트 코파일럿 365 제품군 핵심 엔진으로, 생산성 도구의 AI 진화를 주도할 예정입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://techcrunch.com/wp-content/uploads/2026/07/elon-musk-spacex-ipo-getty.jpg?resize=1200,800" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://techcrunch.com/2026/07/09/dont-want-to-invest-in-elon-musk-two-new-etfs-explicitly-exclude-him/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Two New ETFs Let Investors &#39;Blacklist&#39; Elon Musk-Led Companies</span>
+                        <span class="lang-content lang-ja">elon musk率いる企業を除外する新ETF二種登場</span>
+                        <span class="lang-content lang-ko">엘론 머스크 기업 투자 거부… 새로운 ETF 두 종목 출시</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The first-ever Musk-exclusion ETFs bypass all ventures under Elon Musk&#39;s control—including Tesla and SpaceX—offering a novel twist on socially conscious investing.</span>
+                    <span class="lang-content lang-ja">elon muskの直接管理下にある企業を投資対象から除外する二つの新ETFが登場し、ソーシャルインベストメント市場に新たな選択肢を提供します。</span>
+                    <span class="lang-content lang-ko">테슬라와 스페이스X 등 엘론 머스크가 지배하는 기업을 대상으로 하지 않는 새로운 ETF 두 종목이 국내외 투자자들에게 제공됩니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://techcrunch.com/wp-content/uploads/2026/07/Fidji-Simo.jpg?w=1024" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://techcrunch.com/2026/07/09/fidji-simo-steps-down-from-openais-no-2-role/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Fidji Simo Resigns as OpenAI’s No. 2 Amid Leadership Restructuring and Strategic Uncertainties</span>
+                        <span class="lang-content lang-ja">OpenAI副社長Fidji Simo氏、医学的休暇延長に伴う退任を発表</span>
+                        <span class="lang-content lang-ko">Fidji Simo, OpenAI 부사장직 사의 표명… 의료 휴가 연장 뒤</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">OpenAI&#39;s COO departs after prolonged medical leave, deepening leadership challenges as the AI pioneer confronts pivotal growth decisions.</span>
+                    <span class="lang-content lang-ja">Fidji Simo氏は医療休暇の長期化に伴ってOpenAI副社長職に退任しました。これにより、同社は重要な成長戦略の中核的指導体制の変化に直面しています。</span>
+                    <span class="lang-content lang-ko">Fidji Simo 전 OpenAI 부사장이 장기 의료 휴가 이후 부사장직을 사임하며 주요 리더십 공백이 발생했습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://techcrunch.com/wp-content/uploads/2025/09/GettyImages-2224158119.jpg?resize=1200,837" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://techcrunch.com/2026/07/09/openai-launches-its-new-family-of-models-with-gpt-5-6/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">OpenAI Unveils GPT-5.6: A New Era in Cybersecurity and AI Capabilities</span>
+                        <span class="lang-content lang-ja">OpenAI、GPT-5.6と新モデルファミリーのリリース</span>
+                        <span class="lang-content lang-ko">오픈에이아이, GPT-5.6과 새로운 모델 가족 발표</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">OpenAI has launched GPT-5.6 alongside a new model family, delivering breakthrough advancements in cybersecurity and multimodal processing. The architecture promises faster inference times and enhanced anomaly detection capabilities.</span>
+                    <span class="lang-content lang-ja">セキュリティとマルチモーダル処理で飛躍的な進化を遂げたOpenAIの新モデルファミリーが登場。GPT-5.6は攻撃パターン検出能力と処理速度の向上に特化しています。</span>
+                    <span class="lang-content lang-ko">오픈에이아이가 사이버보안 및 AI 기능을 대폭 개선한 GPT-5.6을 포함한 새로운 모델 세대를 발표했다. 신속한 추론 속도와 비정상 패턴 탐지가 주요 특징이다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://techcrunch.com/wp-content/uploads/2026/07/Lyzr-graphic.png?resize=1200,658" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>TechCrunch</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://techcrunch.com/2026/07/09/an-ai-agent-startup-just-let-its-agent-run-its-100-million-fundraise/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Lyzr’s AI Agent Self-Funds $100M Raise – Proof of Product Power</span>
+                        <span class="lang-content lang-ja">AIエージェントが自社融資交渉を行うLyzrの画期的実績</span>
+                        <span class="lang-content lang-ko">AI 에이전트가 자금 조달하는 레저의 혁신적 사례</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">AI startup Lyzr demonstrated its agent technology&#39;s credibility by using its own AI to negotiate a $100 million funding round. This marks the first instance of a business AI autonomously handling venture capital transactions.</span>
+                    <span class="lang-content lang-ja">企業向けAIエージェントを開発するLyzrが、自社製品で1000万ドルの資金調達を成功させました。これはベンチャーキャピタルをAIが主導する最初の事例です。</span>
+                    <span class="lang-content lang-ko">레저는 자체 개발 AI 에이전트를 활용해 1억 달러 자금 조달을 성사시켜 기술의 신뢰성을 입증했다. 이는 벤처 캐피탈 거래를 자율적으로 수행한 첫 사례이다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>The Verge</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.theverge.com/ai-artificial-intelligence/963738/openai-fidji-simo-steps-down-ceo-advisor" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Fidji Simo Steps Down as OpenAI&#39;s AGI Lead Amid Health Concerns</span>
+                        <span class="lang-content lang-ja">フィジ・シモ氏、健康上の理由でOpenAIのAGIプロジェクトから退任へ</span>
+                        <span class="lang-content lang-ko">오픈AI의 AGI 담당 피지 시모, 건강 문제로 직무에서 물러나</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">After leading OpenAI&#39;s ambitious AGI (artificial general intelligence) initiatives, Fidji Simo has transitioned to a part-time advisory role due to health reasons, following an April announcement about her reduced commitment.</span>
+                    <span class="lang-content lang-ja">OpenAIのAGI（人工汎用知能）部門をリードしていたフィジ・シモ氏が健康上の理由により、フルタイムの役職を離れパートタイムのアドバイザとして切り替えるとツイートしました。これは4月の同氏による役職調整の発表後の動きです。</span>
+                    <span class="lang-content lang-ko">오픈AI의 인공일반지능(AGI) 개발을 주도하던 피지 시모가 건강상 이유로 정규직을 떠나고 조언자로 전환했다고 X에 공개했습니다. 이는 4월에 발표했던 역할 축소 계획의 연장선입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>The Verge</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.theverge.com/streaming/963733/netflix-always-on-channels-bundles" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Netflix Reported to Explore Always-On Channels for Streamlined Content</span>
+                        <span class="lang-content lang-ja">ネットフリックス、常時再生配信サービスの検討</span>
+                        <span class="lang-content lang-ko">넷플릭스, 24시간 연속 채널 도입 검토 중</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Sources indicate Netflix is investigating &#34;always-on&#34; channels that would continuously play curated content, mirroring strategies of services like Discovery+, in a bid to diversify viewer engagement.</span>
+                    <span class="lang-content lang-ja">ウォールストリートジャーナルが報じる情報によると、ディスカバリープラスのような常時再生コンテンツを模倣し、視聴体験を多様化する目的で、ネットフリックスが「24時間連続再生」配信チャンネルの検討を進めているとされています。</span>
+                    <span class="lang-content lang-ko">워ll 스트리트 저널이 보도한 보도에 따르면, 디스커버리+처럼 특정 콘텐츠를 24시간 연속으로 재생하는 방식의 넷플릭스 &#39;항상 켜진 채널&#39; 도입 검토 중입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>The Verge</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.theverge.com/ai-artificial-intelligence/963654/openai-chatgpt-atlas-ai-browser-shut-down-sunset" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">OpenAI Shuts Down ChatGPT Atlas Browser Under Product Restructuring</span>
+                        <span class="lang-content lang-ja">ChatGPTアトラスブラウザ、稼働10ヶ月でサービス終了</span>
+                        <span class="lang-content lang-ko">챗GPT 아틀라스 브라우저, 출시 1년 미만 만에 서비스 종료</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The ChatGPT Atlas browser, OpenAI&#39;s autonomous web browsing assistant launched in October 2023, has been discontinued after less than a year in service as the company reorganizes product offerings.</span>
+                    <span class="lang-content lang-ja">2023年10月に発表されたChatGPTアトラスブラウザ（AIによるブラウザ操作支援ツール）が、サービス開始から10ヶ月以内にサービス終了が発表されました。これは同社がプロダクトポートフォリオを整理する動きの一環です。</span>
+                    <span class="lang-content lang-ko">오픈AI는 2023년 10월에 출시한 챗GPT 아틀라스 브라우저(인공지능 웹브라우징 보조 도구)의 서비스 중단을 발표했는데, 이는 제품 포트폴리오 재편의 일환으로 제품 출시 후 1년도 되지 않아 종료하게 된 것입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>The Verge</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.theverge.com/gadgets/963537/anker-soundcore-boom-2-bluetooth-speaker-deal-sale" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Waterproof Power: Soundcore Boom 2 Cuts Prices by Over 50%</span>
+                        <span class="lang-content lang-ja">最高な性能と耐水性を備えたSoundcore Boom 2が50％オフ</span>
+                        <span class="lang-content lang-ko">물놀이용 스피커 &#39;soundcore boom 2&#39; 50% 할인 중</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The Soundcore Boom 2, a versatile floatable Bluetooth speaker with robust audio and water resistance, is now 50% discounted. This deal, available through July 10, offers an exceptional sound-to-price ratio for budget-conscious audiophiles.</span>
+                    <span class="lang-content lang-ja">耐水性能と高音質を備えたBluetoothスピーカー、Soundcore Boom 2が現金割引50％で販売中です。7月10日まで限定のお得なキャンペーン。</span>
+                    <span class="lang-content lang-ko">물에 띄워 사용 가능한 스피커 soundcore boom 2가 50% 할인 판매중입니다. 고음질과 내수성을 구비한 제품이 100달러 미만의 합리적인 가격으로 만나볼 수 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/09/6ae0541f4bd1b55110fb28e6afeeb523.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260709202922" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">GIST Drives Global First in Perovskite Solar Cell Commercialization</span>
+                        <span class="lang-content lang-ja">GISTがペロブスカイト太陽電池の商用化に挑戦</span>
+                        <span class="lang-content lang-ko">지디넷, 페로브스카이트 태양전지 세계 최초 상용화 추진</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">GIST partners with UNIST and Kitech to pioneer perovskite solar batteries, aiming for mass commercialization by 2030 with a 437 billion KRW investment. This breakthrough could redefine the renewable energy landscape.</span>
+                    <span class="lang-content lang-ja">GISTはUNISTとの連携でペロブスカイト太陽電池技術の実用化に着手し、2030年までに市場投入を目指しています。437億ウォンの投資で再生可能エネルギー技術革新が期待される動きです。</span>
+                    <span class="lang-content lang-ko">광주과학기술원은 울산과학기술원과 공동으로 페로브스카이트 태양전지 기술을 세계 최초로 상용화하고 2030년까지 시장에 선보이는 목표를 세웠습니다. 437억 원 규모의 투자 프로젝트를 통해 신에너지 시장을 변화시킬 기술이 주목받고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://mmx.prnasia.com/media/MS1879821/DXC-Technology-Company-DXC와-윌튼-리-20년-파트너십-기념-및-40만-건-포트폴리오-클라우드.jpg?id=OA2755761&amp;p=medium600" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260709231003" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">DXC and Willton Re Complete 400k-Portfolio Cloud Migration</span>
+                        <span class="lang-content lang-ja">DXCとウィルトン・リ、40万ポートフォリオをクラウドへ完全転換</span>
+                        <span class="lang-content lang-ko">디시, 윌튼 리와 40만 건 정책 클라우드 전환 완료</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">DXC has finalized cloud migration of 400,000 insurance policies for Willton Re, establishing foundational infrastructure for AI-driven operations. Their 20-year partnership has grown from 5,000 policies to 500,000+ in scale.</span>
+                    <span class="lang-content lang-ja">DXCはウィルトン・リの40万件のポートフォリオを単一のクラウドプラットフォームへ移行し、次世代AI運用の基盤を構築しました。20年以上にわたる提携で成長を実現した成功事例です。</span>
+                    <span class="lang-content lang-ko">DXC는 20년 파트너십을 이어온 윌톤 리의 40만 건 포트폴리오를 단일 클라우드 플랫폼으로 완전히 이관했습니다. AI 기반 미래 운영을 가능하게 하는 이번 전환은 2005년 약 5,000건에서 50만 건 이상으로 성장한 성공 사례입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/09/72773b08f5c3afd3ddc13b096764845e.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260709230314" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">KIEST Explores Ethical AI and Innovation Ecosystems in 2026 Summer Academic Conference</span>
+                        <span class="lang-content lang-ja">エージェンティックAIとイノベーションエコシステムに注目、KIESTの2026年夏季学術大会を成功裏に終了</span>
+                        <span class="lang-content lang-ko">AI 윤리와 혁신 생태계로 한국 미래 성장 전략 제시…2026 하계학술대회 종료</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The Korea Institute of Technology &amp; Economy (KIEST) successfully concluded its 2026 Summer Academic Conference in Jeju, attracting over 1,000 industry-academia-expert participants. The event featured 40 academic sessions focusing on ethical AI integration across manufacturing and service sectors, offering insights into South Korea’s next-generation growth strategies.</span>
+                    <span class="lang-content lang-ja">技術経営経済学会(KIEST)は第ジュジュのメゾングレードホテルで「エージェンティックAIとイノベーションエコシステム」をテーマにした2026年度夏季学術大会を終了。1000人以上の産学官専門家が参加し、製造からサービスまで跨る40の学術セッションを通じて韓国成長戦略の方向性を探った。</span>
+                    <span class="lang-content lang-ko">한국기술기획평가원(KIEST)이 제주 메종글래드 호텔에서 2~4일 40개 학술세션과 100여 편의 연구 성과를 발표하며 2026 하계학술대회를 성료했습니다. 산학연정 1000여 명이 참여한 이번 행사에서는 제조 부문부터 서비스까지 확장되는 &#39;AI 윤리 및 혁신 생태계&#39;에 대한 논의가 활발히 이뤄졌습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/03/27/63d2b36e9b350b9dd93c94c510537baa.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260709214406" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Samsung Electronics Files Additional Non-Infringement Lawsuit Against Netlist in Prolonged Memory Patent Dispute</span>
+                        <span class="lang-content lang-ja">メモリ市場での激しい競争、サムスンがNetlistとの特許権侵害訴訟をエスカレート</span>
+                        <span class="lang-content lang-ko">네트리스트와 메모리 특허 소송 싸움 이어…삼성전자, 추가 비침해확인소송 제기</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Samsung Electronics has escalated its ongoing legal battle with memory semiconductor challenger Netlist by filing a new non-infringement lawsuit. This counters Netlist’s recent patent infringement claims, as the Texas Eastern District Court case involving Samsung’s Patent No. 12,675,407 highlights the intensifying competition in the memory market.</span>
+                    <span class="lang-content lang-ja">サムスン電子はNetlistと続くメモリ特許問題で新たな不侵害確認訴訟を追加提起しました。Netlistが提訴した特許侵害の主張に対抗する形で、米テキサス東部連邦裁判所にSamsungの特許番号12,675,407に関する係争を拡大しつつある状況を反映しています。</span>
+                    <span class="lang-content lang-ko">메모리 반도체 특허 분쟁을 지속하는 삼성전자가 넷리스트를 상대로 신규 비침해확인소송을 추가로 제기했습니다. 넷리스트의 침해 주장 대응 차원으로, 텍사스 동부 연방 법원에서 진행 중인 삼성전자의 12,675,407번 특허 관련 소송의 영향이 커지고 있는 상황입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.zdnet.co.kr/2026/07/08/aie18cbf7e0d9ff4b3a9f5d90624b88552.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ZDNet Korea</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://zdnet.co.kr/view/?no=20260709212158" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Alibaba&#39;s SkillWeaver Framework Cuts AI Agent Token Usage by 99% Through Intelligent Tool Selection</span>
+                        <span class="lang-content lang-ja">AIエージェントのトークン使用量を99%削減、アリババのSkillWeaverフレームワークが登場</span>
+                        <span class="lang-content lang-ko">AI 에이전트 토큰 사용량 99% 절감…알리바바, &#39;스킬위버&#39; 프레임워크 공개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Alibaba researchers unveiled SkillWeaver, a groundbreaking framework that drastically reduces AI agent token consumption by 99% via strategic tool management. The innovation optimizes context windows by selectively activating necessary tools, addressing the cost and performance challenges of expanding multi-tool AI agent systems.</span>
+                    <span class="lang-content lang-ja">アリババ研究チームは、AIエージェントのトークン使用量を99%削減する革新的なフレームワーク「SkillWeaver」を発表しました。複数ツールの同時使用による膨大なコンテキスト処理問題に対応し、コストと効率の最適化を実現する仕組みです。</span>
+                    <span class="lang-content lang-ko">알리바바 연구진이 AI 에이전트의 토큰 사용량을 99% 이상 줄이는 프레임워크 &#39;스킬위버&#39;를 발표했습니다. 도구가 늘어날수록 처리량이 감속되는 문제를 해결해 비용과 속도를 동시에 개선하는 것이 핵심입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/10/cover_news079.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/10/news079.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">OpenAI&#39;s Chief AGI Implementer Steps Down to Prioritize Long-Term Health Care</span>
+                        <span class="lang-content lang-ja">OpenAIのAGI導入CEO・フィジ・シモ氏が慢性疾患療養に専念しフルタイム役職から退任</span>
+                        <span class="lang-content lang-ko">오픈AI AGI 도입 최고책임자, 만성 질환 치료에 집중하며 역할 전환</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Fjord Simonsen, OpenAI&#39;s Chief AGI Implementer, has transitioned from a full-time role to a part-time advisory position. This decision centers on managing his chronic illness while shifting focus toward AI-driven medical solutions. OpenAI&#39;s CEO Sam Altman expressed deep regret over the change.</span>
+                    <span class="lang-content lang-ja">OpenAIのAGI導入責任者であるフィジ・シモ氏が、7年間続けたフルタイム職を離れ、パートタイムのアドバイザーに転向すると明らかにした。慢性疾患の療養に集中し、AIを活用した医療研究を推進するとのこと。アルトマンCEOは「非常に残念だ」とコメント。「医療AIの研究で重要な役割を担うことを期待している」と述べた。</span>
+                    <span class="lang-content lang-ko">오픈AI AGI 도입 책임자인 피지 시몬슨(Pjotr Simonsen)이 만성 질환 치료에 집중하기 위해 풀타임 자리를 비우고 파트타임 조언자로 전환했다. 그는 AI 기반 치료 연구에 주력할 예정이다. 알트먼 최고경영자는 &#39;정말 슬프다&#39;며 그의 연구 성과를 기대한다고 발표했다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/10/cover_news074.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/10/news074.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Anthropic Appoints Former Fed Chair Ben Bernanke to Lead Oversight on AI&#39;s Economic Impact</span>
+                        <span class="lang-content lang-ja">Anthropic、AI経済への影響分析を強化――元FRB議長バーナンキ氏の監督機関入り</span>
+                        <span class="lang-content lang-ko">앤서럽릭, 전 FRB 의장 벤 버냉키 고용해 AI 경제 영향 모니터링 강화</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Anthropic has added former Federal Reserve Chair Ben Bernanke to its independent oversight board. His role involves analyzing AI&#39;s societal and economic implications. The LTBT board, central to Anthropic&#39;s governance model, now benefits from Bernanke&#39;s expertise in macroeconomic challenges.</span>
+                    <span class="lang-content lang-ja">Anthropicは、同社の公益追求型ガバナンスにおいて重要な役割を果たすLTBT委員会に、元FRB議長のベン・バーナンキ氏を新メンバーとして迎えた。バーナンキ氏は、AIが社会に与える影響、特にマクロ経済的課題の分析に貢献する。</span>
+                    <span class="lang-content lang-ko">앤서럽릭(Anthropic)은 AI가 경제에 미치는 영향을 분석하기 위해 전 미국 연방준비은행(FRB) 의장 벤 버냉키(Ben Bernanke)를 독립 감독 기구에 영입했다. 버냉키는 AI에 따른 거시경제적 도전 상황을 평가하는 역할을 맡게 된다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="IT/Tech">
+                
+                <img src="https://image.itmedia.co.jp/news/articles/2607/09/cover_news167.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>IT/Tech</span>
+                    <span>&bull;</span>
+                    <span>ITmedia</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.itmedia.co.jp/news/articles/2607/09/news167.html" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Humanoid Robots Go Head-to-Head in Robot Fight Tournament: REK Makes Its Debut in Akihabara</span>
+                        <span class="lang-content lang-ja">米国発メカ格闘技『REK』が秋葉原に上陸、ヒト型ロボットがリアル対決</span>
+                        <span class="lang-content lang-ko">미국 메카 서바이벌 &#39;REK&#39;, 아키하바라서 최초 개최</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">American robotics combat organization REK will debut in Tokyo’s Akihabara on July 25th, showcasing humanoid robots battling in a ring. The event promises a fusion of cutting-edge technology and high-octane entertainment in Japan’s robot capital.</span>
+                    <span class="lang-content lang-ja">米国のロボット格闘団体「REK」は7月25日、秋葉原で初のイベントを開催。ヒト型ロボットがリングで戦い、技術とエンターテインメントの境界線を描く。</span>
+                    <span class="lang-content lang-ko">미국 로봇 격투 기업 &#39;REK&#39;가 7월 25일 아키하바라에서 첫 공연을 진행한다. 인간형 로봇이 링에서 벌이는 파괴와 경쟁이 기술과 엔터테인먼트를 결합한 쇼다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://wp.technologyreview.com/wp-content/uploads/2026/07/llm-crystal-globe_1.jpg?resize=1200,600" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>MIT Tech Review AI</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.technologyreview.com/2026/07/09/1140293/anthropic-found-a-hidden-space-where-claude-puzzles-over-concepts/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Anthropic Unveils the Hidden &#39;Concept Chamber&#39; Inside Claude&#39;s Mind</span>
+                        <span class="lang-content lang-ja">アンソロピックが Claude の潜在概念領域を解明 － 言語モデルの思考プロセスに革命</span>
+                        <span class="lang-content lang-ko">클라우드의 숨은 개념 공간을 발견한 엔서로픽</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Anthropic develops a groundbreaking technique to visualize how large language models like Claude process abstract concepts during tasks. The discovery offers unprecedented insight into neural network decision-making patterns.</span>
+                    <span class="lang-content lang-ja">大規模言語モデル Claude の抽象概念処理メカニズムを視覚化する新たな技術を開発したアンソロピック。この突破的な研究はニューロンレベルでの意思決定プロセスを明らかにする</span>
+                    <span class="lang-content lang-ko">엔서로픽이 Claude와 같은 대형 언어 모델이 작업 수행 시 추상 개념을 처리하는 방식을 시각화한 기술을 개발해, 뉴로원 수준의 의사결정 메커니즘을 최초로 밝혀냈습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212566_215851_348.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212566" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Why AI &#39;Champions&#39; Drive Real Adoption in Companies</span>
+                        <span class="lang-content lang-ja">AI変革の鍵は「動機付け」にあり － メタの評価制度を読む</span>
+                        <span class="lang-content lang-ko">AI 챔피언이 조직 내 실제 확산의 주역이 되는 이유</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Leading enterprises are transforming how they incentivize AI adoption, including integrating AI proficiency into performance reviews. BCG research reveals peer influence remains the most effective implementation strategy.</span>
+                    <span class="lang-content lang-ja">メタがAI利用率を人事評価に反映した画期的な取り組みを皮切りに、グローバル企業が従業員のAIスキル向上策を積極推進。BCGのレポートが同実践効果を裏付けける</span>
+                    <span class="lang-content lang-ko">메타가 AI 사용량을 인사 평가에 반영하는 등 전략을 변화시키고 있는 가운데, 동료 감염 효과가 가장 유료한 AI 확산 전략이라는 보스턴 컨설팅의 연구 결과가 주목받고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212596_215894_3017.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212596" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Meta&#39;s New Media Generation Model Redefining Creative Boundaries</span>
+                        <span class="lang-content lang-ja">メタが提示するマルチモーダルジェネレーティブモデル － 創作の境界を越える</span>
+                        <span class="lang-content lang-ko">메타가 제시한 창의적 경계 확장 &#39;미디어 생성 모델&#39;</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Meta&#39;s latest media generation model breaks the text-image paradigm by enabling seamless creation between multiple modalities. The system demonstrates unprecedented quality and cross-media coherence.</span>
+                    <span class="lang-content lang-ja">テキスト・画像の枠を超えたマルチモーダル生成を実現するメタの新たなメディア生成モデル。品質とマルチメディア一貫性が従来を超える飛躍を示す</span>
+                    <span class="lang-content lang-ko">메타가 발표한 신규 미디어 생성 모델이 텍스트-이미지의 관계를 넘어 다양한 형식 간 원활한 창작이 가능하도록 하며, 미디어 일관성을 혁신적으로 향상시켰습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212605_215914_5043.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212605" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Sam Altman Signals Shift on AI Regulation, Announces Close Collaboration with U.S. Government</span>
+                        <span class="lang-content lang-ja">サーマン氏、規制反対姿勢を後退　GPT-5.6リリースで政府と密な調整へ</span>
+                        <span class="lang-content lang-ko">샘 알트먼, 정부와 협력한 GPT-5.6 출시 발표… 규제 반대 입장에서 한발 물러난 전략</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">OpenAI CEO Sam Altman revealed the GPT-5.6 launch followed extensive coordination with U.S. government officials, marking a strategic pivot from previous resistance to regulatory frameworks. The collaboration included key Trump administration figures, signaling a new approach to balancing innovation with oversight.</span>
+                    <span class="lang-content lang-ja">OpenAIのサム・アルトマンCEOは、GPT-5.6の正式リリースにおいて米政府と緊密な事前協力を行い、これまでの規制反対姿勢から一歩引いた姿勢を明らかにしました。トランプ政権の重要閣僚らとの協議を通じた戦略的転換が注目されます。</span>
+                    <span class="lang-content lang-ko">오픈AI의 샘 알트먼 CEO는 GPT-5.6 출시가 미국 정부와의 긴밀한 협력을 거쳐 이뤄졌다고 밝히며, 기존 규제 반대 입장을 완화한 전략적 변화를 보여주었습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212604_215913_318.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212604" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">OpenAI Launches Cost-Effective GPT-5.6 Lineup: Sol, Terra, and Luna Challenge GLM-5.2</span>
+                        <span class="lang-content lang-ja">OpenAI、経済的なGPT-5.6シリーズ発表　GLM-5.2の優位を脅かすLunaなどリリース</span>
+                        <span class="lang-content lang-ko">GPT-5.6 시리즈로 AA 순위 강타… 루나, GLM-5.2 주도권 위협</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">OpenAI unveiled its GPT-5.6 series — Sol, Terra, and Luna — which deliver top-tier performance at radically reduced costs. The models demonstrate unparalleled cost-efficiency, threatening the dominance of GLM-5.2 in AI benchmarks while maintaining high accuracy.</span>
+                    <span class="lang-content lang-ja">OpenAIは、最高性能を維持しながらコストを大幅に削減したGPT-5.6系列「ソル」「テラ」「ルナ」をリリースしました。経済的なパラメータ設計がGLM-5.2の地位に挑戦する形でAIベンチマークに影響を与えています。</span>
+                    <span class="lang-content lang-ko">오픈AI가 GPT-5.6 솔, 테라, 루나를 출시하며 비용 성능 비 최적화를 달성했습니다. 루나는 AA 순위에서 GLM-5.2의 지배적 위치를 위협하는 것으로 평가받고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="AI">
+                
+                <img src="https://cdn.aitimes.com/news/photo/202607/212584_215878_1917.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>AI</span>
+                    <span>&bull;</span>
+                    <span>AI Times (KR)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.aitimes.com/news/articleView.html?idxno=212584" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">MiniMax Builds China’s Largest LLM with 270 Billion Parameters for Q3 Release</span>
+                        <span class="lang-content lang-ja">MiniMax、中国最大級の2700億パラメータLLM「M3 Pro」を開発　Q3公開</span>
+                        <span class="lang-content lang-ko">미니맥스, 2.7조 매개변수 초거대 LLM 개발… 중국 역대 최대 규모</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Chinese firm MiniMax is set to unveil its 270B-parameter &#39;M3 Pro&#39; LLM by Q3, potentially becoming one of the world&#39;s largest open-weight AI models. The system aims to redefine enterprise-scale AI processing with its massive computational capacity.</span>
+                    <span class="lang-content lang-ja">MiniMaxはQ3中に2700億パラメータを備えたLLM『M3 Pro』を公開予定です。このモデルは世界的に見ても最大規模のオープンウェイトAIとなり、企業向けAI処理を刷新する可能性があります。</span>
+                    <span class="lang-content lang-ko">중국 업체 미니맥스가 내부적으로 &#39;M3 프로&#39;로 명명된 2700억 매개변수 규모의 대형언어모델을 3분기에 정식 출시할 예정입니다. 이는 중국에서 개발된 유사 모델 중 최대 규모입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://www.blendernation.com/wp-content/uploads/2026/07/Cloth-Tearing-GN-BN-800x450.jpg.webp" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>BlenderNation</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.blendernation.com/2026/07/09/tearing-cloth-with-geometry-nodes/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Mastering Fabric Destruction in Blender 5.2 with Geometry Nodes</span>
+                        <span class="lang-content lang-ja">ジオメトリーノードで布を破壊: Blender 5.2のノード構成チュートリアル</span>
+                        <span class="lang-content lang-ko">Blender 5.2에서 기하 노드로 직조물 파괴 테크닉 공개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Blender 5.2 introduces a groundbreaking workflow for simulating realistic cloth tearing using Geometry Nodes. Artist Jan van den Hemel walks through advanced node setup techniques in this essential tutorial.</span>
+                    <span class="lang-content lang-ja">Blender 5.2のジオメトリーノード機能を活用したリアルな布の破壊シミュレーション。アーティストのJan van den Hemel氏がノードの設定方法を詳しく解説します。</span>
+                    <span class="lang-content lang-ko">Blender 5.2의 기하 노드를 활용한 실제론적인 천 가르기 시뮬레이션이 도입되었습니다. 아티스트 Jan van den Hemel이 노드 구성 방법을 상세히 안내합니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://www.blendernation.com/wp-content/uploads/2026/07/ovg-bridge-artwork.177e0c9969a8-800x450.webp" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>BlenderNation</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.blendernation.com/2026/07/09/overgrown-a-feature-film-project-by-blender-studio/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Blender Studio&#39;s Ambitious Feature Film &#39;Overgrown&#39; Aims to Enlist 7,000 Subscribers</span>
+                        <span class="lang-content lang-ja">オーバグロウン: Blenderスタジオの新長編映画プロジェクトと7,000人のサブスク支援呼びかけ</span>
+                        <span class="lang-content lang-ko">블렌더 스튜디오, 7000명의 구독자 모집을 목표로 한 길이 영화 ‘오버그로운’ 개발</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Blender Studio returns to feature film production with &#39;Overgrown,&#39; a new project requiring 7,000 subscriber backers. Co-directors Hjalti Hjálmarsson and Rik Schutte share their creative vision.</span>
+                    <span class="lang-content lang-ja">Blenderスタジオが7,000人のサブスクライバーによる支援を目指す新作長編『オーバグロウン』を開発中。監督のHjalti Hjálmarsson氏とRik Schutte氏がクリエイティブビジョンを語ります。</span>
+                    <span class="lang-content lang-ko">블렌더 스튜디오가 7000명의 구독자 후원을 모집하는 길이 영화 &#39;오버그로운&#39;을 준비 중입니다. 공동 감독 헤르티 헨마르손과 릭 슐테르가 창의적 비전을 공유합니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="CG/Blender">
+                
+                <img src="https://modelinghappy.com/wp-content/uploads/2026/07/20260709_TXTRCast_01.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>CG/Blender</span>
+                    <span>&bull;</span>
+                    <span>ModelingHappy (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://modelinghappy.com/archives/69359" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">TXTRCast: Free Add-on for Real-Time Texture Sync between Photoshop/Clip Studio Paint and Blender</span>
+                        <span class="lang-content lang-ja">TXTRCast: ブレンダと2Dペイントソフトのリアルタイムテクスチャ同期アドオン</span>
+                        <span class="lang-content lang-ko">TXTRCast: 포토샵/클립 스튜디오 페인트와 블렌더 간 실시간 텍스처 동기화 무료 애드온</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">TXTRCast bridges 2D art workflows with Blender by enabling live texture synchronization from Photoshop and Clip Studio Paint. This free add-on transforms hybrid 3D/2D creative processes.</span>
+                    <span class="lang-content lang-ja">TXTRCastはPhotoshopやClip Studio Paintで描いた内容をBlenderにリアルタイムで反映できる無料アドオン。2Dと3Dのワークフローを融合させます。</span>
+                    <span class="lang-content lang-ko">TXTRCast는 Photoshop 또는 Clip Studio Paint에서 그린 내용을 Blender에 실시간으로 반영할 수 있는 무료 애드온입니다. 이 도구는 2D/3D 복합 제작 과정을 혁신합니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2026/07/09/gettyimages-1171364359-1783637953882.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/to-continue-being-produced-long-term-games-need-to-succeed-not-just-be-beloved-john-carmack-responds-to-id-software-layoffs" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">John Carmack Addresses id Software Layoffs: The Imperative of Success Beyond Beloved Status</span>
+                        <span class="lang-content lang-ja">ジョン・カーマックがidソフトウェアのリストラに言及：『人気があっても成功しないと長期的なゲーム制作は成り立たない』</span>
+                        <span class="lang-content lang-ko">존 카마크, id 소프트웨어 인력 감축 언급: &#39;인기를 택했든 성공하는 것이 더 중요&#39;</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">John Carmack expressed sorrow over the mass layoffs at id Software but emphasized that sustained game production requires commercial success, not just popularity.</span>
+                    <span class="lang-content lang-ja">Doomの開発元id Softwareの大規模リストラに言及したジョン・カーマック氏は、「単なる人気より成功が重要」と述べ、ゲーム制作の持続可能性を浮き彫りにした。</span>
+                    <span class="lang-content lang-ko">Doom 개발사 id 소프트웨어의 대규모 감원에 존 카마크가 언급하며 장기적인 게임 제작은 단순한 인기뿐 아니라 성공이 필요하다고 강조했습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets2.ignimgs.com/2015/06/04/fallout4trailerend1433355589png-5a44ec.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/fallout-games-in-order" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Uncover the Chronological Order of Fallout Games: The Ultimate Playthrough Guide</span>
+                        <span class="lang-content lang-ja">フォールアウトゲームの歴史的順序完全解説：すべてのゲームを時系列でプレイするためのガイド</span>
+                        <span class="lang-content lang-ko">포폴타 게임 시계열 순서 밝히다: 완벽한 플레이 가이드</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Navigate the sprawling post-apocalyptic universe of Fallout with this definitive chronological order guide.</span>
+                    <span class="lang-content lang-ja">フォールアウトの世界観を最大限に楽しむために、シリーズすべてのゲームを時系列でプレイする方法を解説します。</span>
+                    <span class="lang-content lang-ko">확장된 사후핵전쟁 세계관 포폴타 시리즈를 시계열로 플레이하려면 어디서부터 시작해야 할까요?</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2026/06/08/black-ops-2-key-art-1780955021839.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/call-of-duty-black-ops-1-and-2-ports-out-now-on-ps5-but-they-come-at-a-high-cost" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Call of Duty: Black Ops 1 and 2 Get PS5 Ports — But Price Tag Raises Eyebrows</span>
+                        <span class="lang-content lang-ja">コールオブデューティ『ブラックオペレーションズ1・2』のPS5版リリースが決定…だが高額価格が物議を醸す</span>
+                        <span class="lang-content lang-ko">콜 오브 듀티: 블랙 옵스 1·2, PS5 이식 버전 출시되지만 고가 논란</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The PS4/PS5 versions of Black Ops 1 and 2 are now live, though their steep price points remain controversial.</span>
+                    <span class="lang-content lang-ja">『ブラックオペレーションズ』シリーズのPS5移植版がリリースされたが、その価格帯がプレイヤーの反応を二分しているという状況だ。</span>
+                    <span class="lang-content lang-ko">콜 오브 듀티: 블랙 옵스 1·2의 PS4/PS5 버전이 출시됐으나, 비싼 가격에 사용자들이 반응을 분화시키고 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://assets-prd.ignimgs.com/2026/06/30/kenway-site-1782819248796.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>IGN Games</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.ign.com/articles/assassins-creed-black-flag-resynced-has-already-earned-the-series-biggest-player-peak-on-steam" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Assassin&#39;s Creed Black Flag Resynced Shatters Series Player Records on Steam</span>
+                        <span class="lang-content lang-ja">『アサシン クリード ブラック フラッグ RE:シンクロ』がSteam同時接続数でシリーズ最高記録を更新</span>
+                        <span class="lang-content lang-ko">아서신 크리드 블랙 플래그 리시너크, 스팀 인원 기록 갈아치우다</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Ubisoft’s updated remake of Assassin’s Creed Black Flag has already surpassed 100,000 concurrent Steam players, setting a new benchmark for the franchise.</span>
+                    <span class="lang-content lang-ja">アサシン クリード ブラック フラッグ RE:シンクロはリリース直後から10万人近いSteam同時接続数を記録し、シリーズ史上最大の盛り上がりを見せている。</span>
+                    <span class="lang-content lang-ko">유비소프트의 『아서신 크리드 블랙 플래그 리시너크』가 스팀에서 10만 명의 동시 접속 기록을 달성하며 시리즈 역대 최고 인기를 기록하고 있다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260710-454226-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/20260710-454226/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Assassin’s Creed Black Flag Resynced Steals the Spotlight with Record Steam Concurrent Players</span>
+                        <span class="lang-content lang-ja">『アサシン クリード ブラック フラッグ RE:シンクロ』が10万人の同時接続でシリーズ最大の注目を集める</span>
+                        <span class="lang-content lang-ko">아서신 크리드 블랙 플래그 리시너크, 현대적 리부팅으로 신기록 돌파</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The modernized reboot of Assassin’s Creed Black Flag has attracted an astonishing 100,000 players simultaneously on Steam, breaking franchise records.</span>
+                    <span class="lang-content lang-ja">最新のアニバルエンジンで再構築された『アサシン クリード ブラック フラッグ RE:シンクロ』がリリース2日目に同時接続数10万人を突破し、大きな話題を呼んでいる。</span>
+                    <span class="lang-content lang-ko">최신 애니발 엔진으로 전면 재구축된 『아서신 크리드 블랙 플래그 리시너크』가 스팀에 동시 접속자 수 10만 명을 기록하며 큰 주목을 받고 있다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/HEADER.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/newsjp/ak-20260709-454216/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Arknights&#39; Much-Anticipated PC Version Launches August 13th</span>
+                        <span class="lang-content lang-ja">『アークナイツ』の待望のPC版が8月13日に登場</span>
+                        <span class="lang-content lang-ko">『아크나이츠』의 대망의 PC판이 8월 13일에 등장</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Set to support only Windows, the game will be downloadable directly from the official website, promising a desktop gaming experience for fans.</span>
+                    <span class="lang-content lang-ja">公式サイトからのダウンロードで、Windows専用にリリースされる。</span>
+                    <span class="lang-content lang-ko">정식 웹사이트를 통해 윈도우 전용 PC 버전이 출시된다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Game">
+                
+                <img src="https://automaton-media.com/wp-content/uploads/2026/07/ake-20260709-454176-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Game</span>
+                    <span>&bull;</span>
+                    <span>Automaton (JP)</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://automaton-media.com/articles/columnjp/ake-20260709-454176/" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Unpacking Kamui&#39;s Story in Arknights: Endfield: Ties to the Original Series Revealed</span>
+                        <span class="lang-content lang-ja">『アークナイツ：エンドフィールド』カミーユの物語背景と原作とのつながりを解読</span>
+                        <span class="lang-content lang-ko">『아크나이츠: 엔드필드』 캐밀의 스토리 배경과 원작 연결점 분석</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Dive into the enigmatic lore of Kamui&#39;s narrative in Arknights: Endfield, uncovering how this spinoff&#39;s unique terminology creates intricate connections to the original Arknights universe.</span>
+                    <span class="lang-content lang-ja">エンドフィールドスピンオフ作品の独自用語を詳細解説。カミーユのストーリーがどう元のアークナイツと関係するのかを専門的に掘り下げた分析。</span>
+                    <span class="lang-content lang-ko">엔드필드의 독특한 용어와 캐밀의 스토리 구조를 파헤쳐 보며, 원작 아크나이츠와의 밀접한 연관성을 시사하는 분석 내용을 다룹니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gH7/cms/news.9/238580/cocoon.png.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-09/fantasia-intl-film-fest-screens-grotesqqque-a-new-dawn-cocoon-anime/.239327" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Fantasia Festival Spotlights Emerging Anime Talent with Grotesqqque, New Dawn, and Cocoon Premieres</span>
+                        <span class="lang-content lang-ja">フアンタジア国際映画祭、新鋭アニメーターの台頭を観客に</span>
+                        <span class="lang-content lang-ko">판타지아 국제영화제, 새로운 애니메 창작자들의 작품 무대에 올린다</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The Fantasia International Film Festival spotlights bold new anime voices this year with standout screenings of Grotesqqque, New Dawn, and Cocoon, alongside experimental anime shorts from Strange: Junji Ito&#39;s Sleepless Tales and 20001 An Earth Odyssey.</span>
+                    <span class="lang-content lang-ja">本年、フアンタジア国際映画祭は『グロテスククー』『ニューダウン』『コクーン』の初上映と、異端の奇才・伊藤潤二の『スリープレス・ナイト』および『地球の物語2001』ショートアニメエピソードを含む実験的アニメ作品を紹介します。</span>
+                    <span class="lang-content lang-ko">판타지아 국제영화제가 올해 「그로테스큐크」「뉴 다운」「코쿤」의 초연과 일본 애니메계의 독보적 인재 이토 준이치 감독의 생방송 시리즈 「수면 없는 밤」과 「지구의 이야기 2001」의 단편을 함께 소개합니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gGA/youtube/V-oZF0WTlPQ.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-09/flipflops-darwin-game-manga-gets-live-action-film-in-2027/.239460" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Darwin&#39;s Game Live-Action Film Gets Stellar Cast for 2027 Release</span>
+                        <span class="lang-content lang-ja">『進化のゲーム』実写化 映画版にスター俳優陣集結</span>
+                        <span class="lang-content lang-ko">『다윈의 게임』 실사 영화 주연 5인 공개, 2027년 3월 개봉 확정</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">FLIPFLOPs&#39; manga adaptation hits the big screen with Nakagawa, Kōki, Hata, Kamio, and Yamamoto leading the charge in this high-stakes survival drama opening March 12, 2027.</span>
+                    <span class="lang-content lang-ja">映画『進化のゲーム Darwin&#39;s Game』が2027年に公開されることが発表され、中川太一、小木、羽田メイ、神居ふじら、山本悟が主演を務める。</span>
+                    <span class="lang-content lang-ko">『다윈의 게임』의 실사 영화가 오는 2027년 3월 12일 개봉하며, 중가와 타이시, 쿄키, 하타 메이, 가미오 후지라, 야마모토 고지의 5인 주연 캐스팅이 확정되었습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gJA/cms/news.9/239365/sss.png.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-09/manga-up-global-adds-trained-to-be-the-ultimate-anti-magic-spellblade-uglymug-epicfighter-sss-manga/.239365" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Manga Up! Global Expands Anime Universe with New Fantasy Series</span>
+                        <span class="lang-content lang-ja">マンガアップ!グローバル、新たなファンタジー作品を追加</span>
+                        <span class="lang-content lang-ko">망가 업 글로벌, 신작 판타지 소설 &#39;반마법 최종 무기&#39; 시리즈 추가</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The platform introduces the high-octane『Trained to be the Ultimate Anti-magic Spellblade』and the absurdly comedic『Uglymug, Epicfighter SSS』, alongside the lighthearted『AGERECO! Getting Into Voice Acting』series.</span>
+                    <span class="lang-content lang-ja">サービスは『反魔法の聖剣を極めろ！』と『ウグミーグ、エピックファイターSSS』の新作を追加し、声優文化の魅力にスポットを当てる『AGE RECО!』も提供しています。</span>
+                    <span class="lang-content lang-ko">『트레이닝 투 비 더 유일한 반마법 스펠블레이드』와 『엉큼이, 에픽파이터 SSS』 시리즈, 그리고 성우 문화를 다룬 『아제코!』까지 마נג아 업 글로벌이 새 작품들을 선보입니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gA2/youtube/Xmy-Z3dHMd8.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-09/godzilla-minus-zero-film-unveils-new-teaser-more-cast-imax-filming-global-debut/.239467" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Godzilla Minus Zero Unveils Teaser &amp; Global Debut: Japanese Giant Returns with IMAX Spectacle</span>
+                        <span class="lang-content lang-ja">「ゴジラマイナスゼロ」新ティザー公開！キャスト追加とIMAXによるグローバルデビュー</span>
+                        <span class="lang-content lang-ko">고지라 마이너스 제로, 신규 티저 공개 및 글로벌 데뷔 확정</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Director Min Tanaka joins the returning ensemble of Kamiki and Hamabe. The monster epic promises global premieres and IMAX-scale cinematic thrills.</span>
+                    <span class="lang-content lang-ja">三田稔が参加し、小栗旬・浜邊美波ら元班の強力なラインナップが復活。IMAXでのスクリーン展開と国際ロードショーが決定</span>
+                    <span class="lang-content lang-ko">신작은 전작과 동일한 캐스팅에 민 탄카 감독이 합류하며 IMAX 대형 스크린으로 전 세계 상영 확정</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gH3/cms/news.9/239326/image1-keyvisual.png.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Anime News Network</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://www.animenewsnetwork.com/news/2026-07-09/salamander-pictures-nippon-animation-20001-an-earth-odyssey-anime-short-to-premiere-on-july-18/.239326" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">20001: An Earth Odyssey Animates Environmental Hope</span>
+                        <span class="lang-content lang-ja">サクランバー×日本アニメーションが描く『20001 地球奇遊記』夏のフェスティバル上映決定</span>
+                        <span class="lang-content lang-ko">자쿠란바×일본 애니메이션이 그리는 「20001 지구 기유기」여름의 페스티벌 상영 결정</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The festival-bound short reimagines humanity&#39;s future through cutting-edge animation. Premiers at Fantasia Film Festival on July 18.</span>
+                    <span class="lang-content lang-ja">地球環境をテーマにした新作アニメが2026年 Fantasia国際映画祭にエントリー。7月18日初公開</span>
+                    <span class="lang-content lang-ko">환경 미래를 다룬 독창적 애니메가 제27회 판타지아 영화제에서 세계 초연 확정</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/10/godzilla-minus-zero-film-teaser-trailer-visual-new-cast-members" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Godzilla&#39;s Next Epic: Teaser Trailer Reveals Post-Apocalyptic J-RPG</span>
+                        <span class="lang-content lang-ja">『ゴジラマイナスゼロ』ティーザー最新公開！前作後の世界観進化披露</span>
+                        <span class="lang-content lang-ko">고지라 마이너스 제로, 사전 정보 공개 및 신규 캐스팅 확정</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The sequel expands its world two years after the devastating events of its predecessor. New characters are introduced amid escalating nuclear threats.</span>
+                    <span class="lang-content lang-ja">前作の破壊後2年目の世界を描く新作が、核技術の危機と新たな戦士達を紹介する最新バージョンをリリース</span>
+                    <span class="lang-content lang-ko">전작의 파괴 후 2년을 배경으로 핵위협에 맞서 싸우는 주요 인물들 추가 캐스팅</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/9/hana-kimi-season-2-anime-creditless-opening-ending-videos" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Hana-Kimi S2 Unveils Creditless Opening &amp; Ending Videos Exclusively on Crunchyroll</span>
+                        <span class="lang-content lang-ja">「花の君」シーズン2のオープニング・エンディング映像がクレジットなしでリリース</span>
+                        <span class="lang-content lang-ko">화나-미 시즌2 애니, 크레딧 없는 오프닝·엔딩 영상 공개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The Hana-Kimi Season 2 anime has premiered, with creditless opening and ending videos released exclusively on Crunchyroll.</span>
+                    <span class="lang-content lang-ja">『花の君』シーズン2は7月1日にプレミア放映され、オープニングおよびエンディングのクレジットなし映像がCrunchyrollで独占公開されました。</span>
+                    <span class="lang-content lang-ko">『화나-미』 시즌2 애니는 7월 1일에 개제되었으며, 크레딧 없는 오프닝과 엔딩 영상이 크런치롤에서 공개되었습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/announcements/2026/7/9/goodbye-lara-anime-english-dub-release-date-cast-crew" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Goodbye, Lara’s English Dub Debuts on Crunchyroll: New Episode Drops Now</span>
+                        <span class="lang-content lang-ja">キンエマシの新作アニメ『グッバイ、ララ』、英語吹替がCrunchyrollで配信開始</span>
+                        <span class="lang-content lang-ko">고바이 라라, 영문 더빙·일문 자막 동시 상영</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">Kinema Citrus’ original anime Goodbye, Lara launches its English dub with the first episode now streaming exclusively on Crunchyroll.</span>
+                    <span class="lang-content lang-ja">『グッバイ、ララ』の初エピソードはKinema Citrusが制作し、英語吹替と日本語字幕付きでCrunchyrollで独占配信されています。</span>
+                    <span class="lang-content lang-ko">「고바이 라라」 첫 에피소드는 크런치롤에서 일본어 자막과 영어 더빙을 함께 감상할 수 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/9/you-and-i-are-polar-opposites-season-2-anime-opening-video" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">You and I Are Polar Opposites S2 Unveils Stylish New Opening Theme</span>
+                        <span class="lang-content lang-ja">「あなたと私、真逆」シーズン2は新オープニングアニメで注目</span>
+                        <span class="lang-content lang-ko">『너와 나는 반대쪽』 시즌2, 패션 감성 빛난 오프닝 공개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The second season of You and I Are Polar Opposites is now streaming on Crunchyroll with a revamped fashion-forward opening sequence.</span>
+                    <span class="lang-content lang-ja">「あなたと私、真逆」のシーズン2は、スタイルフルなオープニングムービー付きでCrunchyrollで独占配信中です。</span>
+                    <span class="lang-content lang-ko">『너와 나는 반대쪽』 시즌2 오프닝 영상이 공개되며 크런치롤에서 애니메이션을 감상할 수 있습니다.</span>
+                </div>
+            </article>
+            
+            <article class="article-card" data-category="Anime">
+                
+                
+                <div class="meta">
+                    <span>Anime</span>
+                    <span>&bull;</span>
+                    <span>Crunchyroll News</span>
+                </div>
+                
+                <h2 class="article-title">
+                    <a href="https://crunchyroll.com/news/latest/2026/7/9/new-sgt-frog-anime-film-clip-4dx-poster-visual" target="_blank" rel="noopener noreferrer">
+                        <span class="lang-content lang-en">Sgt. Frog Anime Film Unveils Bold New Clip and 4DX Theatrical Poster</span>
+                        <span class="lang-content lang-ja">「ケロッピン」新アニメ映画がスクリーンに迫るアクションを新クループと4DXポスタービジュアルで披露</span>
+                        <span class="lang-content lang-ko">『케로로대위』 애니메이션 영화, 새로운 클립과 4DX 포스터로 강렬한 첫 공개</span>
+                    </a>
+                </h2>
+                
+                <div class="article-summary">
+                    <span class="lang-content lang-en">The latest trailer and 4DX poster for the Sgt. Frog anime film offer a vibrant preview of its explosive action and immersive 4DX experience, now showing in Japanese theaters.</span>
+                    <span class="lang-content lang-ja">「ケロッピン」の新アニメ映画は、スクリーンに迫るアクションを強調する最新ティーザークリップと4DXポスタービジュアルを公開。日本劇場で上映中。</span>
+                    <span class="lang-content lang-ko">『케로로대위』 애니메이션 영화의 최신 클립과 4DX 시어터 포스터가 발표되어, 화려한 액션과 몰입형 경험을 미리 보여줍니다. 일본 극장에서 상영 중입니다.</span>
+                </div>
+            </article>
+            
+        </div>
+        
+    </div>
+
+    <script>
+        function setCategory(cat) {
+            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('cat-' + cat);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            document.querySelectorAll('.article-card').forEach(card => {
+                if (cat === 'All' || card.getAttribute('data-category') === cat) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            localStorage.setItem('preferredCat', cat);
+        }
+
+        function setLanguage(lang) {
+            const supportedLanguages = ['en', 'ja', 'ko'];
+            if (!supportedLanguages.includes(lang)) lang = 'ko';
+            document.documentElement.setAttribute('lang', lang);
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            const activeButton = document.getElementById('btn-' + lang);
+            if (activeButton) activeButton.classList.add('active');
+            localStorage.setItem('preferredLang', lang);
+        }
+
+        // Init language and category
+        const savedLang = localStorage.getItem('preferredLang') || 'ko';
+        setLanguage(savedLang);
+
+        const supportedCategories = ['All', 'IT/Tech', 'AI', 'Game', 'Anime', 'CG/Blender'];
+        const savedCat = localStorage.getItem('preferredCat') || 'All';
+        setCategory(supportedCategories.includes(savedCat) ? savedCat : 'All');
+    </script>
+</body>
+</html>

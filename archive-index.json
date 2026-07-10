@@ -1,0 +1,58 @@
+[
+  {
+    "date": "2026-07-10",
+    "page": "index.html",
+    "archive_page": "archive-2026-07-10.html",
+    "data": "data-2026-07-10.json",
+    "count": 82
+  },
+  {
+    "date": "2026-07-09",
+    "page": "archive-2026-07-09.html",
+    "archive_page": "archive-2026-07-09.html",
+    "data": "data-2026-07-09.json",
+    "count": 40
+  },
+  {
+    "date": "2026-07-08",
+    "page": "archive-2026-07-08.html",
+    "archive_page": "archive-2026-07-08.html",
+    "data": "data-2026-07-08.json",
+    "count": 44
+  },
+  {
+    "date": "2026-07-07",
+    "page": "archive-2026-07-07.html",
+    "archive_page": "archive-2026-07-07.html",
+    "data": "data-2026-07-07.json",
+    "count": 38
+  },
+  {
+    "date": "2026-07-06",
+    "page": "archive-2026-07-06.html",
+    "archive_page": "archive-2026-07-06.html",
+    "data": "data-2026-07-06.json",
+    "count": 41
+  },
+  {
+    "date": "2026-07-03",
+    "page": "archive-2026-07-03.html",
+    "archive_page": "archive-2026-07-03.html",
+    "data": "data-2026-07-03.json",
+    "count": 40
+  },
+  {
+    "date": "2026-07-02",
+    "page": "archive-2026-07-02.html",
+    "archive_page": "archive-2026-07-02.html",
+    "data": "data-2026-07-02.json",
+    "count": 23
+  },
+  {
+    "date": "2026-07-01",
+    "page": "archive-2026-07-01.html",
+    "archive_page": "archive-2026-07-01.html",
+    "data": "data-2026-07-01.json",
+    "count": 30
+  }
+]
