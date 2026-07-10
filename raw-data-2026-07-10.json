@@ -182,6 +182,18 @@
   {
     "category": "IT/Tech",
     "source": "ITmedia",
+    "title_source": "介護施設向け「ぷよぷよトレーナー」10月提供開始 演出は控えめ、詰将棋モードも",
+    "summary_source": "エンタケア研究所は9日、セガの国民的パズルゲーム「ぷよぷよ」のゲーム性を生かした介護施設向けの脳トレーニングゲーム「ぷよぷよトレーナー」を発表した。",
+    "title_ja": "介護施設向け「ぷよぷよトレーナー」10月提供開始 演出は控えめ、詰将棋モードも",
+    "summary_ja": "エンタケア研究所は9日、セガの国民的パズルゲーム「ぷよぷよ」のゲーム性を生かした介護施設向けの脳トレーニングゲーム「ぷよぷよトレーナー」を発表した。",
+    "link": "https://www.itmedia.co.jp/news/articles/2607/10/news123.html",
+    "published": "Fri, 10 Jul 2026 16:22:00 +0900",
+    "timestamp": 1783668120,
+    "image_url": "https://image.itmedia.co.jp/news/articles/2607/10/cover_news123.jpg"
+  },
+  {
+    "category": "IT/Tech",
+    "source": "ITmedia",
     "title_source": "経産省、「全東信破産」受け中小支援 特別相談窓口を設置、日本公庫の貸付要件も緩和",
     "summary_source": "経済産業省の赤沢亮正大臣が、決済代行事業者の全東信が破産手続きに入ったことを受け、日本政策金融公庫による貸し付け制度の要件を一部緩和すると発表した。資金繰りへの影響が懸念される中小企業向けの相談窓口も設置する。",
     "title_ja": "経産省、「全東信破産」受け中小支援 特別相談窓口を設置、日本公庫の貸付要件も緩和",
@@ -226,18 +238,6 @@
     "published": "Fri, 10 Jul 2026 10:24:00 +0900",
     "timestamp": 1783646640,
     "image_url": "https://image.itmedia.co.jp/news/articles/2607/10/cover_news086.jpg"
-  },
-  {
-    "category": "IT/Tech",
-    "source": "ITmedia",
-    "title_source": "「全東信」破産 経団連会長も言及 カード決済の環境整備強調 「事業者は健全経営を」",
-    "summary_source": "クレジットカード決済代行会社「全東信」（大阪市中央区）の破産手続きをめぐり、経団連の筒井義信会長は、大阪市内で開いた記者会見で「決済を扱う事業者は健全経営を徹底すべきだ」と述べた。キャッシュレス決済の普及が進む中、店舗や消費者が安心して利用できる環境づくりの重要性も強調した。",
-    "title_ja": "「全東信」破産 経団連会長も言及 カード決済の環境整備強調 「事業者は健全経営を」",
-    "summary_ja": "クレジットカード決済代行会社「全東信」（大阪市中央区）の破産手続きをめぐり、経団連の筒井義信会長は、大阪市内で開いた記者会見で「決済を扱う事業者は健全経営を徹底すべきだ」と述べた。キャッシュレス決済の普及が進む中、店舗や消費者が安心して利用できる環境づくりの重要性も強調した。",
-    "link": "https://www.itmedia.co.jp/news/articles/2607/10/news085.html",
-    "published": "Fri, 10 Jul 2026 10:16:00 +0900",
-    "timestamp": 1783646160,
-    "image_url": "https://image.itmedia.co.jp/news/articles/2607/10/cover_news085.jpg"
   },
   {
     "category": "AI",
@@ -422,6 +422,18 @@
   {
     "category": "CG/Blender",
     "source": "BlenderNation",
+    "title_source": "Best of Blender Artists: 2026-28",
+    "summary_source": "Every week, hundreds of artists share their work on the Blender Artists forum. I’m putting some of the best work in the spotlight in a weekly post here on BlenderNation. Source",
+    "title_ja": "Best of Blender Artists: 2026-28",
+    "summary_ja": "Every week, hundreds of artists share their work on the Blender Artists forum. I’m putting some of the best work in the spotlight in a weekly post here on BlenderNation. Source",
+    "link": "https://www.blendernation.com/2026/07/10/best-of-blender-artists-2026-28/",
+    "published": "Fri, 10 Jul 2026 06:09:45 +0000",
+    "timestamp": 1783663785,
+    "image_url": "https://www.blendernation.com/wp-content/uploads/2026/07/flying-camper-800x450.jpg.webp"
+  },
+  {
+    "category": "CG/Blender",
+    "source": "BlenderNation",
     "title_source": "Tearing Cloth with Geometry Nodes",
     "summary_source": "In this video Jan van den Hemel looks at setting up the nodes for tearing cloth apart in Blender 5.2. Source",
     "title_ja": "Tearing Cloth with Geometry Nodes",
@@ -466,18 +478,6 @@
     "published": "Tue, 07 Jul 2026 07:00:27 +0000",
     "timestamp": 1783407627,
     "image_url": "https://www.blendernation.com/wp-content/uploads/2026/07/Screenshot-2026-07-05-213145.png"
-  },
-  {
-    "category": "CG/Blender",
-    "source": "BlenderNation",
-    "title_source": "Blender 5.2 LTS: Physics Just Got Insane!",
-    "summary_source": "Blender 5.2 LTS is about to drop and it contains a LOT of updates! The full list of changes is available here, but let’s zoom in on the changes in the physics: new cloth and hair options, effectors (like colliders and force) and the big one: the XPBD Solver that drives the new cloth and […] Source",
-    "title_ja": "Blender 5.2 LTS: Physics Just Got Insane!",
-    "summary_ja": "Blender 5.2 LTS is about to drop and it contains a LOT of updates! The full list of changes is available here, but let’s zoom in on the changes in the physics: new cloth and hair options, effectors (like colliders and force) and the big one: the XPBD Solver that drives the new cloth and […] Source",
-    "link": "https://www.blendernation.com/2026/07/07/blender-5-2-lts-physics-just-got-insane/",
-    "published": "Tue, 07 Jul 2026 06:16:49 +0000",
-    "timestamp": 1783405009,
-    "image_url": "https://www.blendernation.com/wp-content/uploads/2026/07/maxresdefault-800x450.jpg.webp"
   },
   {
     "category": "CG/Blender",
@@ -722,6 +722,18 @@
   {
     "category": "Game",
     "source": "Automaton (JP)",
+    "title_source": "塔昇りバトロワ『アーケロン』ストリーマーけんき氏主催カスタムマッチ7月19日開催へ。新CBTに参加する初心者も必見、豪華ストリーマー陣激闘イベント",
+    "summary_source": "DRIMAGE JAPANは7月10日、チーム制PvPゲーム『アーケロン（Arkheron）』において、ストリーマーのけんき氏が主催する「けんきカスタムイベント」を7月19日に開催すると発表した。",
+    "title_ja": "塔昇りバトロワ『アーケロン』ストリーマーけんき氏主催カスタムマッチ7月19日開催へ。新CBTに参加する初心者も必見、豪華ストリーマー陣激闘イベント",
+    "summary_ja": "DRIMAGE JAPANは7月10日、チーム制PvPゲーム『アーケロン（Arkheron）』において、ストリーマーのけんき氏が主催する「けんきカスタムイベント」を7月19日に開催すると発表した。",
+    "link": "https://automaton-media.com/articles/newsjp/20260710-454340/",
+    "published": "Fri, 10 Jul 2026 07:43:06 +0000",
+    "timestamp": 1783669386,
+    "image_url": "https://automaton-media.com/wp-content/uploads/2026/07/20260710-454340-header.jpeg"
+  },
+  {
+    "category": "Game",
+    "source": "Automaton (JP)",
     "title_source": "話題沸騰中のブサイク人生RPG『活俠傳』、9月15日に「虞小梅＆郁竹ルート」追加へ。さらなる高難度モード“勇者”実装など、約1年ぶりの大型アプデ",
     "summary_source": "原始鳥熊（Obb Studio）は7月10日、『活俠傳 Legend of Mortal』の大型アップデートを9月15日に配信すると発表した。虞小梅と郁竹のルートが追加されるほか、ゲームシステムも改良されるという。",
     "title_ja": "話題沸騰中のブサイク人生RPG『活俠傳』、9月15日に「虞小梅＆郁竹ルート」追加へ。さらなる高難度モード“勇者”実装など、約1年ぶりの大型アプデ",
@@ -766,18 +778,6 @@
     "published": "Fri, 10 Jul 2026 05:30:25 +0000",
     "timestamp": 1783661425,
     "image_url": "https://automaton-media.com/wp-content/uploads/2026/07/20260710-454353-004.jpg"
-  },
-  {
-    "category": "Game",
-    "source": "Automaton (JP)",
-    "title_source": "「圧倒的に好評」推理ゲーム『未解決事件は終わらせないといけないから』PS5版発表、8月19日発売へ。関係者全員が“嘘”をついていた12年前の事件、記憶を辿り真相に迫る",
-    "summary_source": "PLAYISMは7月10日、『未解決事件は終わらせないといけないから』のPS5版を発表した。",
-    "title_ja": "「圧倒的に好評」推理ゲーム『未解決事件は終わらせないといけないから』PS5版発表、8月19日発売へ。関係者全員が“嘘”をついていた12年前の事件、記憶を辿り真相に迫る",
-    "summary_ja": "PLAYISMは7月10日、『未解決事件は終わらせないといけないから』のPS5版を発表した。",
-    "link": "https://automaton-media.com/articles/newsjp/20260710-454343/",
-    "published": "Fri, 10 Jul 2026 05:19:41 +0000",
-    "timestamp": 1783660781,
-    "image_url": "https://automaton-media.com/wp-content/uploads/2026/07/20260710-454343-header.jpg"
   },
   {
     "category": "Anime",
@@ -898,6 +898,42 @@
     "published": "Fri, 10 Jul 2026 00:32:00 GMT",
     "timestamp": 1783643520,
     "image_url": "https://a.storyblok.com/f/178900/960x539/f298f2ef98/godzilla-minus-zero-header.jpg"
+  },
+  {
+    "category": "IT/Tech",
+    "source": "ITmedia",
+    "title_source": "「全東信」破産 経団連会長も言及 カード決済の環境整備強調 「事業者は健全経営を」",
+    "summary_source": "クレジットカード決済代行会社「全東信」（大阪市中央区）の破産手続きをめぐり、経団連の筒井義信会長は、大阪市内で開いた記者会見で「決済を扱う事業者は健全経営を徹底すべきだ」と述べた。キャッシュレス決済の普及が進む中、店舗や消費者が安心して利用できる環境づくりの重要性も強調した。",
+    "title_ja": "「全東信」破産 経団連会長も言及 カード決済の環境整備強調 「事業者は健全経営を」",
+    "summary_ja": "クレジットカード決済代行会社「全東信」（大阪市中央区）の破産手続きをめぐり、経団連の筒井義信会長は、大阪市内で開いた記者会見で「決済を扱う事業者は健全経営を徹底すべきだ」と述べた。キャッシュレス決済の普及が進む中、店舗や消費者が安心して利用できる環境づくりの重要性も強調した。",
+    "link": "https://www.itmedia.co.jp/news/articles/2607/10/news085.html",
+    "published": "Fri, 10 Jul 2026 10:16:00 +0900",
+    "timestamp": 1783646160,
+    "image_url": "https://image.itmedia.co.jp/news/articles/2607/10/cover_news085.jpg"
+  },
+  {
+    "category": "CG/Blender",
+    "source": "BlenderNation",
+    "title_source": "Blender 5.2 LTS: Physics Just Got Insane!",
+    "summary_source": "Blender 5.2 LTS is about to drop and it contains a LOT of updates! The full list of changes is available here, but let’s zoom in on the changes in the physics: new cloth and hair options, effectors (like colliders and force) and the big one: the XPBD Solver that drives the new cloth and […] Source",
+    "title_ja": "Blender 5.2 LTS: Physics Just Got Insane!",
+    "summary_ja": "Blender 5.2 LTS is about to drop and it contains a LOT of updates! The full list of changes is available here, but let’s zoom in on the changes in the physics: new cloth and hair options, effectors (like colliders and force) and the big one: the XPBD Solver that drives the new cloth and […] Source",
+    "link": "https://www.blendernation.com/2026/07/07/blender-5-2-lts-physics-just-got-insane/",
+    "published": "Tue, 07 Jul 2026 06:16:49 +0000",
+    "timestamp": 1783405009,
+    "image_url": "https://www.blendernation.com/wp-content/uploads/2026/07/maxresdefault-800x450.jpg.webp"
+  },
+  {
+    "category": "Game",
+    "source": "Automaton (JP)",
+    "title_source": "「圧倒的に好評」推理ゲーム『未解決事件は終わらせないといけないから』PS5版発表、8月19日発売へ。関係者全員が“嘘”をついていた12年前の事件、記憶を辿り真相に迫る",
+    "summary_source": "PLAYISMは7月10日、『未解決事件は終わらせないといけないから』のPS5版を発表した。",
+    "title_ja": "「圧倒的に好評」推理ゲーム『未解決事件は終わらせないといけないから』PS5版発表、8月19日発売へ。関係者全員が“嘘”をついていた12年前の事件、記憶を辿り真相に迫る",
+    "summary_ja": "PLAYISMは7月10日、『未解決事件は終わらせないといけないから』のPS5版を発表した。",
+    "link": "https://automaton-media.com/articles/newsjp/20260710-454343/",
+    "published": "Fri, 10 Jul 2026 05:19:41 +0000",
+    "timestamp": 1783660781,
+    "image_url": "https://automaton-media.com/wp-content/uploads/2026/07/20260710-454343-header.jpg"
   },
   {
     "category": "IT/Tech",
