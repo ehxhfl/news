@@ -73,6 +73,10 @@ HTML_TEMPLATE = """
             --hover-bg: #f9f9f9;
         }
 
+        html {
+            scrollbar-gutter: stable;
+        }
+
         @media (prefers-color-scheme: dark) {
             :root {
                 /* Premium Muted Dark Mode */
@@ -135,6 +139,8 @@ HTML_TEMPLATE = """
             align-items: center;
             justify-content: flex-end;
             flex-wrap: wrap;
+            min-width: 0;
+            max-width: 100%;
         }
         
         /* Category Filter */
@@ -145,19 +151,25 @@ HTML_TEMPLATE = """
             font-weight: 500;
             justify-content: center;
             flex-wrap: wrap;
+            min-width: 0;
         }
         .cat-btn {
+            flex: 0 0 auto;
             cursor: pointer;
             color: var(--text-muted);
-            transition: color 0.2s;
-            border: none;
+            transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+            border: 1px solid transparent;
+            border-radius: 999px;
             background: none;
             font-family: inherit;
+            font-weight: 600;
             padding: 0.2rem 0.5rem;
+            white-space: nowrap;
         }
         .cat-btn.active, .cat-btn:hover {
             color: var(--text-main);
-            font-weight: 700;
+            border-color: var(--border-color);
+            background: var(--hover-bg);
         }
 
         .lang-toggle {
@@ -373,8 +385,18 @@ HTML_TEMPLATE = """
         @media (max-width: 640px) {
             .masonry-grid { column-count: 1; }
             .navbar { flex-direction: column; gap: 1rem; padding: 1rem; }
-            .nav-controls { width: 100%; justify-content: center; gap: 1rem; }
-            .category-toggle { width: 100%; gap: 0.5rem; }
+            .nav-controls { width: 100%; justify-content: center; gap: 0.75rem; flex-direction: column; flex-wrap: nowrap; }
+            .category-toggle {
+                width: 100%;
+                gap: 0.5rem;
+                justify-content: flex-start;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                overscroll-behavior-x: contain;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+            }
+            .category-toggle::-webkit-scrollbar { display: none; }
             .issue-navigation { width: 100%; }
             .featured-img { min-height: 200px; }
             .featured-title { font-size: 2rem; }
