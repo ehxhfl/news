@@ -148,10 +148,11 @@ names accurate. English fields must contain no Hangul, Kana, or CJK ideographs.
 Korean fields may contain Latin brand names but no Hiragana or Katakana.
 
 The configured category is {category_name!r}. Keep relevant articles about AI,
-IT, technology, gadgets, games, anime, CG, or Blender. A clearly unrelated item
-may be filtered only by placing its exact input link in filtered_links. Every
-input link must appear exactly once: either as an article link or in
-filtered_links. Never silently omit a link.
+IT, technology, gadgets, games, game engines, VTubers, anime, cosplay and
+related fan events, CG, or Blender. A clearly unrelated item may be filtered
+only by placing its exact input link in filtered_links. Every input link must
+appear exactly once: either as an article link or in filtered_links. Never
+silently omit a link.
 
 INPUT ARTICLES:
 {json.dumps(prompt_articles, ensure_ascii=False, indent=2)}

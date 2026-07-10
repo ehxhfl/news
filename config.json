@@ -36,6 +36,21 @@
       "url": "https://blog.google/technology/ai/rss/"
     },
     {
+      "category": "Game Engine",
+      "name": "Unity Blog",
+      "url": "https://unity.com/blog/rss"
+    },
+    {
+      "category": "Game Engine",
+      "name": "Unreal Engine Blog",
+      "url": "https://www.unrealengine.com/rss"
+    },
+    {
+      "category": "Game Engine",
+      "name": "Godot Engine News",
+      "url": "https://godotengine.org/rss.xml"
+    },
+    {
       "category": "CG/Blender",
       "name": "BlenderNation",
       "url": "https://www.blendernation.com/feed/"
@@ -66,6 +81,11 @@
       "url": "https://automaton-media.com/feed/"
     },
     {
+      "category": "VTuber",
+      "name": "PANORA VTuber (JP)",
+      "url": "https://panora.tokyo/archives/category/vtuber/feed"
+    },
+    {
       "category": "Anime",
       "name": "Anime News Network",
       "url": "https://www.animenewsnetwork.com/news/rss.xml"
@@ -74,6 +94,11 @@
       "category": "Anime",
       "name": "Crunchyroll News",
       "url": "https://cr-news-api-service.prd.crunchyrollsvc.com/v1/en-US/rss"
+    },
+    {
+      "category": "Cosplay/Event",
+      "name": "Japan Cosplay Committee (JP)",
+      "url": "https://jpcc.or.jp/feed/"
     }
   ]
 }

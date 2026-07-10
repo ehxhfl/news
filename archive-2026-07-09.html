@@ -372,8 +372,11 @@
                 <button class="cat-btn active" onclick="setCategory('All')" id="cat-All">All</button>
                 <button class="cat-btn" onclick="setCategory('IT/Tech')" id="cat-IT/Tech">IT/Tech</button>
                 <button class="cat-btn" onclick="setCategory('AI')" id="cat-AI">AI</button>
+                <button class="cat-btn" onclick="setCategory('Game Engine')" id="cat-Game Engine">Game Engine</button>
                 <button class="cat-btn" onclick="setCategory('Game')" id="cat-Game">Game</button>
+                <button class="cat-btn" onclick="setCategory('VTuber')" id="cat-VTuber">VTuber</button>
                 <button class="cat-btn" onclick="setCategory('Anime')" id="cat-Anime">Anime</button>
+                <button class="cat-btn" onclick="setCategory('Cosplay/Event')" id="cat-Cosplay/Event">Cosplay/Event</button>
                 <button class="cat-btn" onclick="setCategory('CG/Blender')" id="cat-CG/Blender">CG/Blender</button>
             </div>
             <div class="issue-navigation" aria-label="Issue navigation">
@@ -1500,7 +1503,7 @@
         const savedLang = localStorage.getItem('preferredLang') || 'ko';
         setLanguage(savedLang);
 
-        const supportedCategories = ['All', 'IT/Tech', 'AI', 'Game', 'Anime', 'CG/Blender'];
+        const supportedCategories = ['All', 'IT/Tech', 'AI', 'Game Engine', 'Game', 'VTuber', 'Anime', 'Cosplay/Event', 'CG/Blender'];
         const savedCat = localStorage.getItem('preferredCat') || 'All';
         setCategory(supportedCategories.includes(savedCat) ? savedCat : 'All');
     </script>

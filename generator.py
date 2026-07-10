@@ -8,6 +8,30 @@ from jinja2 import Environment
 DATA_FILE_RE = re.compile(r"^data-(\d{4}-\d{2}-\d{2})\.json$")
 ARCHIVE_FILE_RE = re.compile(r"^archive-(\d{4}-\d{2}-\d{2})\.html$")
 
+ENGINE_CATEGORY = "Game Engine"
+VTUBER_CATEGORY = "VTuber"
+COSPLAY_CATEGORY = "Cosplay/Event"
+
+ENGINE_PATTERN = re.compile(
+    r"\bunreal\s+engine\b|\bue(?:4|5|6)\b|\buefn\b|"
+    r"\bunity(?:\s+(?:engine|editor|hub|release|roadmap|graphics|runtime|[0-9][0-9.]*))\b|"
+    r"\bgodot(?:\s+(?:engine|[0-9][0-9.]*))?\b|\bcryengine\b|\bo3de\b|"
+    r"\bopen\s+3d\s+engine\b|\bgame\s+engine\b|"
+    r"게임\s*엔진|언리얼(?:\s*엔진)?|유니티(?:\s*[0-9][0-9.]*)?|"
+    r"ゲームエンジン|アンリアルエンジン|ゴドーエンジン",
+    re.IGNORECASE,
+)
+VTUBER_PATTERN = re.compile(
+    r"\bvtubers?\b|\bvirtual\s+youtubers?\b|버튜버|브이튜버|"
+    r"バーチャル\s*youtuber|ホロライブ|にじさんじ|\bhololive\b|\bnijisanji\b|\bvshojo\b",
+    re.IGNORECASE,
+)
+COSPLAY_PATTERN = re.compile(
+    r"\bcosplay(?:er|ers)?\b|코스프레|コスプレ|"
+    r"world\s+cosplay\s+summit|世界コスプレサミット|\bacosta!?\b",
+    re.IGNORECASE,
+)
+
 
 def discover_archives():
     """Return valid dated data files as newest-first static archive links."""
@@ -32,10 +56,53 @@ def discover_archives():
     return sorted(archives, key=lambda archive: archive["date"], reverse=True)
 
 
-def canonical_category(category):
-    """Map current and legacy labels to the five filter keys without changing display text."""
+def _article_filter_text(article):
+    if not isinstance(article, dict):
+        return ""
+    fields = (
+        "source",
+        "link",
+        "title_source",
+        "title_en",
+        "title_ja",
+        "title_ko",
+    )
+    return " ".join(str(article.get(field) or "") for field in fields)
+
+
+def canonical_category(category, article=None):
+    """Map current, legacy, and clearly identified article labels to filter keys."""
     value = str(category or "").strip()
     folded = value.casefold()
+    article_text = _article_filter_text(article)
+
+    legacy_engine_category = folded == "game engines"
+    if folded == "game engine" or "게임 엔진" in value or (legacy_engine_category and not article_text):
+        return ENGINE_CATEGORY
+    if any(
+        marker in article_text.casefold()
+        for marker in (
+            "unreal engine blog",
+            "unity blog",
+            "godot engine",
+            "unrealengine.com",
+            "unity.com/blog",
+            "godotengine.org",
+        )
+    ) or ENGINE_PATTERN.search(article_text):
+        return ENGINE_CATEGORY
+    if legacy_engine_category:
+        return "Game"
+
+    if folded == "vtuber" or "버튜버" in value:
+        return VTUBER_CATEGORY
+    if "panora vtuber" in article_text.casefold() or VTUBER_PATTERN.search(article_text):
+        return VTUBER_CATEGORY
+
+    if folded in {"cosplay/event", "cosplay", "cosplay event"} or "코스프레" in value:
+        return COSPLAY_CATEGORY
+    if "japan cosplay committee" in article_text.casefold() or COSPLAY_PATTERN.search(article_text):
+        return COSPLAY_CATEGORY
 
     if value == "AI":
         return "AI"
@@ -49,6 +116,14 @@ def canonical_category(category):
         return "Game"
 
     return value
+
+
+def display_category(article):
+    original = str(article.get("category") or "").strip() if isinstance(article, dict) else ""
+    canonical = canonical_category(original, article)
+    if canonical in {ENGINE_CATEGORY, VTUBER_CATEGORY, COSPLAY_CATEGORY}:
+        return canonical
+    return original or canonical
 
 
 HTML_TEMPLATE = """
@@ -425,8 +500,11 @@ HTML_TEMPLATE = """
                 <button class="cat-btn active" onclick="setCategory('All')" id="cat-All">All</button>
                 <button class="cat-btn" onclick="setCategory('IT/Tech')" id="cat-IT/Tech">IT/Tech</button>
                 <button class="cat-btn" onclick="setCategory('AI')" id="cat-AI">AI</button>
+                <button class="cat-btn" onclick="setCategory('Game Engine')" id="cat-Game Engine">Game Engine</button>
                 <button class="cat-btn" onclick="setCategory('Game')" id="cat-Game">Game</button>
+                <button class="cat-btn" onclick="setCategory('VTuber')" id="cat-VTuber">VTuber</button>
                 <button class="cat-btn" onclick="setCategory('Anime')" id="cat-Anime">Anime</button>
+                <button class="cat-btn" onclick="setCategory('Cosplay/Event')" id="cat-Cosplay/Event">Cosplay/Event</button>
                 <button class="cat-btn" onclick="setCategory('CG/Blender')" id="cat-CG/Blender">CG/Blender</button>
             </div>
             <div class="issue-navigation" aria-label="Issue navigation">
@@ -479,7 +557,7 @@ HTML_TEMPLATE = """
         <div class="header-date">{{ date }} EDITORIAL ISSUE</div>
 
         {% if featured_article %}
-        <article class="featured article-card" data-category="{{ canonical_category(featured_article.category) }}">
+        <article class="featured article-card" data-category="{{ canonical_category(featured_article.category, featured_article) }}">
             {% if featured_article.image_url %}
             <img src="{{ featured_article.image_url }}" alt="Featured Image" class="featured-img" onerror="this.style.display='none'">
             {% else %}
@@ -488,7 +566,7 @@ HTML_TEMPLATE = """
             
             <div class="featured-content">
                 <div class="meta">
-                    <span>{{ featured_article.category }}</span>
+                    <span>{{ display_category(featured_article) }}</span>
                     <span>&mdash;</span>
                     <span>{{ featured_article.source }}</span>
                 </div>
@@ -513,13 +591,13 @@ HTML_TEMPLATE = """
         {% if featured_article %}
         <div class="masonry-grid">
             {% for item in articles %}
-            <article class="article-card" data-category="{{ canonical_category(item.category) }}">
+            <article class="article-card" data-category="{{ canonical_category(item.category, item) }}">
                 {% if item.image_url %}
                 <img src="{{ item.image_url }}" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
                 {% endif %}
                 
                 <div class="meta">
-                    <span>{{ item.category }}</span>
+                    <span>{{ display_category(item) }}</span>
                     <span>&bull;</span>
                     <span>{{ item.source }}</span>
                 </div>
@@ -586,7 +664,7 @@ HTML_TEMPLATE = """
         const savedLang = localStorage.getItem('preferredLang') || 'ko';
         setLanguage(savedLang);
 
-        const supportedCategories = ['All', 'IT/Tech', 'AI', 'Game', 'Anime', 'CG/Blender'];
+        const supportedCategories = ['All', 'IT/Tech', 'AI', 'Game Engine', 'Game', 'VTuber', 'Anime', 'Cosplay/Event', 'CG/Blender'];
         const savedCat = localStorage.getItem('preferredCat') || 'All';
         setCategory(supportedCategories.includes(savedCat) ? savedCat : 'All');
     </script>
@@ -644,6 +722,7 @@ def generate_html(articles, output_path="index.html", display_date=None):
         older_archive=older_archive,
         newer_archive=newer_archive,
         canonical_category=canonical_category,
+        display_category=display_category,
     )
     
     with open(output_path, "w", encoding="utf-8") as f:
