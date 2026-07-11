@@ -1,7 +1,14 @@
 [
   {
-    "date": "2026-07-10",
+    "date": "2026-07-11",
     "page": "index.html",
+    "archive_page": "archive-2026-07-11.html",
+    "data": "data-2026-07-11.json",
+    "count": 52
+  },
+  {
+    "date": "2026-07-10",
+    "page": "archive-2026-07-10.html",
     "archive_page": "archive-2026-07-10.html",
     "data": "data-2026-07-10.json",
     "count": 133
