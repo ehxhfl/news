@@ -46,6 +46,27 @@ def _merge_by_link(*article_groups):
     return merged
 
 
+def _refresh_missing_images(articles, crawled_articles):
+    """Fill missing current-day thumbnails without retranslating existing articles."""
+    crawled_by_link = {}
+    for article in crawled_articles:
+        link = (article.get("link") or "").strip()
+        key = normalize_url(link) or link
+        if key and article.get("image_url"):
+            crawled_by_link[key] = article["image_url"]
+
+    refreshed = []
+    for article in articles:
+        updated = dict(article)
+        if not updated.get("image_url"):
+            link = (updated.get("link") or "").strip()
+            key = normalize_url(link) or link
+            if key in crawled_by_link:
+                updated["image_url"] = crawled_by_link[key]
+        refreshed.append(updated)
+    return refreshed
+
+
 def _dated_data_files():
     dated_files = []
     for path in glob.glob("data-*.json"):
@@ -140,6 +161,8 @@ def main():
             existing_today = _load_articles(data_file)
         except (OSError, ValueError, json.JSONDecodeError) as error:
             logging.warning("Ignoring unreadable current data file %s: %s", data_file, error)
+
+    existing_today = _refresh_missing_images(existing_today, crawled_articles)
 
     seen_links = _seen_links(exclude_path=data_file)
     seen_links.update(

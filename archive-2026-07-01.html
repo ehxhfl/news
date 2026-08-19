@@ -4,20 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Tech Magazine</title>
+    <title>Chunhyo Brief — Tech, Games & Culture</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+JP:wght@400;600;700&display=swap');
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         
         :root {
             /* Light Theme */
-            --bg-color: #ffffff;
-            --text-main: #111111;
-            --text-muted: #666666;
-            --border-color: #eaeaea;
-            --nav-bg: rgba(255, 255, 255, 0.95);
-            --accent: #000000;
-            --hover-bg: #f9f9f9;
+            --bg-color: #e9edf2;
+            --text-main: #141a21;
+            --text-muted: #66707b;
+            --border-color: #c6ccd2;
+            --nav-bg: rgba(255, 253, 247, 0.98);
+            --accent: #2448ff;
+            --accent-ink: #1831b5;
+            --orange: #ff5a36;
+            --highlight: #dfe6ff;
+            --hover-bg: #f0f2f4;
+            --surface-color: #fffdf7;
         }
 
         html {
@@ -27,13 +31,17 @@
         @media (prefers-color-scheme: dark) {
             :root {
                 /* Premium Muted Dark Mode */
-                --bg-color: #0d0d0d;
-                --text-main: #f0f0f0;
-                --text-muted: #a0a0a0;
-                --border-color: #222222;
-                --nav-bg: rgba(13, 13, 13, 0.95);
-                --accent: #ffffff;
-                --hover-bg: #161616;
+                --bg-color: #12161d;
+                --text-main: #f5f0e6;
+                --text-muted: #a9b0ba;
+                --border-color: #454c57;
+                --nav-bg: rgba(27, 32, 40, 0.98);
+                --accent: #7390ff;
+                --accent-ink: #a8b9ff;
+                --orange: #ff7757;
+                --highlight: #29345c;
+                --hover-bg: #252b34;
+                --surface-color: #1b2028;
             }
         }
 
@@ -44,7 +52,7 @@
         }
 
         body {
-            font-family: 'Inter', 'Pretendard', 'Noto Sans JP', sans-serif;
+            font-family: 'Pretendard', 'Noto Sans JP', system-ui, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
@@ -56,6 +64,19 @@
             text-decoration: none;
         }
 
+        .skip-link {
+            position: fixed;
+            left: 1rem;
+            top: 1rem;
+            z-index: 2000;
+            padding: 0.7rem 1rem;
+            background: var(--text-main);
+            color: var(--bg-color);
+            transform: translateY(-180%);
+        }
+
+        .skip-link:focus { transform: translateY(0); }
+
         /* Top Navigation */
         .navbar {
             position: sticky;
@@ -65,63 +86,89 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
+            padding: 0 2rem;
+            display: grid;
+            gap: 0;
+        }
+
+        .nav-topline {
+            min-height: 4.75rem;
             display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: space-between;
             align-items: center;
-            z-index: 1000;
+            justify-content: space-between;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .brand {
-            font-weight: 700;
-            font-size: 1.25rem;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.65rem;
+            font-weight: 800;
+            font-size: 1.45rem;
             letter-spacing: -0.02em;
         }
 
+        .brand-domain,
+        .nav-issue-meta {
+            color: var(--text-muted);
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .issue-number { color: var(--accent); }
+
         .nav-controls {
             display: flex;
-            gap: 2rem;
+            gap: 1.25rem;
             align-items: center;
-            justify-content: flex-end;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            flex-wrap: nowrap;
             min-width: 0;
-            max-width: 100%;
+            width: 100%;
+            padding: 0.55rem 0;
         }
         
         /* Category Filter */
         .category-toggle {
             display: flex;
-            gap: 1rem;
-            font-size: 0.85rem;
+            gap: 0.35rem;
+            font-size: 0.78rem;
             font-weight: 500;
-            justify-content: center;
-            flex-wrap: wrap;
+            justify-content: flex-start;
+            flex: 1 1 auto;
+            flex-wrap: nowrap;
             min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
+        .category-toggle::-webkit-scrollbar { display: none; }
         .cat-btn {
             flex: 0 0 auto;
             cursor: pointer;
             color: var(--text-muted);
             transition: color 0.2s, border-color 0.2s, background-color 0.2s;
             border: 1px solid transparent;
-            border-radius: 999px;
+            border-radius: 0;
             background: none;
             font-family: inherit;
             font-weight: 600;
-            padding: 0.2rem 0.5rem;
+            min-height: 2.75rem;
+            padding: 0.45rem 0.55rem;
             white-space: nowrap;
         }
         .cat-btn.active, .cat-btn:hover {
             color: var(--text-main);
-            border-color: var(--border-color);
-            background: var(--hover-bg);
+            border-bottom-color: var(--accent);
+            background: transparent;
         }
 
         .lang-toggle {
             display: flex;
-            gap: 1rem;
+            flex: 0 0 auto;
+            gap: 0.25rem;
             font-size: 0.85rem;
             font-weight: 500;
         }
@@ -135,6 +182,8 @@
             font-family: inherit;
             font-weight: inherit;
             font-size: inherit;
+            min-width: 2.75rem;
+            min-height: 2.75rem;
         }
         .lang-btn:hover { color: var(--text-main); }
         .lang-btn.active { color: var(--text-main); font-weight: 700; }
@@ -151,7 +200,7 @@
         .archive-dropdown select {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
-            border-radius: 0.35rem;
+            border-radius: 0;
             color: var(--text-main);
             font-family: inherit;
             font-size: inherit;
@@ -164,16 +213,21 @@
         .archive-dropdown select:focus-visible,
         .issue-link:focus-visible,
         .cat-btn:focus-visible,
-        .lang-btn:focus-visible {
+        .lang-btn:focus-visible,
+        .search-field input:focus-visible,
+        .saved-filter:focus-visible,
+        .interaction-btn:focus-visible,
+        .reset-filter:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
 
         .issue-navigation {
             display: flex;
+            flex: 0 0 auto;
             align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 0.75rem;
         }
 
@@ -182,7 +236,7 @@
             align-items: center;
             gap: 0.3rem;
             border: 1px solid var(--border-color);
-            border-radius: 999px;
+            border-radius: 0;
             padding: 0.35rem 0.7rem;
             color: var(--text-muted);
             font-size: 0.78rem;
@@ -204,16 +258,238 @@
             padding: 2rem;
         }
 
-        /* Header Date */
-        .header-date {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        /* Editorial issue masthead */
+        .editorial-masthead {
             margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--text-main);
         }
+
+        .masthead-kicker {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 2.25rem 0 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .masthead-kicker::before {
+            content: '';
+            width: 0.45rem;
+            height: 0.45rem;
+            flex: 0 0 auto;
+            background: var(--accent);
+        }
+
+        .masthead-kicker time { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+        .masthead-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 2rem;
+            align-items: end;
+            padding: 1rem 0 1.75rem;
+            border-bottom: 1px solid var(--text-main);
+        }
+
+        .masthead-title {
+            max-width: 13ch;
+            font-size: clamp(3rem, 8vw, 7.5rem);
+            font-weight: 800;
+            line-height: 0.88;
+            letter-spacing: -0.075em;
+            text-wrap: balance;
+        }
+
+        .guide-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-height: 3rem;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid var(--text-main);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .guide-link:hover { background: var(--text-main); color: var(--bg-color); }
+
+        .masthead-summary {
+            display: grid;
+            grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.2fr);
+            gap: 2rem;
+            align-items: start;
+            padding: 1.75rem 0;
+        }
+
+        .masthead-copy {
+            max-width: 42rem;
+            color: var(--text-muted);
+            font-size: 0.94rem;
+        }
+
+        .masthead-copy strong { color: var(--accent); font-family: 'Newsreader', serif; font-size: 1.35rem; font-style: italic; font-weight: 500; }
+
+        .masthead-metrics {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(12rem, 2fr);
+            gap: 1.25rem;
+        }
+
+        .digest-stats,
+        .daily-traffic {
+            display: grid;
+            gap: 0.75rem;
+            margin: 0;
+        }
+
+        .digest-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+        .daily-traffic {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .digest-stats > div,
+        .daily-traffic > div {
+            min-inline-size: 0;
+            padding-left: 0.75rem;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .digest-stats dt,
+        .daily-traffic dt {
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .digest-stats dd,
+        .daily-traffic dd {
+            min-block-size: 1.3em;
+            color: var(--text-main);
+            font-size: 1.4rem;
+            font-weight: 800;
+            line-height: 1.3;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .discovery-panel {
+            display: grid;
+            grid-template-columns: minmax(18rem, 1fr) auto;
+            gap: 0.75rem 1rem;
+            align-items: center;
+            margin: 0 0 1rem;
+            padding: 0.85rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            background: var(--surface-color);
+        }
+
+        .search-field {
+            position: relative;
+            display: block;
+            min-width: 0;
+        }
+
+        .search-field svg {
+            position: absolute;
+            left: 0.9rem;
+            top: 50%;
+            width: 1.1rem;
+            height: 1.1rem;
+            color: var(--text-muted);
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .search-field input {
+            width: 100%;
+            min-height: 3rem;
+            padding: 0.7rem 1rem 0.7rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            background: var(--surface-color);
+            color: var(--text-main);
+            font: inherit;
+            font-size: 0.92rem;
+        }
+
+        .search-field input::placeholder { color: var(--text-muted); }
+
+        .saved-filter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 3rem;
+            padding: 0.65rem 0.9rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            background: var(--surface-color);
+            color: var(--text-main);
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .saved-filter svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.8; }
+        .saved-filter[aria-pressed="true"] { border-color: var(--text-main); background: var(--text-main); color: var(--bg-color); }
+        .saved-filter-count { min-width: 1.5rem; border-radius: 999px; padding: 0.05rem 0.4rem; background: var(--hover-bg); color: var(--text-main); font-variant-numeric: tabular-nums; }
+        .saved-filter[aria-pressed="true"] .saved-filter-count { background: var(--bg-color); }
+
+        .results-status {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .reset-filter {
+            border: 0;
+            background: none;
+            color: var(--text-main);
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 0.18rem;
+        }
+
+        .field-note {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            gap: 1.25rem;
+            align-items: center;
+            margin: 0 0 2.5rem;
+            padding: 1rem 1.1rem;
+            border: 1px solid var(--border-color);
+            border-left: 0.35rem solid var(--accent);
+            background: var(--surface-color);
+        }
+
+        .field-note-label {
+            color: var(--accent);
+            font-size: 0.67rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .field-note h2 { margin-bottom: 0.1rem; font-size: 1rem; }
+        .field-note p { color: var(--text-muted); font-size: 0.82rem; }
+        .field-note a { min-height: 2.75rem; display: inline-flex; align-items: center; font-size: 0.78rem; font-weight: 700; text-decoration: underline; text-underline-offset: 0.2rem; }
 
         /* Featured Article */
         .featured {
@@ -281,11 +557,42 @@
             border-bottom: 1px solid var(--border-color);
         }
 
+        .article-card[hidden], .no-results[hidden] { display: none !important; }
+
         .article-img {
             width: 100%;
             height: auto;
             margin-bottom: 1rem;
             background: var(--hover-bg);
+        }
+
+        .article-placeholder {
+            aspect-ratio: 16 / 9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #ffffff;
+            text-align: center;
+            letter-spacing: 0.08em;
+        }
+
+        .article-placeholder[hidden] { display: none; }
+
+        .cosplay-placeholder {
+            background: var(--accent);
+        }
+
+        .placeholder-kicker {
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .placeholder-title {
+            font-size: clamp(1.35rem, 4vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1;
         }
 
         .article-title {
@@ -304,6 +611,65 @@
             font-size: 0.95rem;
             color: var(--text-muted);
             line-height: 1.5;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+        }
+
+        .article-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .interaction-btn {
+            min-height: 2.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            background: var(--bg-color);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.35rem 0.7rem;
+            transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .interaction-btn:hover {
+            color: var(--text-main);
+            border-color: var(--text-muted);
+            background: var(--hover-bg);
+        }
+
+        .like-btn[aria-pressed="true"] {
+            color: #d13b66;
+            border-color: rgba(209, 59, 102, 0.45);
+            background: rgba(209, 59, 102, 0.08);
+        }
+
+        .save-btn svg { width: 0.95rem; height: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.8; }
+        .save-btn[aria-pressed="true"] { color: var(--text-main); border-color: var(--text-main); background: var(--hover-bg); }
+        .save-btn[aria-pressed="true"] svg { fill: currentColor; }
+        .save-btn[aria-pressed="false"] .save-active.lang-content { display: none; }
+        .save-btn[aria-pressed="true"] .save-default.lang-content { display: none; }
+
+        .interaction-btn:disabled {
+            cursor: wait;
+            opacity: 0.65;
+        }
+
+        .like-count {
+            min-width: 1.4ch;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
         }
 
         .empty-state {
@@ -322,16 +688,28 @@
             color: var(--text-muted);
         }
 
+        .no-results { margin: 1rem 0 4rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--hover-bg); padding: 4rem 2rem; text-align: center; }
+        .no-results svg { width: 2rem; height: 2rem; margin-bottom: 1rem; color: var(--text-muted); fill: none; stroke: currentColor; stroke-width: 1.5; }
+        .no-results h2 { margin-bottom: 0.5rem; font-size: 1.35rem; }
+        .no-results p { margin-bottom: 1rem; color: var(--text-muted); }
+
         @media (max-width: 1024px) {
             .masonry-grid { column-count: 2; }
             .featured { grid-template-columns: 1fr; gap: 2rem; }
             .featured-img { min-height: 300px; }
             .featured-title { font-size: 2.5rem; }
+            .masthead-summary { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 640px) {
             .masonry-grid { column-count: 1; }
-            .navbar { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .navbar { padding: 0 1rem; }
+            .nav-topline { min-height: 4rem; flex-wrap: wrap; gap: 0.5rem; padding: 0.75rem 0; }
+            .brand { width: 100%; font-size: 1.2rem; white-space: nowrap; }
+            .brand-domain { display: none; }
+            .nav-issue-meta { display: none; }
+            .nav-topline .issue-navigation { width: 100%; justify-content: flex-start; }
+            .nav-topline .issue-link:not([aria-current="page"]) { display: none; }
             .nav-controls { width: 100%; justify-content: center; gap: 0.75rem; flex-direction: column; flex-wrap: nowrap; }
             .category-toggle {
                 width: 100%;
@@ -345,9 +723,524 @@
             }
             .category-toggle::-webkit-scrollbar { display: none; }
             .issue-navigation { width: 100%; }
+            .masthead-kicker { align-items: flex-start; padding-top: 1.5rem; letter-spacing: 0.1em; }
+            .masthead-row { grid-template-columns: 1fr; gap: 1.25rem; }
+            .masthead-title { font-size: clamp(3rem, 16vw, 5rem); }
+            .guide-link { width: 100%; justify-content: space-between; }
+            .masthead-summary { grid-template-columns: 1fr; }
+            .masthead-metrics { grid-template-columns: 1fr; }
+            .field-note { grid-template-columns: 1fr; gap: 0.4rem; }
             .featured-img { min-height: 200px; }
             .featured-title { font-size: 2rem; }
             .container { padding: 1rem; }
+            .discovery-panel { grid-template-columns: 1fr; margin-top: 0; }
+            .saved-filter { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+
+        /* Chunhyo Feed — two-colour personal newsboard */
+        body {
+            border-top: 5px solid var(--accent);
+            word-break: keep-all;
+        }
+
+        .navbar {
+            padding: 0 clamp(1rem, 3vw, 2.5rem);
+            background: var(--nav-bg);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: 2px solid var(--text-main);
+        }
+
+        .nav-topline,
+        .nav-controls {
+            width: min(100%, 1320px);
+            margin-inline: auto;
+        }
+
+        .nav-topline {
+            min-height: 4.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            gap: 0.75rem;
+            font-size: 1rem;
+            letter-spacing: 0;
+        }
+
+        .brand > span:first-child {
+            display: inline-grid;
+            place-items: center;
+            min-height: 2.6rem;
+            padding: 0.2rem 0.65rem;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-domain,
+        .nav-issue-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            letter-spacing: 0.08em;
+        }
+
+        .brand-domain {
+            max-width: 10rem;
+            line-height: 1.25;
+        }
+
+        .issue-number { color: var(--orange); }
+
+        .nav-controls {
+            min-height: 3.4rem;
+            padding: 0;
+        }
+
+        .category-toggle {
+            align-self: stretch;
+            gap: 0;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .cat-btn {
+            min-height: 3.35rem;
+            padding: 0.45rem 0.7rem;
+            border: 0;
+            border-right: 1px solid var(--border-color);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cat-btn.active,
+        .cat-btn:hover {
+            border-bottom-color: transparent;
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .lang-toggle {
+            gap: 0;
+            border: 1px solid var(--text-main);
+        }
+
+        .lang-btn {
+            min-width: 2.6rem;
+            min-height: 2.35rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+        }
+
+        .lang-btn + .lang-btn { border-left: 1px solid var(--text-main); }
+        .lang-btn.active { background: var(--text-main); color: var(--surface-color); }
+
+        .archive-dropdown select,
+        .issue-link {
+            border-color: var(--text-main);
+            background: var(--surface-color);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        .issue-link[aria-current="page"] {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1320px;
+            padding: 2rem clamp(1rem, 3vw, 2.5rem) 5rem;
+        }
+
+        .editorial-masthead {
+            margin: 0 0 1.5rem;
+            border: 2px solid var(--text-main);
+            background: var(--surface-color);
+        }
+
+        .masthead-kicker {
+            min-height: 2.7rem;
+            justify-content: flex-start;
+            padding: 0.55rem 0.9rem;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+        }
+
+        .masthead-kicker::before {
+            width: 0.55rem;
+            height: 0.55rem;
+            background: var(--orange);
+        }
+
+        .masthead-kicker time { margin-left: auto; }
+
+        .masthead-row {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.4rem;
+            border-bottom: 1px solid var(--text-main);
+        }
+
+        .masthead-title {
+            max-width: 16ch;
+            font-family: 'Pretendard', 'Noto Sans JP', sans-serif;
+            font-size: clamp(2.8rem, 6.5vw, 5.8rem);
+            font-weight: 800;
+            line-height: 0.93;
+            letter-spacing: -0.07em;
+        }
+
+        .guide-link {
+            min-height: 3rem;
+            padding: 0.7rem 0.9rem;
+            border: 2px solid var(--text-main);
+            background: var(--highlight);
+            color: var(--text-main);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.02em;
+        }
+
+        .guide-link:hover { background: var(--orange); color: #fff; }
+
+        .masthead-summary {
+            grid-template-columns: minmax(15rem, 0.75fr) minmax(0, 1.25fr);
+            gap: 1.5rem;
+            padding: 1.4rem;
+        }
+
+        .masthead-copy { font-size: 0.9rem; }
+
+        .masthead-copy strong {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: var(--orange);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .masthead-metrics { gap: 0.5rem; }
+        .digest-stats, .daily-traffic { gap: 0; }
+
+        .digest-stats > div,
+        .daily-traffic > div {
+            padding: 0.65rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-left: 0;
+            background: var(--bg-color);
+        }
+
+        .digest-stats > div:first-child,
+        .daily-traffic > div:first-child { border-left: 1px solid var(--border-color); }
+
+        .digest-stats dt,
+        .daily-traffic dt {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.02em;
+        }
+
+        .digest-stats dd,
+        .daily-traffic dd {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.3rem;
+        }
+
+        .discovery-panel {
+            margin: 0 0 1.5rem;
+            padding: 0.7rem 0;
+            border: 0;
+            border-top: 2px solid var(--text-main);
+            border-bottom: 2px solid var(--text-main);
+            background: transparent;
+        }
+
+        .search-field input,
+        .saved-filter {
+            border: 1px solid var(--text-main);
+            background: var(--surface-color);
+            border-radius: 0;
+        }
+
+        .saved-filter {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+        }
+
+        .saved-filter[aria-pressed="true"] {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .saved-filter-count,
+        .saved-filter[aria-pressed="true"] .saved-filter-count {
+            border-radius: 0;
+            background: var(--highlight);
+            color: var(--text-main);
+        }
+
+        .results-status { font-family: 'IBM Plex Mono', monospace; }
+
+        .field-note {
+            margin-bottom: 2rem;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--text-main);
+            border-left: 6px solid var(--orange);
+            background: var(--surface-color);
+        }
+
+        .field-note-label {
+            color: var(--orange);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .featured {
+            position: relative;
+            grid-template-columns: minmax(0, 7fr) minmax(20rem, 5fr);
+            gap: 0;
+            margin: 0 0 2.5rem;
+            padding: 0;
+            border: 2px solid var(--text-main);
+            background: var(--surface-color);
+        }
+
+        .featured::before {
+            content: 'LEAD / 01';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            padding: 0.35rem 0.55rem;
+            background: var(--orange);
+            color: #fff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+        }
+
+        .featured-img {
+            min-height: 430px;
+            aspect-ratio: 5 / 3;
+            border-right: 2px solid var(--text-main);
+            background: var(--highlight);
+        }
+
+        .featured-content {
+            align-items: flex-start;
+            padding: clamp(1.5rem, 3vw, 2.6rem);
+        }
+
+        .meta {
+            align-items: center;
+            gap: 0.55rem;
+            margin-bottom: 0.8rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.66rem;
+            letter-spacing: 0.02em;
+        }
+
+        .meta > span:first-child {
+            padding: 0.18rem 0.35rem;
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .featured-title {
+            font-size: clamp(2rem, 3.3vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.06;
+            letter-spacing: -0.045em;
+        }
+
+        .featured-title a:hover,
+        .article-title a:hover {
+            text-decoration-color: var(--orange);
+            text-decoration-thickness: 0.15em;
+            text-underline-offset: 0.12em;
+        }
+
+        .featured-summary { font-size: 1rem; }
+
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0;
+            width: 100%;
+            border-top: 2px solid var(--text-main);
+            border-left: 2px solid var(--text-main);
+            counter-reset: story 1;
+            column-count: initial;
+        }
+
+        .masonry-grid .article-card {
+            position: relative;
+            display: flex;
+            min-width: 0;
+            min-height: 100%;
+            flex-direction: column;
+            margin: 0;
+            padding: 1.15rem;
+            border: 0;
+            border-right: 2px solid var(--text-main);
+            border-bottom: 2px solid var(--text-main);
+            background: var(--surface-color);
+            counter-increment: story;
+        }
+
+        .masonry-grid .article-card::before {
+            content: counter(story, decimal-leading-zero);
+            align-self: flex-start;
+            margin-bottom: 0.65rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 3px solid var(--orange);
+            color: var(--text-main);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .masonry-grid .article-card:hover { background: var(--highlight); }
+
+        .article-img {
+            aspect-ratio: 5 / 3;
+            margin-bottom: 0.9rem;
+            border: 1px solid var(--text-main);
+            object-fit: cover;
+        }
+
+        .cosplay-placeholder {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .placeholder-kicker { font-family: 'IBM Plex Mono', monospace; }
+
+        .placeholder-title {
+            max-width: 8ch;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            letter-spacing: -0.04em;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.025em;
+        }
+
+        .article-summary {
+            -webkit-line-clamp: 4;
+            font-size: 0.88rem;
+        }
+
+        .article-actions { margin-top: auto; padding-top: 1rem; }
+
+        .interaction-btn {
+            min-height: 2rem;
+            padding: 0.25rem 0;
+            border: 0;
+            border-bottom: 1px solid var(--text-muted);
+            border-radius: 0;
+            background: transparent;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+        }
+
+        .interaction-btn:hover {
+            border-color: var(--accent);
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .like-btn[aria-pressed="true"] {
+            border-color: var(--orange);
+            background: transparent;
+            color: var(--orange);
+        }
+
+        .save-btn[aria-pressed="true"] {
+            border-color: var(--accent);
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .empty-state,
+        .no-results {
+            border: 2px solid var(--text-main);
+            border-radius: 0;
+            background: var(--surface-color);
+        }
+
+        @media (max-width: 1050px) {
+            .masonry-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .featured { grid-template-columns: 1fr; }
+            .featured-img { min-height: 300px; border-right: 0; border-bottom: 2px solid var(--text-main); }
+            .masthead-summary { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 720px) {
+            body { border-top-width: 4px; }
+            .navbar { padding: 0 0.8rem; }
+            .nav-topline {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                min-height: 0;
+                gap: 0.65rem;
+                padding: 0.65rem 0;
+            }
+            .brand { width: auto; min-width: 0; }
+            .brand > span:first-child { min-height: 2.3rem; }
+            .brand-domain { display: block; }
+            .nav-issue-meta { display: none; }
+            .nav-topline .issue-navigation { width: auto; min-width: 0; justify-content: flex-end; }
+            .nav-topline .issue-link:not([aria-current="page"]) { display: none; }
+            .archive-dropdown label { display: none; }
+            .archive-dropdown select { width: min(8.5rem, 34vw); }
+            .nav-controls { flex-direction: column; align-items: stretch; gap: 0.35rem; padding: 0.35rem 0 0.55rem; }
+            .category-toggle { width: 100%; min-height: 3rem; }
+            .cat-btn { min-height: 3rem; scroll-snap-align: start; }
+            .lang-toggle { align-self: flex-end; }
+            .container { padding: 1rem 0.8rem 3rem; }
+            .masthead-row { grid-template-columns: 1fr; align-items: start; padding: 1rem; }
+            .masthead-title { font-size: clamp(2.8rem, 14vw, 4.5rem); }
+            .guide-link { width: 100%; justify-content: space-between; }
+            .masthead-summary { padding: 1rem; }
+            .masthead-metrics { grid-template-columns: 1fr; }
+            .field-note { grid-template-columns: 1fr; }
+            .featured-content { padding: 1.25rem; }
+        }
+
+        @media (max-width: 620px) {
+            .masonry-grid { grid-template-columns: 1fr; }
+            .discovery-panel { grid-template-columns: 1fr; }
+            .saved-filter { width: 100%; }
+            .masthead-kicker { align-items: center; padding-top: 0.55rem; }
+            .masthead-title { max-width: 10ch; }
+            .featured-title { font-size: 2rem; }
+            .featured-img { min-height: 230px; }
         }
         
         /* Language System */
@@ -365,20 +1258,18 @@
 </head>
 <body>
 
+    <a class="skip-link" href="#main-content">
+        <span class="lang-content lang-en">Skip to stories</span>
+        <span class="lang-content lang-ja">記事へ移動</span>
+        <span class="lang-content lang-ko">기사로 바로가기</span>
+    </a>
+
     <nav class="navbar">
-        <div class="brand">TECH MAG</div>
-        <div class="nav-controls">
-            <div class="category-toggle">
-                <button class="cat-btn active" onclick="setCategory('All')" id="cat-All">All</button>
-                <button class="cat-btn" onclick="setCategory('IT/Tech')" id="cat-IT/Tech">IT/Tech</button>
-                <button class="cat-btn" onclick="setCategory('AI')" id="cat-AI">AI</button>
-                <button class="cat-btn" onclick="setCategory('Game Engine')" id="cat-Game Engine">Game Engine</button>
-                <button class="cat-btn" onclick="setCategory('Game')" id="cat-Game">Game</button>
-                <button class="cat-btn" onclick="setCategory('VTuber')" id="cat-VTuber">VTuber</button>
-                <button class="cat-btn" onclick="setCategory('Anime')" id="cat-Anime">Anime</button>
-                <button class="cat-btn" onclick="setCategory('Cosplay/Event')" id="cat-Cosplay/Event">Cosplay/Event</button>
-                <button class="cat-btn" onclick="setCategory('CG/Blender')" id="cat-CG/Blender">CG/Blender</button>
-            </div>
+        <div class="nav-topline">
+            <a class="brand" href="index.html">
+                <span>CHUNHYO</span>
+                <span class="brand-domain">DAILY FEED · 10:00</span>
+            </a>
             <div class="issue-navigation" aria-label="Issue navigation">
                 <a class="issue-link" href="index.html" >
                     <span class="lang-content lang-en">Latest</span>
@@ -503,6 +1394,26 @@
                     </select>
                 </div>
             </div>
+            <p class="nav-issue-meta">
+                <span class="issue-number">№ 001</span>
+                <span aria-hidden="true"> · </span>
+                <span>2026-07-01</span>
+                <span aria-hidden="true"> · </span>
+                <span>DAILY ARCHIVE</span>
+            </p>
+        </div>
+        <div class="nav-controls">
+            <div class="category-toggle">
+                <button class="cat-btn active" onclick="setCategory('All')" id="cat-All">All</button>
+                <button class="cat-btn" onclick="setCategory('IT/Tech')" id="cat-IT/Tech">IT/Tech</button>
+                <button class="cat-btn" onclick="setCategory('AI')" id="cat-AI">AI</button>
+                <button class="cat-btn" onclick="setCategory('Game Engine')" id="cat-Game Engine">Game Engine</button>
+                <button class="cat-btn" onclick="setCategory('Game')" id="cat-Game">Game</button>
+                <button class="cat-btn" onclick="setCategory('VTuber')" id="cat-VTuber">VTuber</button>
+                <button class="cat-btn" onclick="setCategory('Anime')" id="cat-Anime">Anime</button>
+                <button class="cat-btn" onclick="setCategory('Cosplay/Event')" id="cat-Cosplay/Event">Cosplay/Event</button>
+                <button class="cat-btn" onclick="setCategory('CG/Blender')" id="cat-CG/Blender">CG/Blender</button>
+            </div>
             <div class="lang-toggle">
                 <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
                 <button class="lang-btn" onclick="setLanguage('ja')" id="btn-ja">JA</button>
@@ -511,13 +1422,96 @@
         </div>
     </nav>
 
-    <div class="container">
-        <div class="header-date">2026-07-01 EDITORIAL ISSUE</div>
+    <main class="container" id="main-content">
+        <header class="editorial-masthead">
+            <div class="masthead-kicker">
+                <span>COLLECTED DAILY · 10:00 JST / KST</span>
+                <time datetime="2026-07-01">2026-07-01</time>
+            </div>
+            <div class="masthead-row">
+                <h1 class="masthead-title" id="digest-title">
+                    <span class="lang-content lang-en">WHAT CAME IN TODAY</span>
+                    <span class="lang-content lang-ja">今日届いたもの</span>
+                    <span class="lang-content lang-ko">오늘 들어온 것들</span>
+                </h1>
+                <a class="guide-link" href="#lead-story">
+                    <span class="lang-content lang-en">Start reading</span>
+                    <span class="lang-content lang-ja">記事を見る</span>
+                    <span class="lang-content lang-ko">첫 기사 보기</span>
+                    <span aria-hidden="true">↓</span>
+                </a>
+            </div>
+            <div class="masthead-summary">
+                <p class="masthead-copy">
+                    <strong>
+                        <span class="lang-content lang-en">Morning edition</span>
+                        <span class="lang-content lang-ja">朝刊</span>
+                        <span class="lang-content lang-ko">아침판</span>
+                    </strong><br>
+                    <span class="lang-content lang-en">Tech, AI, games and digital culture, collected every morning and arranged in three languages.</span>
+                    <span class="lang-content lang-ja">テクノロジー、AI、ゲーム、デジタル文化の話題を毎朝集め、3言語で整理します。</span>
+                    <span class="lang-content lang-ko">테크·AI·게임·디지털 문화 소식을 매일 아침 모아 세 언어로 정리합니다.</span>
+                </p>
+                <div class="masthead-metrics">
+                    <dl class="digest-stats">
+                        <div>
+                            <dt><span class="lang-content lang-en">Stories</span><span class="lang-content lang-ja">記事</span><span class="lang-content lang-ko">기사</span></dt>
+                            <dd>30</dd>
+                        </div>
+                        <div>
+                            <dt><span class="lang-content lang-en">Sources</span><span class="lang-content lang-ja">媒体</span><span class="lang-content lang-ko">출처</span></dt>
+                            <dd>9</dd>
+                        </div>
+                        <div>
+                            <dt><span class="lang-content lang-en">Topics</span><span class="lang-content lang-ja">分野</span><span class="lang-content lang-ko">주제</span></dt>
+                            <dd>6</dd>
+                        </div>
+                    </dl>
+                    <dl id="daily-traffic" class="daily-traffic" aria-live="polite" aria-busy="true" data-state="loading">
+                        <div>
+                            <dt><span class="lang-content lang-en">Views today</span><span class="lang-content lang-ja">今日の閲覧数</span><span class="lang-content lang-ko">오늘 조회수</span></dt>
+                            <dd id="today-views">&mdash;</dd>
+                        </div>
+                        <div>
+                            <dt><span class="lang-content lang-en">Visitors</span><span class="lang-content lang-ja">訪問者</span><span class="lang-content lang-ko">방문자</span></dt>
+                            <dd id="today-visitors">&mdash;</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </header>
 
         
-        <article class="featured article-card" data-category="Game">
+        <section class="discovery-panel" aria-label="Article discovery tools">
+            <label class="search-field" for="news-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                <input id="news-search" type="search" autocomplete="off"
+                    placeholder="기사 제목·요약·출처 검색"
+                    aria-label="기사 검색">
+            </label>
+            <button class="saved-filter" id="saved-filter" type="button" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                <span class="lang-content lang-en">Saved</span>
+                <span class="lang-content lang-ja">保存済み</span>
+                <span class="lang-content lang-ko">읽기 목록</span>
+                <span class="saved-filter-count" id="saved-count">0</span>
+            </button>
+            <div class="results-status">
+                <span id="results-count" aria-live="polite"></span>
+                <button class="reset-filter" id="reset-filter" type="button">
+                    <span class="lang-content lang-en">Reset filters</span>
+                    <span class="lang-content lang-ja">条件をリセット</span>
+                    <span class="lang-content lang-ko">필터 초기화</span>
+                </button>
+            </div>
+        </section>
+        
+
+        
+        <article class="featured article-card" id="lead-story" data-category="Game" data-article-key="5bee8538b0fef7a3ec5a" data-search="game 게임 (game) ign japan &#39;monster fantasy&#39; preview combines the thrill of &#39;monster hunter&#39; with the relaxing comfort of &#39;animal crossing&#39; 『monster fantasy』プレビュー、「モンスターハンター」のスリルと「どうぶつの森」のほっこりとしたくつろぎの融合 몬스터 판타지 defeat gigantic beasts and build a vibrant community in this highly anticipated action rpg with life sim elements.the monster-hunting monster hunter series fans and the animal crossing: new horizons fan base enjoy laid-back community development. i had no idea that there were so many subsets where these two overlapped. however, the highly anticipated action rpg &#34;monster fantasy&#34; is based on my beliefs... ライフシム要素を取り入れたこの期待のアクションrpgで、巨大な獣たちを倒し、活気あふれるコミュニティを築き上げよう モンスターを狩る「モンスターハンター」シリーズのファン層と、のんびりとしたコミュニティ開発を楽しむ「どうぶつの森」のファン層。この2つが重なる部分集合にそれほど多くのものがあるとは到底思えなかった。しかし、期待のアクションrpg『monster fantasy』は、そんな私の思い込み... 몬스터 판타지는 몬스터를 사냥하는 게임과 함께 휴식 공간을 제공하는 게임의 결합으로, 사용자들이 다양한 몬스터를 사냥하고 활기찬 공동체를 구축할 수 있습니다. 이 게임에서는 라이프 시뮬레이션 요소를 포함하여 사용자들이 더 풍부한 게임 경험을 할 수 있습니다. 몬스터를 사냥하는 게임 팬층과 휴식 공간을 제공하는 게임 팬층이 합쳐진 게임입니다.">
             
             <img src="https://sm.ign.com/ign_jp/preview/m/monster-fa/monster-fantasy-combines-the-thrill-of-monster-hunter-with-t_xmyd.jpg" alt="Featured Image" class="featured-img" onerror="this.style.display='none'">
+            
             
             
             <div class="featured-content">
@@ -527,18 +1521,33 @@
                     <span>IGN Japan</span>
                 </div>
                 
-                <h1 class="featured-title">
+                <h2 class="featured-title">
                     <a href="https://jp.ign.com/monster-fantasy/83609/monster-fantasy" target="_blank" rel="noopener noreferrer">
                         <span class="lang-content lang-en">&#39;Monster Fantasy&#39; preview combines the thrill of &#39;Monster Hunter&#39; with the relaxing comfort of &#39;Animal Crossing&#39;</span>
                         <span class="lang-content lang-ja">『Monster Fantasy』プレビュー、「モンスターハンター」のスリルと「どうぶつの森」のほっこりとしたくつろぎの融合</span>
                         <span class="lang-content lang-ko">몬스터 판타지</span>
                     </a>
-                </h1>
+                </h2>
                 
                 <div class="featured-summary">
                     <span class="lang-content lang-en">Defeat gigantic beasts and build a vibrant community in this highly anticipated action RPG with life sim elements.The monster-hunting Monster Hunter series fans and the Animal Crossing: New Horizons fan base enjoy laid-back community development. I had no idea that there were so many subsets where these two overlapped. However, the highly anticipated action RPG &#34;Monster Fantasy&#34; is based on my beliefs...</span>
                     <span class="lang-content lang-ja">ライフシム要素を取り入れたこの期待のアクションRPGで、巨大な獣たちを倒し、活気あふれるコミュニティを築き上げよう モンスターを狩る「モンスターハンター」シリーズのファン層と、のんびりとしたコミュニティ開発を楽しむ「どうぶつの森」のファン層。この2つが重なる部分集合にそれほど多くのものがあるとは到底思えなかった。しかし、期待のアクションRPG『Monster Fantasy』は、そんな私の思い込み...</span>
                     <span class="lang-content lang-ko">몬스터 판타지는 몬스터를 사냥하는 게임과 함께 휴식 공간을 제공하는 게임의 결합으로, 사용자들이 다양한 몬스터를 사냥하고 활기찬 공동체를 구축할 수 있습니다. 이 게임에서는 라이프 시뮬레이션 요소를 포함하여 사용자들이 더 풍부한 게임 경험을 할 수 있습니다. 몬스터를 사냥하는 게임 팬층과 휴식 공간을 제공하는 게임 팬층이 합쳐진 게임입니다.</span>
+                </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="5bee8538b0fef7a3ec5a" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like5bee8538b0fef7a3ec5a" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
                 </div>
             </div>
         </article>
@@ -547,9 +1556,10 @@
         
         <div class="masonry-grid">
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="f509f9e201f95cdf11c1" data-search="game 게임 (game) ign japan “beast of reincarnation” preview a completely new action rpg set in japan, where you fight strategically with your dog buddy. 『beast of reincarnation』プレビュー 相棒の犬と戦略的に共闘する、日本が舞台の完全新作アクションrpg 「beast of reincarnation」미리보기 친구의 개와 전략적으로 공투하는 일본이 무대의 완전 신작 액션 rpg a 2-hour trial run of the ambitious work by game freak, creators of the &#34;pokémon&#34; series. will 2026 be the year of &#34;buddies&#34; in video games? grace in ``resident evil: requiem&#39;&#39; (review) has leon who saves the day, hugh in ``pragmata&#39;&#39; (review) has deanna who hacks a killer robot, and swordsman emma in ``beast of reincarnation&#39;&#39; has kuu. kuu is a woman&#39;s sword and bow and arrow... 「ポケットモンスター」シリーズを手がけるゲームフリークの意欲作を2時間試遊 2026年はビデオゲームにおける「相棒」の年になるのだろうか。『バイオハザード レクイエム』（ レビュー ）のグレースには窮地を救うレオンが、『プラグマタ』（ レビュー ）のヒューには殺人ロボットをハッキングするディアナが、そして『beast of reincarnation』の剣士エマにはクゥがいる。クゥは、女の刀と弓矢... 「포켓 몬스터」시리즈를 다루는 게임 괴물의 의욕작을 2시간 시유 2026년은 비디오 게임에 있어서의 「파트너」의 해가 될까. 「바이오하자드 레퀴엠」(리뷰)의 그레이스에는 궁지를 구하는 레온이, 「플러그마타」(리뷰)의 휴에게는 살인 로봇을 해킹하는 디아나가, 그리고 「beast of reincarnation」의 검사 엠마에는 쿠가 있다. 쿠는 여자의 검과 활 화살 ...">
                 
                 <img src="https://sm.ign.com/ign_jp/preview/b/beast-of-r/beast-of-reincarnation-is-a-stunning-action-rpg-with-a-tacti_hxxu.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -571,11 +1581,27 @@
                     <span class="lang-content lang-ja">「ポケットモンスター」シリーズを手がけるゲームフリークの意欲作を2時間試遊 2026年はビデオゲームにおける「相棒」の年になるのだろうか。『バイオハザード レクイエム』（ レビュー ）のグレースには窮地を救うレオンが、『プラグマタ』（ レビュー ）のヒューには殺人ロボットをハッキングするディアナが、そして『Beast of Reincarnation』の剣士エマにはクゥがいる。クゥは、女の刀と弓矢...</span>
                     <span class="lang-content lang-ko">「포켓 몬스터」시리즈를 다루는 게임 괴물의 의욕작을 2시간 시유 2026년은 비디오 게임에 있어서의 「파트너」의 해가 될까. 「바이오하자드 레퀴엠」(리뷰)의 그레이스에는 궁지를 구하는 레온이, 「플러그마타」(리뷰)의 휴에게는 살인 로봇을 해킹하는 디아나가, 그리고 「Beast of Reincarnation」의 검사 엠마에는 쿠가 있다. 쿠는 여자의 검과 활 화살 ...</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="f509f9e201f95cdf11c1" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likef509f9e201f95cdf11c1" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="e7914a430a62316a6133" data-search="game 게임 (game) ign japan ``splatoon raiders&#39;&#39; preview: an unexpected roguelite, and after a 2-hour trial run, it turned out pretty good. 『スプラトゥーン レイダース』プレビュー まさかのローグライト、そして2時間試遊した限りではかなりよい仕上がり 스플래툰 레이다스 good news for all you crazy people it is a universal truth that everyone agrees that ``multiplayer titles with enthusiastic fans require single play.&#39;&#39; it has always been that way, and i think it will continue to be that way. and &#34;splatoon&#34; fans will never be satisfied no matter how much they are given. that&#39;s why nintendo is releasing splatoon raiders. basically single play (well, with the proviso &#34;mostly&#34;... イカした諸君に朗報 「熱狂的なファンを抱えるマルチプレイタイトルには、シングルプレイが求められるものだ」ということは、誰もが認める普遍の真理である。これまでもそうだったし、これからもそうあり続けるだろう、と思う。そして「スプラトゥーン」ファンはどれだけ与えられても満足しない。だからこそ、任天堂が送り出すのが『スプラトゥーン レイダース』だ。基本はシングルプレイ（まぁ「ほとんどは」というただし書きが... 오징어 한 제군에게 희소식 &#34;열광적인 팬을 안는 멀티 플레이 타이틀에는 싱글 플레이가 요구되는 것이다&#34;라는 것은 모두가 인정하는 보편의 진리이다. 지금까지도 그랬고, 앞으로도 그렇게 계속 될 것이라고 생각한다. 그리고 &#39;스플라툰&#39; 팬들은 얼마나 주어도 만족하지 못한다. 그래서 닌텐도가 내보내는 것이 &#39;스플라툰 레이더스&#39;다. 기본은 싱글 플레이">
                 
                 <img src="https://sm.ign.com/ign_jp/preview/s/splatoon-r/splatoon-raiders-preview-turns-out-its-kind-of-a-roguelite_wwas.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -597,11 +1623,27 @@
                     <span class="lang-content lang-ja">イカした諸君に朗報 「熱狂的なファンを抱えるマルチプレイタイトルには、シングルプレイが求められるものだ」ということは、誰もが認める普遍の真理である。これまでもそうだったし、これからもそうあり続けるだろう、と思う。そして「スプラトゥーン」ファンはどれだけ与えられても満足しない。だからこそ、任天堂が送り出すのが『スプラトゥーン レイダース』だ。基本はシングルプレイ（まぁ「ほとんどは」というただし書きが...</span>
                     <span class="lang-content lang-ko">오징어 한 제군에게 희소식 &#34;열광적인 팬을 안는 멀티 플레이 타이틀에는 싱글 플레이가 요구되는 것이다&#34;라는 것은 모두가 인정하는 보편의 진리이다. 지금까지도 그랬고, 앞으로도 그렇게 계속 될 것이라고 생각한다. 그리고 &#39;스플라툰&#39; 팬들은 얼마나 주어도 만족하지 못한다. 그래서 닌텐도가 내보내는 것이 &#39;스플라툰 레이더스&#39;다. 기본은 싱글 플레이</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="e7914a430a62316a6133" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likee7914a430a62316a6133" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="8533d7412aee4c28206f" data-search="game 게임 (game) ign japan “deltarune” chapter 5 was a twist that defied expectations – and that’s why it’s the best 『deltarune』チャプター5は予想を裏切る展開だった――だからこそ、最高だ 델타룬 the fun adventure is over and the sun is finally setting. this is an opinion piece written by ign writer brendan graeber. he has reviewed chapters 1 through 4 of deltarune, and has been analyzing the mysteries of toby fox&#39;s mind for over 10 years. just over a year ago, developer toby fox and his team released their hit indie rpg, undertale... 楽しかった冒険の時間は終わり、ついに日が沈み始める これはignのライター、ブレンダン・グレイバーによるオピニオン記事だ。彼は 『deltarune』のチャプター1から4までをレビュー しており、10年以上にわたってトビー・フォックスの思考が織りなす謎を分析し続けている。 今からちょうど1年ほど前、開発者のトビー・フォックスとそのチームは、自身のヒット作であるインディーrpg『 undertale... 즐거웠던 모험의 시간은 끝나고 마침내 해가지기 시작한다 이것은 ign의 라이터, 블렌던 그레이버에 의한 오피니언 기사이다. 그는 &#39;델타루네&#39;의 챕터 1부터 4까지를 검토하고 있으며, 10년 이상 토비 폭스의 사고가 만들어내는 수수께끼를 계속 분석하고 있다. 지금부터 1년 정도 전 개발자 토비 폭스와 그 팀은 자신의 히트작인 인디 rpg &#39;undertale...">
                 
                 <img src="https://sm.ign.com/ign_jp/feature/d/deltarune-/deltarune-chapter-5-was-not-what-i-was-expecting-and-thats-f_44rk.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -623,11 +1665,27 @@
                     <span class="lang-content lang-ja">楽しかった冒険の時間は終わり、ついに日が沈み始める これはIGNのライター、ブレンダン・グレイバーによるオピニオン記事だ。彼は 『DELTARUNE』のチャプター1から4までをレビュー しており、10年以上にわたってトビー・フォックスの思考が織りなす謎を分析し続けている。 今からちょうど1年ほど前、開発者のトビー・フォックスとそのチームは、自身のヒット作であるインディーRPG『 UNDERTALE...</span>
                     <span class="lang-content lang-ko">즐거웠던 모험의 시간은 끝나고 마침내 해가지기 시작한다 이것은 IGN의 라이터, 블렌던 그레이버에 의한 오피니언 기사이다. 그는 &#39;델타루네&#39;의 챕터 1부터 4까지를 검토하고 있으며, 10년 이상 토비 폭스의 사고가 만들어내는 수수께끼를 계속 분석하고 있다. 지금부터 1년 정도 전 개발자 토비 폭스와 그 팀은 자신의 히트작인 인디 RPG &#39;UNDERTALE...</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="8533d7412aee4c28206f" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like8533d7412aee4c28206f" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="f995bc23ce66c5592709" data-search="game 게임 (game) automaton a fierce man appears who has identified the &#34;mint house&#34; that was briefly shown in the &#34;city&#34; open world &#34;nte&#34; pv. address: barre heroine&#39;s room, free entry 「街」オープンワールド『nte』pvに一瞬映った“ミントの家”を特定した猛者あらわる。住所即バレ系ヒロインの部屋、入室自由 엔티 a user has identified the location of the &#34;mint house&#34; that was briefly shown in the pv, and it has become a hot topic on social media. pvで短時間映った、“ミントの家”の場所を特定したユーザーがあらわれ、snsで話題となっている。 엔티 게임의 오픈월드 게임인 엔티에서 새로운 영웅의 집을 찾아낸 사람이 있습니다. 이 집은 게임의 pv에서 잠깐 나타났으며, 사용자들이 자유롭게 이동할 수 있습니다. 이 게임의 세계는 매우 넓으며, 사용자들이 다양한 공간을 탐험할 수 있습니다.">
                 
                 <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260701-452793-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -649,11 +1707,27 @@
                     <span class="lang-content lang-ja">PVで短時間映った、“ミントの家”の場所を特定したユーザーがあらわれ、SNSで話題となっている。</span>
                     <span class="lang-content lang-ko">엔티 게임의 오픈월드 게임인 엔티에서 새로운 영웅의 집을 찾아낸 사람이 있습니다. 이 집은 게임의 PV에서 잠깐 나타났으며, 사용자들이 자유롭게 이동할 수 있습니다. 이 게임의 세계는 매우 넓으며, 사용자들이 다양한 공간을 탐험할 수 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="f995bc23ce66c5592709" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likef995bc23ce66c5592709" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="78963523f20f5761e408" data-search="anime 애니/코믹 (anime) comic natalie hidenori yamaji&#39;s &#34;soarer and the house of monsters&#34; will be made into a tv anime in 2027! cast includes ikumi hasegawa and ayumu murase 山地ひでのり「ソアラと魔物の家」2027年tvアニメ化！キャストに長谷川育美＆村瀬歩 산지 히데노리의 소아라와 마법사 집이 2027년에 티비 애니메이션으로 제작된다 hidenori yamaji&#39;s ``soarer and the house of monsters&#39;&#39; will be made into a tv anime in 2027. ultra teaser visual, pv, main cast and staff have been announced. 山地ひでのり「ソアラと魔物の家」が2027年にtvアニメ化。ウルトラティザービジュアル、pv、メインキャスト・スタッフが発表された。 야마지 히데노리 「소아라와 마물의 집」이 2027년에 tv 애니메이션화. 울트라 티저 비주얼, pv, 메인 캐스트 직원이 발표되었다.">
                 
                 <img src="https://ogre.natalie.mu/media/news/comic/2026/0701/soara_teaser_logo.jpg?impolicy=twitter_card_face_crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -675,11 +1749,27 @@
                     <span class="lang-content lang-ja">山地ひでのり「ソアラと魔物の家」が2027年にTVアニメ化。ウルトラティザービジュアル、PV、メインキャスト・スタッフが発表された。</span>
                     <span class="lang-content lang-ko">야마지 히데노리 「소아라와 마물의 집」이 2027년에 TV 애니메이션화. 울트라 티저 비주얼, PV, 메인 캐스트 직원이 발표되었다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="78963523f20f5761e408" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like78963523f20f5761e408" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="d774ce3e3de69bc514b2" data-search="anime 애니/코믹 (anime) comic natalie “the witch and the hound” tv animation, pv &amp; visual released; kamitsuki rainey participates in series composition 「魔女と猟犬」tvアニメ化、pv＆ビジュアル公開 シリーズ構成にカミツキレイニー参加 마녀와 사냥개의 티비 애니메이션 제작이 발표되었다 rainy kamitsuki&#39;s light novel &#34;the witch and the hound&#34; has been adapted into a tv anime. teaser pv and teaser visual have been released. カミツキレイニーのライトノベル「魔女と猟犬」がtvアニメ化。ティザーpv、ティザービジュアルが公開された。 마녀와 사냥개의 티비 애니메이션 제작이 발표되었다. 티저 프리뷰 영상과 티자 비주얼이 공개되었다. 이 작품은 카미츠키 레이니의 라이트 노벨을 기반으로 제작되었다. 애니메이션 팬들은 이 작품에 대해 많은 기대를 가지고 있다.">
                 
                 <img src="https://ogre.natalie.mu/media/news/comic/2026/0701/majyotoryoken_teaser.jpg?impolicy=twitter_card_face_crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -701,11 +1791,27 @@
                     <span class="lang-content lang-ja">カミツキレイニーのライトノベル「魔女と猟犬」がTVアニメ化。ティザーPV、ティザービジュアルが公開された。</span>
                     <span class="lang-content lang-ko">마녀와 사냥개의 티비 애니메이션 제작이 발표되었다. 티저 프리뷰 영상과 티자 비주얼이 공개되었다. 이 작품은 카미츠키 레이니의 라이트 노벨을 기반으로 제작되었다. 애니메이션 팬들은 이 작품에 대해 많은 기대를 가지고 있다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="d774ce3e3de69bc514b2" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="liked774ce3e3de69bc514b2" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="8b5860241d4d10384ca2" data-search="anime 애니/코믹 (anime) comic natalie new original animation &#34;zan-&#34; based on yoshitaka amano&#39;s original work, directed by sei ikeda and toru yoshida 天野喜孝原作の新作オリジナルアニメ「斬 -zan-」始動、監督は池田成と吉田徹 천노 기요스케 원작의 새로운 오리지널 애니메이션 쩨자가 제작된다 the start of a completely new original anime ``zan&#39;&#39;, written by yoshitaka amano, has been announced. 天野喜孝が原作を手がける完全新作オリジナルアニメ「斬 -zan-」の始動が発表された。 아마노 요시타카가 원작을 다루는 완전 신작 오리지널 애니메이션 「참-zan-」의 시동이 발표되었다.">
                 
                 <img src="https://ogre.natalie.mu/media/news/comic/2026/0702/zan_main.jpg?impolicy=twitter_card_face_crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -727,11 +1833,27 @@
                     <span class="lang-content lang-ja">天野喜孝が原作を手がける完全新作オリジナルアニメ「斬 -ZAN-」の始動が発表された。</span>
                     <span class="lang-content lang-ko">아마노 요시타카가 원작을 다루는 완전 신작 오리지널 애니메이션 「참-ZAN-」의 시동이 발표되었다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="8b5860241d4d10384ca2" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like8b5860241d4d10384ca2" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="402678f2af837de32f8d" data-search="anime 애니/코믹 (anime) comic natalie revival screening of the movie version &#34;madoka magica&#34; [part 1] [part 2] expanded from 10 theaters to 192 theaters 劇場版「まどか☆マギカ」[前編][後編]のリバイバル上映、10館から192館に拡大 극장판 마도카 마기카 리바이벌 상영이 확대된다 the number of theaters eligible for revival screenings of ``puella magi madoka magica the movie [part 1] the story of the beginning,&#39;&#39; which will be shown from july 10th, and ``puella magi madoka magica the movie [part 2] eternal story,&#39;&#39; which will be shown from july 17th, has expanded from 10 to 192 theaters. 7月10日から上映される「劇場版 魔法少女まどか☆マギカ [前編]始まりの物語」と7月17日から上映される「劇場版 魔法少女まどか☆マギカ [後編]永遠の物語」のリバイバル上映の対象館が、10館から192館に拡大した。 7월 10일부터 상영되는 「극장판 마법소녀 마도카☆마기카 [전편] 시작의 이야기」라고 7월 17일부터 상영되는 「극장판 마법소녀 마도카☆마기카 [후편]영원의 이야기」의 리바이벌 상영의 대상관이, 10관에서 192관으로 확대되었다.">
                 
                 <img src="https://ogre.natalie.mu/media/news/comic/2026/0609/M_zenpen_KV.jpg?impolicy=twitter_card_face_crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -753,11 +1875,27 @@
                     <span class="lang-content lang-ja">7月10日から上映される「劇場版 魔法少女まどか☆マギカ [前編]始まりの物語」と7月17日から上映される「劇場版 魔法少女まどか☆マギカ [後編]永遠の物語」のリバイバル上映の対象館が、10館から192館に拡大した。</span>
                     <span class="lang-content lang-ko">7월 10일부터 상영되는 「극장판 마법소녀 마도카☆마기카 [전편] 시작의 이야기」라고 7월 17일부터 상영되는 「극장판 마법소녀 마도카☆마기카 [후편]영원의 이야기」의 리바이벌 상영의 대상관이, 10관에서 192관으로 확대되었다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="402678f2af837de32f8d" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like402678f2af837de32f8d" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="b50c1e80ec100147ca6c" data-search="anime 애니/코믹 (anime) comic natalie &#34;mushoku tensei iii&#34; episodes 1 &amp; 2 are &#34;eris training edition&#34;, preview cuts released 「無職転生iii」第1話＆2話は「エリス修行編」、先行カットを公開 무직전생 3의 첫 번째와 두 번째 에피소드가 공개되었다 preliminary scene cuts of the tv anime ``mushoku tensei iii ~if i go to another world, i&#39;ll get serious~&#39;&#39; have been released, including episode 1, ``more mad dog,&#39;&#39; and episode 2, ``bark, mad dog.&#39;&#39; tvアニメ「無職転生iii ～異世界行ったら本気だす～」第1話「燃えよ狂犬」、2話「吠えよ狂犬」の先行場面カットが公開された。 tv애니메이션 「무직전생iii ～이세계 가면 진심으로 굳이～」 제1화 「불타 광견」, 2화 「짖어 광견」의 선행 장면 컷이 공개되었다.">
                 
                 <img src="https://ogre.natalie.mu/media/news/comic/2026/0701/mushokutensei3_ep1_00001.jpg?impolicy=twitter_card_face_crop" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -779,11 +1917,27 @@
                     <span class="lang-content lang-ja">TVアニメ「無職転生III ～異世界行ったら本気だす～」第1話「燃えよ狂犬」、2話「吠えよ狂犬」の先行場面カットが公開された。</span>
                     <span class="lang-content lang-ko">TV애니메이션 「무직전생III ～이세계 가면 진심으로 굳이～」 제1화 「불타 광견」, 2화 「짖어 광견」의 선행 장면 컷이 공개되었다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="b50c1e80ec100147ca6c" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likeb50c1e80ec100147ca6c" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="d930626b089d1a7861a7" data-search="it/tech it/테크 (it/tech) hatena it 랭킹 &#34;claude sonnet 5&#34; is now available, with performance close to opus 4.8 and can be used even on cheap &amp; free plans 「claude sonnet 5」が登場、opus 4.8に近い性能で安価＆無料プランでも使用可能 「claude sonnet 5」가 등장, opus 4.8에 가까운 성능으로 저렴 &amp; 무료 플랜에서도 사용 가능 anthropic released the ai ​​model &#34;claude sonnet 5&#34; on june 30, 2026 local time. claude sonnet 5 is a model with excellent cost performance that can be used even with the free plan, and has recorded a score close to claude opus 4.8 in benchmark tests. introducing claude sonnet 5 \ anthropic https://www.a... anthropicがaiモデル「claude sonnet 5」を現地時間の2026年6月30日にリリースしました。claude sonnet 5は無料プランでも使用可能なコストパフォーマンスに優れたモデルで、ベンチマークテストではclaude opus 4.8に近いスコアを記録しています。 introducing claude sonnet 5 \ anthropic https://www.a... anthropic이 ai 모델 &#39;클라우드 소넷 5&#39;를 현지 시간인 2026년 6월 30일에 출시했습니다. claude sonnet 5는 무료 플랜에서도 사용 가능한 비용 성능이 우수한 모델로, 벤치마크 테스트는 claude opus 4.8에 가까운 점수를 기록하고 있습니다. introducing claude sonnet 5 \ anthropic https://www.a...">
                 
                 <img src="https://i.gzn.jp/img/2026/07/01/claude-sonnet-5/00.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -805,11 +1959,27 @@
                     <span class="lang-content lang-ja">AnthropicがAIモデル「Claude Sonnet 5」を現地時間の2026年6月30日にリリースしました。Claude Sonnet 5は無料プランでも使用可能なコストパフォーマンスに優れたモデルで、ベンチマークテストではClaude Opus 4.8に近いスコアを記録しています。 Introducing Claude Sonnet 5 \ Anthropic https://www.a...</span>
                     <span class="lang-content lang-ko">Anthropic이 AI 모델 &#39;클라우드 소넷 5&#39;를 현지 시간인 2026년 6월 30일에 출시했습니다. Claude Sonnet 5는 무료 플랜에서도 사용 가능한 비용 성능이 우수한 모델로, 벤치마크 테스트는 Claude Opus 4.8에 가까운 점수를 기록하고 있습니다. Introducing Claude Sonnet 5 \ Anthropic https://www.a...</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="d930626b089d1a7861a7" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="liked930626b089d1a7861a7" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="d2b2e527fa98c486adc6" data-search="it/tech it/테크 (it/tech) pc watch claude desktop linux version now available in beta claude desktopのlinux版、ベータで提供開始 클라우드 데스크톱 리눅스 버전 출시 on july 1st (japan time), american company anthropic released the claude desktop app for linux as a beta version. available for ubuntu and debian-based distributions. 米anthropicは7月1日(日本時間)、linux向けのclaude desktopアプリをベータ版として公開した。ubuntuおよびdebianベースのディストリビューションにて利用できる。 클라우드 데스크톱의 리눅스 버전이 베타 버전으로 출시되었습니다. 이는 우분투 및 데비안 기반의 분산판에서 사용할 수 있으며, 개발자들의 편의성을 높여줄 것으로 기대됩니다. 클라우드 데스크톱은 개발자들이 다양한 작업을 수행할 수 있는 강력한 도구입니다.">
                 
                 <img src="https://pc.watch.impress.co.jp/img/pcw/list/2121/519/01.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -831,11 +2001,27 @@
                     <span class="lang-content lang-ja">米Anthropicは7月1日(日本時間)、Linux向けのClaude Desktopアプリをベータ版として公開した。UbuntuおよびDebianベースのディストリビューションにて利用できる。</span>
                     <span class="lang-content lang-ko">클라우드 데스크톱의 리눅스 버전이 베타 버전으로 출시되었습니다. 이는 우분투 및 데비안 기반의 분산판에서 사용할 수 있으며, 개발자들의 편의성을 높여줄 것으로 기대됩니다. 클라우드 데스크톱은 개발자들이 다양한 작업을 수행할 수 있는 강력한 도구입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="d2b2e527fa98c486adc6" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="liked2b2e527fa98c486adc6" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="3021f916905dcf65dd14" data-search="it/tech it/테크 (it/tech) hatena it 랭킹 12 reasons why i migrated claude code from 10 months of cli to desktop main 10 か月 cli で使ってきた claude code を、desktop メインに移行した 12 の理由 클라우드 코드를 데스크톱으로 전환한 12가지 이유 12 reasons why i migrated claude code, which i had been using on cli for 10 months, to desktop main this article is based on what was discussed at an ai sharing meeting held within kanley (an impression based on the actual operation of the macos version of claude desktop app as of june 2026). introduction how do you start and use claude code? ta... 10 か月 cli で使ってきた claude code を、desktop メインに移行した 12 の理由 本記事は、カンリー社内で実施している ai 共有会で話した内容を記事化したものです(2026 年 6 月時点の macos 版 claude desktop アプリの実機運用に基づく感想記事)。 はじめに 皆さんは claude code をどう起動して使っていますか？ タ... 10개월 cli에서 사용해온 claude code를 desktop 메인으로 마이그레이션한 12개의 이유 소개 여러분은 claude code를 어떻게 시작하고 사용하고 있습니까? 타...">
                 
                 <img src="https://res.cloudinary.com/zenn/image/upload/s--t0xG5qKr--/c_fit%2Cg_north_west%2Cl_text:notosansjp-medium.otf_55:10%2520%25E3%2581%258B%25E6%259C%2588%2520CLI%2520%25E3%2581%25A7%25E4%25BD%25BF%25E3%2581%25A3%25E3%2581%25A6%25E3%2581%258D%25E3%2581%259F%2520Claude%2520Code%2520%25E3%2582%2592%25E3%2580%2581Desktop%2520%25E3%2583%25A1%25E3%2582%25A4%25E3%2583%25B3%25E3%2581%25AB%25E7%25A7%25BB%25E8%25A1%258C%25E3%2581%2597%25E3%2581%259F%252012%2520%25E3%2581%25AE%25E7%2590%2586%25E7%2594%25B1%2Cw_1010%2Cx_90%2Cy_100/g_south_west%2Cl_text:notosansjp-medium.otf_34:%25E3%2581%25B5%25E3%2581%258F%25E3%2581%25A0%25EF%25BC%2588fukuda%2520ryu%25EF%25BC%2589%2Cx_220%2Cy_108/bo_3px_solid_rgb:d6e3ed%2Cg_south_west%2Ch_90%2Cl_fetch:aHR0cHM6Ly9zdGF0aWMuemVubi5zdHVkaW8vdXNlci11cGxvYWQvYXZhdGFyL2EwYjI3NWVjYTkuanBlZw==%2Cr_20%2Cw_90%2Cx_92%2Cy_102/co_rgb:6e7b85%2Cg_south_west%2Cl_text:notosansjp-medium.otf_30:%25E3%2582%25AB%25E3%2583%25B3%25E3%2583%25AA%25E3%2583%25BC%25E3%2583%2586%25E3%2583%2583%25E3%2582%25AF%25E3%2583%2596%25E3%2583%25AD%25E3%2582%25B0%2Cx_220%2Cy_160/bo_4px_solid_white%2Cg_south_west%2Ch_50%2Cl_fetch:aHR0cHM6Ly9zdGF0aWMuemVubi5zdHVkaW8vdXNlci11cGxvYWQvYXZhdGFyLzEyMjRmMTIyZTMuanBlZw==%2Cr_max%2Cw_50%2Cx_139%2Cy_84/v1627283836/default/og-base-w1200-v2.png?_a=BACMTiAE" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -857,9 +2043,24 @@
                     <span class="lang-content lang-ja">10 か月 CLI で使ってきた Claude Code を、Desktop メインに移行した 12 の理由 本記事は、カンリー社内で実施している AI 共有会で話した内容を記事化したものです(2026 年 6 月時点の macOS 版 Claude Desktop アプリの実機運用に基づく感想記事)。 はじめに 皆さんは Claude Code をどう起動して使っていますか？ タ...</span>
                     <span class="lang-content lang-ko">10개월 CLI에서 사용해온 Claude Code를 Desktop 메인으로 마이그레이션한 12개의 이유 소개 여러분은 Claude Code를 어떻게 시작하고 사용하고 있습니까? 타...</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="3021f916905dcf65dd14" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like3021f916905dcf65dd14" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="58e7309a9cb9a900e35c" data-search="it/tech it/테크 (it/tech) pc watch &#34;wsl container&#34; public preview that runs linux containers on windows windowsでlinuxコンテナが動く「wslコンテナ」パブリックプレビュー 윈도우에서 리눅스 컨테이너를 실행하는 wsl 컨테이너 공개 on june 29th (local time), microsoft began offering a public preview of the ``wsl container&#39;&#39; feature that directly integrates linux container development into windows through windows subsystem for linux (wsl). microsoftは6月29日(現地時間)、windows subsystem for linux(wsl)を通じてlinuxコンテナ開発をwindowsに直接統合する「wslコンテナ」の機能をパブリックプレビューとして提供開始した。 윈도우에서 리눅스 컨테이너를 실행할 수 있는 wsl 컨테이너가 공개되었습니다. 이는 개발자들이 윈도우에서 리눅스를 쉽게 사용할 수 있도록 해줄 것입니다. wsl 컨테이너는 개발자들에게 새로운 가능성을 열어줄 것입니다.">
                 
                 
                 <div class="meta">
@@ -881,11 +2082,27 @@
                     <span class="lang-content lang-ja">Microsoftは6月29日(現地時間)、Windows Subsystem for Linux(WSL)を通じてLinuxコンテナ開発をWindowsに直接統合する「WSLコンテナ」の機能をパブリックプレビューとして提供開始した。</span>
                     <span class="lang-content lang-ko">윈도우에서 리눅스 컨테이너를 실행할 수 있는 WSL 컨테이너가 공개되었습니다. 이는 개발자들이 윈도우에서 리눅스를 쉽게 사용할 수 있도록 해줄 것입니다. WSL 컨테이너는 개발자들에게 새로운 가능성을 열어줄 것입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="58e7309a9cb9a900e35c" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like58e7309a9cb9a900e35c" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="9e142a1c888074261e50" data-search="it/tech it/테크 (it/tech) hatena it 랭킹 &#34;linuxmd&#34; runs linux on the actual mega drive machine メガドライブ実機上でlinuxを動かす「linuxmd」が登場 메가드라이브에서 리눅스를 실행하는 프로젝트 &#34;linuxmd&#34; is an experimental project to run linux on sega&#39;s home game console mega drive released in 1988. developer daniel palmer has published it on github, and you can start the kernel and minimal linux environment on the actual machine. github - linuxmd/linuxmd: linux for the sega megadrive · github https://github... 1988年に発売されたセガの家庭用ゲーム機・メガドライブでlinuxを動作させる実験的なプロジェクトが「linuxmd」です。開発者のダニエル・パルマー氏がgithubで公開しており、実機上でカーネルと最小構成のlinux環境を起動できます。 github - linuxmd/linuxmd: linux for the sega megadrive · github https://github... 1988년에 출시된 메가드라이브에서 리눅스를 실행하는 프로젝트가 진행 중입니다. 이는 오래된 하드웨어에서 새로운 소프트웨어를 실행하는 시도를 통해 개발자들의 창의성을 높여줄 것입니다. 메가드라이브에서 리눅스를 실행하는 것은 개발자들의 관심을 끌러는 신기한 프로젝트입니다.">
                 
                 <img src="https://i.gzn.jp/img/2026/07/01/linuxmd/00_m.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -907,11 +2124,27 @@
                     <span class="lang-content lang-ja">1988年に発売されたセガの家庭用ゲーム機・メガドライブでLinuxを動作させる実験的なプロジェクトが「LinuxMD」です。開発者のダニエル・パルマー氏がGitHubで公開しており、実機上でカーネルと最小構成のLinux環境を起動できます。 GitHub - LinuxMD/linuxmd: Linux for the Sega MegaDrive · GitHub https://github...</span>
                     <span class="lang-content lang-ko">1988년에 출시된 메가드라이브에서 리눅스를 실행하는 프로젝트가 진행 중입니다. 이는 오래된 하드웨어에서 새로운 소프트웨어를 실행하는 시도를 통해 개발자들의 창의성을 높여줄 것입니다. 메가드라이브에서 리눅스를 실행하는 것은 개발자들의 관심을 끌러는 신기한 프로젝트입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="9e142a1c888074261e50" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like9e142a1c888074261e50" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="a93e089be735dcca19fa" data-search="it/tech it/테크 (it/tech) itmedia 95% sales drop due to ransom—the president talks behind the scenes of the 3.5 months it took to recover from the generative ai that supported askul&#39;s &#34;system rebuild&#34; ランサムで売上95％減──アスクルの“システム再構築”支えた生成ai活用 復旧までの3.5カ月、社長が語る舞台裏 랜섬에서 매출 95% 감소 - 아스클의 &#34;시스템 재구축&#34;지원한 생성 ai 활용 복구까지의 3.5개월, 사장이 말하는 무대 뒤 due to the ransomware attack, mail-order sales were completely suspended, and monthly sales decreased by 95.1% compared to the same month last year. how did askul, whose entire business was shut down, rebuild itself and why did they entrust the main role of development to ai? the company&#39;s president and ceo akira yoshioka spoke at &#34;aws summit japan 2026&#34;. ランサムウェア攻撃で通販を全面停止し、月次売上は前年同月比95.1％減。事業を丸ごと止められたアスクルは、どう立て直し、なぜ開発の主役をaiに委ねたのか。同社の吉岡晃社長ceoが「aws summit japan 2026」で語った。 랜섬웨어 공격으로 통판을 전면 정지해, 월차 매출은 전년 동월 대비 95.1% 감소. 사업을 통째로 멈출 수 있었던 아스클은, 어떻게 세우고, 왜 개발의 주역을 ai에 맡겼는지. 이 회사의 요시오카 아키라 사장 ceo가 &#39;aws summit japan 2026&#39;에서 말했다.">
                 
                 <img src="https://image.itmedia.co.jp/news/articles/2607/01/cover_news098.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -933,11 +2166,27 @@
                     <span class="lang-content lang-ja">ランサムウェア攻撃で通販を全面停止し、月次売上は前年同月比95.1％減。事業を丸ごと止められたアスクルは、どう立て直し、なぜ開発の主役をAIに委ねたのか。同社の吉岡晃社長CEOが「AWS Summit Japan 2026」で語った。</span>
                     <span class="lang-content lang-ko">랜섬웨어 공격으로 통판을 전면 정지해, 월차 매출은 전년 동월 대비 95.1% 감소. 사업을 통째로 멈출 수 있었던 아스클은, 어떻게 세우고, 왜 개발의 주역을 AI에 맡겼는지. 이 회사의 요시오카 아키라 사장 CEO가 &#39;AWS Summit Japan 2026&#39;에서 말했다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="a93e089be735dcca19fa" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likea93e089be735dcca19fa" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="f4861a840f333c60852b" data-search="it/tech it/테크 (it/tech) pc watch expand the memory of current servers with old ddr4 and improve performance at low cost. meta made possible with cxl 古いddr4で現行サーバーのメモリ拡張、低コストで性能アップ。metaがcxlで実現 옛날 ddr4 메모리를 새로운 서버에서 사용 meta platforms and the university of texas at austin announced vistara, a solution that uses compute express link (cxl), an interconnect standard for data centers, to reuse legacy ddr4 memory as expanded memory in current servers. this makes it possible to reduce the number of servers and improve throughput at low cost by utilizing memory from discarded servers, etc. meta platformsとテキサス大学オースティン校は、データセンター向けのインターコネクト規格であるcompute express link(cxl)を使って、旧来のddr4メモリを現行サーバーの拡張メモリとして再利用できるようにするソリューション「vistara」を発表した。これにより、廃棄サーバーなどのメモリを活用することで、低コストで、サーバー数の削減、スループットの向上などを実現でき... meta platforms와 텍사스 대학 오스틴교는 데이터센터용 인터커넥트 규격인 compute express link(cxl)를 사용하여 기존 ddr4 메모리를 현행 서버의 확장 메모리로 재사용할 수 있도록 하는 솔루션인 vistara를 발표했다. 이를 통해 폐기 서버와 같은 메모리를 활용하여 저렴한 비용으로 서버 수를 줄이고 처리량을 향상시킬 수 있습니다.">
                 
                 <img src="https://pc.watch.impress.co.jp/img/pcw/list/2121/471/01.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -959,11 +2208,27 @@
                     <span class="lang-content lang-ja">Meta Platformsとテキサス大学オースティン校は、データセンター向けのインターコネクト規格であるCompute Express Link(CXL)を使って、旧来のDDR4メモリを現行サーバーの拡張メモリとして再利用できるようにするソリューション「Vistara」を発表した。これにより、廃棄サーバーなどのメモリを活用することで、低コストで、サーバー数の削減、スループットの向上などを実現でき...</span>
                     <span class="lang-content lang-ko">Meta Platforms와 텍사스 대학 오스틴교는 데이터센터용 인터커넥트 규격인 Compute Express Link(CXL)를 사용하여 기존 DDR4 메모리를 현행 서버의 확장 메모리로 재사용할 수 있도록 하는 솔루션인 Vistara를 발표했다. 이를 통해 폐기 서버와 같은 메모리를 활용하여 저렴한 비용으로 서버 수를 줄이고 처리량을 향상시킬 수 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="f4861a840f333c60852b" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likef4861a840f333c60852b" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="a89d2b9af62b589cf986" data-search="it/tech it/테크 (it/tech) hatena it 랭킹 ``x mcp&#39;&#39; will be released that allows ``post search&#39;&#39;, ``trend analysis&#39;&#39;, etc. by operating x&#39;s api via ai agent aiエージェント経由でxのapiを操作して「投稿検索」「トレンド分析」などが可能な「x mcp」が公開される x mcp를 사용하면 ai 에이전트가 x api와 통신할 수 있습니다 on june 30, 2026, x announced x mcp, a hosted model context protocol (mcp) server that allows ai tools to communicate with the x api using users&#39; own account privileges. x mcp makes it easy for ai assistants like claude and grok build and other mcp-compatible apps to connect directly to x, providing analysis and information about x posts. xは2026年6月30日に、ユーザー自身のアカウント権限を使用してaiツールがx apiと通信できるようにするホスト型モデルコンテキストプロトコル(mcp)サーバー「x mcp」を発表しました。x mcpを用いることで、claudeやgrok buildといったaiアシスタントやその他のmcp互換アプリがxに直接接続しやすくなり、xの投稿分析や情報... 최근에 x mcp가 출시되었습니다. 이는 ai 에이전트가 x api와 통신할 수 있는 호스트형 모델 콘텍스트 프로토콜입니다. x mcp를 사용하면 개발자들이 다양한 작업을 수행할 수 있게 됩니다. x mcp는 개발자들에게 새로운 가능성을 열어줄 것입니다.">
                 
                 <img src="https://i.gzn.jp/img/2026/07/01/x-mcp/00.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -985,11 +2250,27 @@
                     <span class="lang-content lang-ja">Xは2026年6月30日に、ユーザー自身のアカウント権限を使用してAIツールがX APIと通信できるようにするホスト型モデルコンテキストプロトコル(MCP)サーバー「X MCP」を発表しました。X MCPを用いることで、ClaudeやGrok BuildといったAIアシスタントやその他のMCP互換アプリがXに直接接続しやすくなり、Xの投稿分析や情報...</span>
                     <span class="lang-content lang-ko">최근에 X MCP가 출시되었습니다. 이는 AI 에이전트가 X API와 통신할 수 있는 호스트형 모델 콘텍스트 프로토콜입니다. X MCP를 사용하면 개발자들이 다양한 작업을 수행할 수 있게 됩니다. X MCP는 개발자들에게 새로운 가능성을 열어줄 것입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="a89d2b9af62b589cf986" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likea89d2b9af62b589cf986" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="b6b577912e8f6c6c6c03" data-search="it/tech it/테크 (it/tech) itmedia “crossing the uncanny valley”? china&#39;s handsome and beautiful robot &#34;u1&#34; is a hot topic starting from 2,860,000 yen 「不気味の谷を越えた」？ 中国の美男美女型ロボット「u1」話題 286万円から &#34;오싹한 계곡을 넘었다&#34;? 중국의 미남 미녀형 로봇 「u1」화제 286만엔부터 multiple media outlets in china reported that chinese robot development company ubtech announced the life-sized humanoid robot &#34;u1&#34; series on june 30th. it is positioned as a product for the home, intended for emotional interaction and long-term companionship. 中国のロボット開発企業優必選（ubtech)が6月30日、等身大のヒト型ロボット「u1」シリーズを発表したと中国の複数メディアが報じた。感情面での交流や長期的な寄り添いを想定した家庭向けの製品と位置付ける。 중국의 로봇 개발 기업 우필선(ubtech)이 6월 30일 등신대의 인간형 로봇 u1 시리즈를 발표했다고 중국의 복수 미디어가 보도했다. 감정 면에서의 교류나 장기적인 응접을 상정한 가정용 제품으로 자리매김한다.">
                 
                 <img src="https://image.itmedia.co.jp/news/articles/2607/01/cover_news115.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1011,11 +2292,27 @@
                     <span class="lang-content lang-ja">中国のロボット開発企業優必選（UBTECH)が6月30日、等身大のヒト型ロボット「U1」シリーズを発表したと中国の複数メディアが報じた。感情面での交流や長期的な寄り添いを想定した家庭向けの製品と位置付ける。</span>
                     <span class="lang-content lang-ko">중국의 로봇 개발 기업 우필선(UBTECH)이 6월 30일 등신대의 인간형 로봇 U1 시리즈를 발표했다고 중국의 복수 미디어가 보도했다. 감정 면에서의 교류나 장기적인 응접을 상정한 가정용 제품으로 자리매김한다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="b6b577912e8f6c6c6c03" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likeb6b577912e8f6c6c6c03" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="e65a67ad6545f1b958e4" data-search="it/tech it/테크 (it/tech) hatena it 랭킹 once i started using &#34;herdr&#34;, i couldn&#39;t go back to other terminals. 「herdr」を使い始めたら、もう他のターミナルには戻れなくなった herdr를 사용하기 시작한 이유 differences from tmux although tmux and zellij are excellent general-purpose multiplexers, they do not have the concept that &#34;the currently running process is an ai agent.&#34; therefore, even if the agent is stuck waiting for you to enter the api key, you won&#39;t notice until you switch screens and check. herdr is an agent-specific condition... tmuxとの違い tmuxやzellijは汎用的なマルチプレクサとしては非常に優秀ですが、「現在動いているプロセスがaiエージェントである」という概念を持っていません。そのため、エージェントがapiキーの入力を待って止まっていたとしても、画面を切り替えて確認するまで気づくことができません。herdrはエージェント特有の状... herdr를 사용하기 시작한 이유에 대해 설명합니다. 이는 개발자들이 다양한 작업을 수행할 수 있도록 지원하는 도구입니다. herdr를 사용하면 개발자들이 더 나은 경험을 할 수 있을 것입니다. herdr는 개발자들의 효율성을 높여줄 것입니다.">
                 
                 <img src="https://res.cloudinary.com/zenn/image/upload/s--43lLCnF1--/c_fit%2Cg_north_west%2Cl_text:notosansjp-medium.otf_55:%25E3%2580%258CHerdr%25E3%2580%258D%25E3%2582%2592%25E4%25BD%25BF%25E3%2581%2584%25E5%25A7%258B%25E3%2582%2581%25E3%2581%259F%25E3%2582%2589%25E3%2580%2581%25E3%2582%2582%25E3%2581%2586%25E4%25BB%2596%25E3%2581%25AE%25E3%2582%25BF%25E3%2583%25BC%25E3%2583%259F%25E3%2583%258A%25E3%2583%25AB%25E3%2581%25AB%25E3%2581%25AF%25E6%2588%25BB%25E3%2582%258C%25E3%2581%25AA%25E3%2581%258F%25E3%2581%25AA%25E3%2581%25A3%25E3%2581%259F%2Cw_1010%2Cx_90%2Cy_100/g_south_west%2Cl_text:notosansjp-medium.otf_37:Nao8%2Cx_203%2Cy_121/g_south_west%2Ch_90%2Cl_fetch:aHR0cHM6Ly9zdGF0aWMuemVubi5zdHVkaW8vdXNlci11cGxvYWQvYXZhdGFyLzczYmFlMWUxMzAuanBlZw==%2Cr_max%2Cw_90%2Cx_87%2Cy_95/v1627283836/default/og-base-w1200-v2.png?_a=BACMTiAE" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1037,11 +2334,27 @@
                     <span class="lang-content lang-ja">tmuxとの違い tmuxやZellijは汎用的なマルチプレクサとしては非常に優秀ですが、「現在動いているプロセスがAIエージェントである」という概念を持っていません。そのため、エージェントがAPIキーの入力を待って止まっていたとしても、画面を切り替えて確認するまで気づくことができません。Herdrはエージェント特有の状...</span>
                     <span class="lang-content lang-ko">Herdr를 사용하기 시작한 이유에 대해 설명합니다. 이는 개발자들이 다양한 작업을 수행할 수 있도록 지원하는 도구입니다. Herdr를 사용하면 개발자들이 더 나은 경험을 할 수 있을 것입니다. Herdr는 개발자들의 효율성을 높여줄 것입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="e65a67ad6545f1b958e4" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likee65a67ad6545f1b958e4" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="CG/Blender">
+            <article class="article-card" data-category="CG/Blender" data-article-key="bc8b0c3a9d34bc261cfa" data-search="cg/blender cg/언리얼/블렌더 modelinghappy &#34;quickmaker&#34; - ai add-on that can complete everything from a single image to 3d models, storyboards, and video production within blender 「quickmaker」- 1枚画像から3dモデル・ストーリーボード・動画制作までblender内で完結できるaiアドオン quickmaker - 1장 이미지에서 3d 모델, 스토리보드, 동영상 제작까지 blender 내에서 완결할 수 있는 ai 애드온 quickmaker quickmaker is an add-on for creators that can use ai to create images, 3d models, and videos on blender, without having to go to an external site while using the blender work screen. quickmaker quickmakerは、blender上でaiを活用した画像・3dモデル・動画制作を行えるクリエイター向けアドオンで、blenderの作業画面をそのまま利用しながら、外部サイトへ移動することなくai the post 「quickmaker」- 1枚画像から3dモデル・ストーリーボード・動画制作までblender内で完結できるaiアドオン first appeared on ... quickmaker quickmaker는 blender에서 ai를 활용한 이미지, 3d 모델, 동영상 제작을 할 수 있는 크리에이터용 애드온으로, blender의 작업 화면을 그대로 이용하면서 외부 사이트로 이동하지 않고 ai the post &#34;quickmaker&#34; - 1장 이미지에서 3d 모델, 스토리보드, 동영상 제작까지">
                 
                 <img src="https://modelinghappy.com/wp-content/uploads/2026/06/20260624_quickmaker_01-1.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1063,11 +2376,27 @@
                     <span class="lang-content lang-ja">quickmaker QuickMakerは、Blender上でAIを活用した画像・3Dモデル・動画制作を行えるクリエイター向けアドオンで、Blenderの作業画面をそのまま利用しながら、外部サイトへ移動することなくAI The post 「QuickMaker」- 1枚画像から3Dモデル・ストーリーボード・動画制作までBlender内で完結できるAIアドオン first appeared on ...</span>
                     <span class="lang-content lang-ko">Quickmaker QuickMaker는 Blender에서 AI를 활용한 이미지, 3D 모델, 동영상 제작을 할 수 있는 크리에이터용 애드온으로, Blender의 작업 화면을 그대로 이용하면서 외부 사이트로 이동하지 않고 AI The post &#34;QuickMaker&#34; - 1장 이미지에서 3D 모델, 스토리보드, 동영상 제작까지</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="bc8b0c3a9d34bc261cfa" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likebc8b0c3a9d34bc261cfa" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="CG/Blender">
+            <article class="article-card" data-category="CG/Blender" data-article-key="f16fa34134f1fde31ca6" data-search="cg/blender cg/언리얼/블렌더 modelinghappy “adobe” acquires ai high image quality tool “topaz labs”! announcing integration into firefly and photoshop 「adobe」がai高画質化ツール「topaz labs」を買収！fireflyやphotoshopへの統合を発表 「adobe」가 ai 고화질화 툴 「topaz labs」를 인수! firefly 및 photoshop에 통합 발표 adobe to acquire topaz labs on june 25, 2026, adobe announced that it has entered into an agreement to acquire topaz labs, which is known for its ai-based video and image quality enhancement tools. topaz labs the post &#34;adobe&#34; acquires ai high image quality tool &#34;topaz labs&#34;! announced integration into firefly and photoshop first appeared on 3dcg... adobe to acquire topaz labs adobeは2026年6月25日、aiによる動画・画像高画質化ツールで知られるtopaz labsを買収する契約を締結したことを発表しました。 topaz labs the post 「adobe」がai高画質化ツール「topaz labs」を買収！fireflyやphotoshopへの統合を発表 first appeared on 3dcg... adobe to acquire topaz labs adobe는 2026년 6월 25일 ai에 의한 동영상·이미지 고화질화 툴로 알려진 topaz labs를 인수하는 계약을 체결한 것을 발표했습니다. topaz labs the post 「adobe」가 ai 고화질화 툴 「topaz labs」를 인수! firefly 및 photoshop에 통합 발표 first appeared on 3dcg...">
                 
                 <img src="https://modelinghappy.com/wp-content/uploads/2026/06/20260626_adobe.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1089,11 +2418,27 @@
                     <span class="lang-content lang-ja">Adobe to Acquire Topaz Labs Adobeは2026年6月25日、AIによる動画・画像高画質化ツールで知られるTopaz Labsを買収する契約を締結したことを発表しました。 Topaz Labs The post 「Adobe」がAI高画質化ツール「Topaz Labs」を買収！FireflyやPhotoshopへの統合を発表 first appeared on 3DCG...</span>
                     <span class="lang-content lang-ko">Adobe to Acquire Topaz Labs Adobe는 2026년 6월 25일 AI에 의한 동영상·이미지 고화질화 툴로 알려진 Topaz Labs를 인수하는 계약을 체결한 것을 발표했습니다. Topaz Labs The post 「Adobe」가 AI 고화질화 툴 「Topaz Labs」를 인수! Firefly 및 Photoshop에 통합 발표 first appeared on 3DCG...</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="f16fa34134f1fde31ca6" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likef16fa34134f1fde31ca6" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game Engine">
+            <article class="article-card" data-category="Game Engine" data-article-key="7615b41614c019cc6a08" data-search="game engine game engine 3d total japan real-time 3d content creation tool unity 6.5 released リアルタイム 3d コンテンツ制作ツール unity 6.5 リリース 실시간 3d 콘텐츠 제작 툴 유니티 6.5 버전 출시 ★new features in unity 6.5 (17 minutes 23 seconds) unity 6.5 has been released. it includes enhanced 2d functionality, improved graphics and shaders, core engine changes, platform updates, etc. […] the post real-time 3d content creation tool unity 6.5 released first appeared on 3dtotal japanese official site. ★new features in unity 6.5（17分23秒） unity 6.5 がリリースされました。2d機能の強化、グラフィックスとシェーダーの改善、コアエンジンの変更、プラットフォームの更新などが盛り込まれ […] the post リアルタイム 3d コンテンツ制作ツール unity 6.5 リリース first appeared on 3dtotal 日本語オフィシャルサイト . ★new features in unity 6.5(17분 23초) unity 6.5가 릴리스 되었습니다. 2d 기능 향상, 그래픽 및 셰이더 개선, 코어 엔진 변경, 플랫폼 업데이트 등이 포함되어 […] the post 실시간 3d 콘텐츠 제작 도구 unity 6.5 릴리스 first appeared on 3dtotal 한국어 공식 사이트 .">
                 
                 <img src="https://3dtotal.jp/wp-content/uploads/2026/06/unity6_5_wnew.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1115,11 +2460,27 @@
                     <span class="lang-content lang-ja">★New features in Unity 6.5（17分23秒） Unity 6.5 がリリースされました。2D機能の強化、グラフィックスとシェーダーの改善、コアエンジンの変更、プラットフォームの更新などが盛り込まれ […] The post リアルタイム 3D コンテンツ制作ツール Unity 6.5 リリース first appeared on 3dtotal 日本語オフィシャルサイト .</span>
                     <span class="lang-content lang-ko">★New features in Unity 6.5(17분 23초) Unity 6.5가 릴리스 되었습니다. 2D 기능 향상, 그래픽 및 셰이더 개선, 코어 엔진 변경, 플랫폼 업데이트 등이 포함되어 […] The post 실시간 3D 콘텐츠 제작 도구 Unity 6.5 릴리스 first appeared on 3dtotal 한국어 공식 사이트 .</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="7615b41614c019cc6a08" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like7615b41614c019cc6a08" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="CG/Blender">
+            <article class="article-card" data-category="CG/Blender" data-article-key="a59dd809fe09a2d13452" data-search="cg/blender cg/언리얼/블렌더 3d total japan tom hanks, tim allen... the cast is here! the pixar show toy story 5 special edition トム・ハンクス、ティム・アレン..。キャストたちが登場! the pixar show トイ・ストーリー5 特別版 톰 행크스, 팀 알렌... 캐스트들이 등장! the pixar show 토이 스토리 5 특별판 ★toy story 5 cast at pixar! | the pixar show ts5 special edition (4 minutes 50 seconds) pixar&#39;s film production team brings you a variety of content directly the […] the post tom hanks, tim allen... the cast has arrived! the pixar show toy story 5 special edition first appeared on ... ★toy story 5 cast at pixar! | the pixar show ts5 special edition（4分50秒） ピクサー の映画制作チームが、さまざまなコンテンツを直接お届けする the […] the post トム・ハンクス、ティム・アレン..。キャストたちが登場! the pixar show トイ・ストーリー5 特別版 first appeared on ... 픽사의 영화 제작 팀이 다양한 콘텐츠를 직접 제공하는 ‘픽사 쇼’에서 토이 스토리 5의 특별판이 공개되었습니다. 이 특별판에는 톰 행크스, 팀 앨런 등이 출연합니다. 새로운 스토리와 캐릭터를 만나볼 수 있는 기대감이 높습니다.">
                 
                 <img src="https://3dtotal.jp/wp-content/uploads/2026/06/pixarshow_tstory5.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1141,11 +2502,27 @@
                     <span class="lang-content lang-ja">★Toy Story 5 Cast at Pixar! | The Pixar Show TS5 Special Edition（4分50秒） ピクサー の映画制作チームが、さまざまなコンテンツを直接お届けする The  […] The post トム・ハンクス、ティム・アレン..。キャストたちが登場! The Pixar Show トイ・ストーリー5 特別版 first appeared on ...</span>
                     <span class="lang-content lang-ko">픽사의 영화 제작 팀이 다양한 콘텐츠를 직접 제공하는 ‘픽사 쇼’에서 토이 스토리 5의 특별판이 공개되었습니다. 이 특별판에는 톰 행크스, 팀 앨런 등이 출연합니다. 새로운 스토리와 캐릭터를 만나볼 수 있는 기대감이 높습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="a59dd809fe09a2d13452" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likea59dd809fe09a2d13452" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="CG/Blender">
+            <article class="article-card" data-category="CG/Blender" data-article-key="973f72e5103721ab81e0" data-search="cg/blender cg/언리얼/블렌더 modelinghappy substance 3d painter 12.1 - adds automatic rebake, deskew painting, openpbr support, and automatic uv unrolling for hard surfaces 「substance 3d painter 12.1」- 自動再ベイク、スキュー補正ペイント、openpbr対応、ハードサーフェス向け自動uv展開を追加 substance 3d painter 12.1 - 자동 재 베이킹, 스큐 보정 페인트, openpbr 지원, 하드 서페이스 용 자동 uv 배포 추가 substance 3d painter 12.1 substance 3d painter 12.1 has been released. improved baking workflow with automatic rebake and deskew paint to correct projection misalignment during baking, op the post &#34;substance 3d painter 12.1&#34; - added automatic rebake, deskew paint, openpbr support, automatic uv unrolling for hard surfaces fir... substance 3d painter 12.1 substance 3d painter 12.1がリリースされました。自動再ベイクとベイク時に投影のズレを直すスキュー補正ペイントによるベイクワークフローの改善、op the post 「substance 3d painter 12.1」- 自動再ベイク、スキュー補正ペイント、openpbr対応、ハードサーフェス向け自動uv展開を追加 fir... substance 3d painter 12.1 substance 3d painter 12.1이 출시되었습니다. 자동 재베이크와 베이크 시에 투영의 어긋남을 고치는 스큐 보정 페인트에 의한 베이크 워크플로우 개선, op the post &#34;substance 3d painter 12.1&#34;">
                 
                 <img src="https://modelinghappy.com/wp-content/uploads/2026/06/20260627_substance_3d_painter.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1167,11 +2544,27 @@
                     <span class="lang-content lang-ja">Substance 3D Painter 12.1 Substance 3D Painter 12.1がリリースされました。自動再ベイクとベイク時に投影のズレを直すスキュー補正ペイントによるベイクワークフローの改善、Op The post 「Substance 3D Painter 12.1」- 自動再ベイク、スキュー補正ペイント、OpenPBR対応、ハードサーフェス向け自動UV展開を追加 fir...</span>
                     <span class="lang-content lang-ko">Substance 3D Painter 12.1 Substance 3D Painter 12.1이 출시되었습니다. 자동 재베이크와 베이크 시에 투영의 어긋남을 고치는 스큐 보정 페인트에 의한 베이크 워크플로우 개선, Op The post &#34;Substance 3D Painter 12.1&#34;</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="973f72e5103721ab81e0" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like973f72e5103721ab81e0" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="CG/Blender">
+            <article class="article-card" data-category="CG/Blender" data-article-key="d611928aeb9abad0210a" data-search="cg/blender cg/언리얼/블렌더 modelinghappy unseam – free standalone software to generate seamless textures and pbr materials in one click unseam – ワンクリックで継ぎ目のないシームレステクスチャとpbrマテリアルを生成できる無料スタンドアロンソフト unseam – 한 번의 클릭으로 이음새가 없는 원활한 텍스처와 pbr 머티리얼을 생성할 수 있는 무료 독립형 소프트웨어 unseam – one-click seamless texture generator unseam is a standalone software for windows that allows you to preview and convert loaded images into seamless tiled textures in seconds the post unseam – free standalone software that allows you to generate seamless textures and pbr materials in one click first appeared on 3d... unseam – one-click seamless texture generator unseamは、読み込んだ画像を数秒でプレビューしながらシームレスなタイルテクスチャへ変換できるwindows向けスタンドアロン the post unseam – ワンクリックで継ぎ目のないシームレステクスチャとpbrマテリアルを生成できる無料スタンドアロンソフト first appeared on 3d... unseam – one-click seamless texture generator unseam은 로드된 이미지를 몇 초 만에 미리 보기하면서 원활한 타일 텍스처로 변환할 수 있습니다.">
                 
                 <img src="https://modelinghappy.com/wp-content/uploads/2026/07/20260702_UNSEAM_01.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1193,11 +2586,27 @@
                     <span class="lang-content lang-ja">UNSEAM – One-Click Seamless Texture Generator UNSEAMは、読み込んだ画像を数秒でプレビューしながらシームレスなタイルテクスチャへ変換できるWindows向けスタンドアロン The post UNSEAM – ワンクリックで継ぎ目のないシームレステクスチャとPBRマテリアルを生成できる無料スタンドアロンソフト first appeared on 3D...</span>
                     <span class="lang-content lang-ko">UNSEAM – One-Click Seamless Texture Generator UNSEAM은 로드된 이미지를 몇 초 만에 미리 보기하면서 원활한 타일 텍스처로 변환할 수 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="d611928aeb9abad0210a" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="liked611928aeb9abad0210a" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="생활/정책 (Life/Policy)">
+            <article class="article-card" data-category="생활/정책 (Life/Policy)" data-article-key="8fd6490b78057abaabd4" data-search="생활/정책 (life/policy) 생활/정책 (life/policy) lifehacker japan from reading to &#34;looking.&#34; how to use “your own mind map” with claude 読むから「眺める」へ。claudeでつくる「自分専用マインドマップ」活用術 읽으니까 「바라다」에. claude로 만드는 「자신 전용 마인드 맵」활용술 have you ever had the experience of re-opening the same 60-page pdf over and over again in a week, only to have no idea what&#39;s inside? in order to solve the problem of long reports looking like just &#34;wallpaper&#34;, we will explain how to create a &#34;skill&#34; to convert documents into visual mind maps using claude, and how to use it to achieve results in business and writing. 1週間で同じ60ページのpdfを何度も開き直しているのに、中身がさっぱり頭に入ってこない――そんな経験はありませんか？長文レポートがただの「壁紙」に見えてしまう課題を解決するため、claudeを活用してドキュメントを視覚的なマインドマップに変換する「スキル」の作り方と、ビジネスや執筆で成果を出す活用法を解説します。 중요한 내용을 기억하기 어렵고 문서를 이해하기 힘들 때는 문서를 마음가운데로 바꾸는 클로드의 특별한 기술을 사용해 보세요. 문서를 시각화하여 쉽게 이해하고 중요한 내용을 기억할 수 있습니다. 클로드의 특별한 기술을 사용하면 문서를 쉽게 마음가운데로 바꿀 수 있고 비즈니스나 글쓰기에서 성과를 낼 수 있습니다.">
                 
                 <img src="https://media.loom-app.com/loom/2026/06/30/f5e36e4a-050b-4d80-8c14-9d246769cbb5/original.png?w=1200&amp;h=630&amp;f=jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1219,11 +2628,27 @@
                     <span class="lang-content lang-ja">1週間で同じ60ページのPDFを何度も開き直しているのに、中身がさっぱり頭に入ってこない――そんな経験はありませんか？長文レポートがただの「壁紙」に見えてしまう課題を解決するため、Claudeを活用してドキュメントを視覚的なマインドマップに変換する「スキル」の作り方と、ビジネスや執筆で成果を出す活用法を解説します。</span>
                     <span class="lang-content lang-ko">중요한 내용을 기억하기 어렵고 문서를 이해하기 힘들 때는 문서를 마음가운데로 바꾸는 클로드의 특별한 기술을 사용해 보세요. 문서를 시각화하여 쉽게 이해하고 중요한 내용을 기억할 수 있습니다. 클로드의 특별한 기술을 사용하면 문서를 쉽게 마음가운데로 바꿀 수 있고 비즈니스나 글쓰기에서 성과를 낼 수 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="8fd6490b78057abaabd4" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like8fd6490b78057abaabd4" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="생활/정책 (Life/Policy)">
+            <article class="article-card" data-category="생활/정책 (Life/Policy)" data-article-key="164a01408595be27d11b" data-search="생활/정책 (life/policy) 생활/정책 (life/policy) lifehacker japan [mainichi book review] how to cultivate self-affirmation by letting go of perfectionism and creating &#34;steady confidence&#34; 【毎日書評】完璧主義を手放し「ブレない自信」をつくる自己肯定感の育み方 【매일 서평】 완벽주의를 놓고 &#34;흔들리지 않는 자신감&#34;을 만드는 자기 긍정감을 키우는 방법 [mainichi book review] from ``the world&#39;s easiest way to build unshakable confidence: a formula to change your unsuccessful self&#39;&#39; (by masaki sato, published by nippon jitsugyo publishing), we will explain how to cultivate self-affirmation by letting go of perfectionism and creating ``unshakable confidence.&#39;&#39; 【毎日書評】『世界一やさしい「ブレない自信」のつくり方 うまくいかない自分を変える方程式』（佐藤政樹 著、日本実業出版社）より、完璧主義を手放し「ブレない自信」をつくる自己肯定感の育み方について解説します。 【매일 서평】 “세계 제일 쉬운 “흔들리지 않는 자신감”의 만드는 방법 잘 안 되는 자신을 바꾸는 방정식”(사토 마사키 저, 일본 실업 출판사)로부터, 완벽주의를 풀어 “흔들리지 않는 자신감”을 만드는 자기 긍정감의 기르는 방법에 대해 해설합니다.">
                 
                 <img src="https://media.loom-app.com/loom/2026/07/01/1c70853c-f6f0-43de-9b4f-c41bc39c3710/original.jpg?w=1200&amp;h=630&amp;f=jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1245,11 +2670,27 @@
                     <span class="lang-content lang-ja">【毎日書評】『世界一やさしい「ブレない自信」のつくり方　うまくいかない自分を変える方程式』（佐藤政樹 著、日本実業出版社）より、完璧主義を手放し「ブレない自信」をつくる自己肯定感の育み方について解説します。</span>
                     <span class="lang-content lang-ko">【매일 서평】 “세계 제일 쉬운 “흔들리지 않는 자신감”의 만드는 방법 잘 안 되는 자신을 바꾸는 방정식”(사토 마사키 저, 일본 실업 출판사)로부터, 완벽주의를 풀어 “흔들리지 않는 자신감”을 만드는 자기 긍정감의 기르는 방법에 대해 해설합니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="164a01408595be27d11b" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like164a01408595be27d11b" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="생활/정책 (Life/Policy)">
+            <article class="article-card" data-category="생활/정책 (Life/Policy)" data-article-key="629f04f5df83ce09f268" data-search="생활/정책 (life/policy) 생활/정책 (life/policy) lifehacker japan all the reasons why you want to run claude code with &#34;vs code&#34; claude codeを「vs code」で動かしたいこれだけの理由 클로드 코드모드를 vscode에서 사용하는 이유 an actual review of the benefits of integrating &#34;claude code&#34;, which appeared as a terminal tool, into vs code. we will explain the mechanism that allows you to seamlessly generate code, fix bugs, and check differences, freeing you from the stress of going back and forth between the chat screen and the editor. we will explore the hidden abilities that dramatically improve the development efficiency of business people. ターミナルツールとして登場した「claude code」をvs codeに統合して使うメリットを実機レビュー。チャット画面とエディタを行き来するストレスから解放され、シームレスなコード生成、バグ修正、差分確認を実現する仕組みを解説します。ビジネスパーソンの開発効率を劇的に高める、その隠れた実力に迫ります。 터미널 툴로서 등장한 「claude code」를 vs code에 통합해 사용하는 메리트를 실기 리뷰. 채팅 화면과 에디터를 오가는 스트레스로부터 해방되어, 원활한 코드 생성, 버그 수정, 차등 확인을 실현하는 구조를 해설합니다. 비즈니스 퍼슨의 개발 효율을 극적으로 높이는, 그 숨겨진 실력에 육박합니다.">
                 
                 <img src="https://media.loom-app.com/loom/2026/07/01/403d759d-1859-481d-a348-2e7d3a556228/original.jpg?w=1200&amp;h=630&amp;f=jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1271,11 +2712,27 @@
                     <span class="lang-content lang-ja">ターミナルツールとして登場した「Claude Code」をVS Codeに統合して使うメリットを実機レビュー。チャット画面とエディタを行き来するストレスから解放され、シームレスなコード生成、バグ修正、差分確認を実現する仕組みを解説します。ビジネスパーソンの開発効率を劇的に高める、その隠れた実力に迫ります。</span>
                     <span class="lang-content lang-ko">터미널 툴로서 등장한 「Claude Code」를 VS Code에 통합해 사용하는 메리트를 실기 리뷰. 채팅 화면과 에디터를 오가는 스트레스로부터 해방되어, 원활한 코드 생성, 버그 수정, 차등 확인을 실현하는 구조를 해설합니다. 비즈니스 퍼슨의 개발 효율을 극적으로 높이는, 그 숨겨진 실력에 육박합니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="629f04f5df83ce09f268" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like629f04f5df83ce09f268" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="생활/정책 (Life/Policy)">
+            <article class="article-card" data-category="생활/정책 (Life/Policy)" data-article-key="74db5f0c62d3dc028eee" data-search="생활/정책 (life/policy) 생활/정책 (life/policy) lifehacker japan i think parents will naturally use it too. ai sound collector that supports conversation and sound audibility 両親も自然に使ってくれそう。会話や音の聞こえやすさをサポートしてくれるai集音器 부모도 자연스럽게 사용해 줄 것 같다. 대화와 소리의 듣기 쉬움을 서포트해 주는 ai 집음기 &#34;kikoe ear&#34; is an ai-equipped sound collector that features a stylish earphone-shaped design that is easy to use even for people who are reluctant to use hearing aids. ai automatically distinguishes between human voice and noise, and accurately removes noise other than conversation. you don&#39;t need a smartphone, just put it on your ear and the system makes it easier to hear the sound, helping you communicate smoothly with family and friends. also perfect as a gift. 「kikoe ear」は補聴器に抵抗がある方でも使いやすいスタイリッシュなイヤホン型デザインが特長のai搭載の集音器。aiが人の声と雑音を自動で識別し、会話以外のノイズを的確に除去。スマホは不要で、「耳に着けるだけ」で音を聞きやすくする仕組みが家族や友人との円滑なコミュニケーションを助けます。プレゼントにも最適です。 「kikoe ear」는 보청기에 저항이 있는 분이라도 사용하기 쉬운 스타일리쉬한 이어폰형 디자인이 특징의 ai 탑재의 집음기. ai가 사람의 목소리와 잡음을 자동으로 식별하여 대화 이외의 소음을 정확하게 제거. 스마트폰은 불필요하고, 「귀에 착용하는 것만」으로 소리를 듣기 쉽게 하는 구조가 가족이나 친구와의 원활한 커뮤니케이션을 돕습니다. 선물에도 최적입니다.">
                 
                 <img src="https://media.loom-app.com/loom/2026/07/01/e05a036d-8eaf-4bf6-b837-f014ace063bf/original.jpg?w=1200&amp;h=630&amp;f=jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1297,26 +2754,366 @@
                     <span class="lang-content lang-ja">「KIKOE EAR」は補聴器に抵抗がある方でも使いやすいスタイリッシュなイヤホン型デザインが特長のAI搭載の集音器。AIが人の声と雑音を自動で識別し、会話以外のノイズを的確に除去。スマホは不要で、「耳に着けるだけ」で音を聞きやすくする仕組みが家族や友人との円滑なコミュニケーションを助けます。プレゼントにも最適です。</span>
                     <span class="lang-content lang-ko">「KIKOE EAR」는 보청기에 저항이 있는 분이라도 사용하기 쉬운 스타일리쉬한 이어폰형 디자인이 특징의 AI 탑재의 집음기. AI가 사람의 목소리와 잡음을 자동으로 식별하여 대화 이외의 소음을 정확하게 제거. 스마트폰은 불필요하고, 「귀에 착용하는 것만」으로 소리를 듣기 쉽게 하는 구조가 가족이나 친구와의 원활한 커뮤니케이션을 돕습니다. 선물에도 최적입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="74db5f0c62d3dc028eee" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like74db5f0c62d3dc028eee" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
         </div>
+        <section class="no-results" id="no-results" hidden role="status">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+            <h2><span class="lang-content lang-en">No matching articles</span><span class="lang-content lang-ja">条件に合う記事がありません</span><span class="lang-content lang-ko">조건에 맞는 기사가 없어요</span></h2>
+            <p><span class="lang-content lang-en">Try another keyword or reset the filters.</span><span class="lang-content lang-ja">別のキーワードか条件のリセットをお試しください。</span><span class="lang-content lang-ko">다른 검색어를 입력하거나 필터를 초기화해 보세요.</span></p>
+            <button class="interaction-btn" type="button" onclick="resetArticleFilters()"><span class="lang-content lang-en">Show all</span><span class="lang-content lang-ja">すべて表示</span><span class="lang-content lang-ko">전체 보기</span></button>
+        </section>
         
-    </div>
+    </main>
 
     <script>
-        function setCategory(cat) {
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById('cat-' + cat);
-            if (activeBtn) activeBtn.classList.add('active');
-            
+        const COUNTER_API_BASE = 'https://api.counterapi.dev/v1';
+        const COUNTER_NAMESPACE = 'techmagehxhflnews7f4c2d91';
+        const LIVE_COUNTER_HOSTS = new Set(['ehxhfl.github.io']);
+        const SAVED_ARTICLES_KEY = 'techmag-saved-articles';
+        let lastTrafficPayload = null;
+        let activeCategory = 'All';
+        let savedOnly = false;
+        let savedArticles = readSavedArticles();
+        let visibleArticleCount = 0;
+
+        function isLiveCounterSite() {
+            return location.protocol === 'https:' && LIVE_COUNTER_HOSTS.has(location.hostname);
+        }
+
+        function safeStorageGet(key) {
+            try { return localStorage.getItem(key); } catch { return null; }
+        }
+
+        function safeStorageSet(key, value) {
+            try { localStorage.setItem(key, value); return true; } catch { return false; }
+        }
+
+        function readSavedArticles() {
+            try {
+                const value = JSON.parse(localStorage.getItem(SAVED_ARTICLES_KEY) || '[]');
+                return new Set(Array.isArray(value) ? value.filter(key => typeof key === 'string') : []);
+            } catch {
+                return new Set();
+            }
+        }
+
+        function writeSavedArticles() {
+            safeStorageSet(SAVED_ARTICLES_KEY, JSON.stringify(Array.from(savedArticles)));
+        }
+
+        function renderSavedState(button) {
+            const saved = savedArticles.has(button.dataset.saveKey);
+            button.setAttribute('aria-pressed', saved ? 'true' : 'false');
+        }
+
+        function renderSavedCount() {
+            const count = document.getElementById('saved-count');
+            if (count) count.textContent = String(savedArticles.size);
+        }
+
+        function renderResultsCount(count) {
+            visibleArticleCount = count;
+            const target = document.getElementById('results-count');
+            if (!target) return;
+            const language = document.documentElement.lang;
+            target.textContent = language === 'en'
+                ? `${count} article${count === 1 ? '' : 's'} shown`
+                : language === 'ja' ? `${count}件の記事を表示` : `${count}개 기사 표시`;
+        }
+
+        function applyArticleFilters() {
+            const search = document.getElementById('news-search');
+            const query = String(search?.value || '').trim().toLocaleLowerCase();
+            let visible = 0;
             document.querySelectorAll('.article-card').forEach(card => {
-                if (cat === 'All' || card.getAttribute('data-category') === cat) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
+                const categoryMatches = activeCategory === 'All' || card.dataset.category === activeCategory;
+                const searchMatches = !query || String(card.dataset.search || '').includes(query);
+                const savedMatches = !savedOnly || savedArticles.has(card.dataset.articleKey);
+                card.hidden = !(categoryMatches && searchMatches && savedMatches);
+                if (!card.hidden) visible += 1;
             });
-            localStorage.setItem('preferredCat', cat);
+            const empty = document.getElementById('no-results');
+            if (empty) empty.hidden = visible !== 0;
+            renderResultsCount(visible);
+        }
+
+        function initDiscoveryTools() {
+            document.getElementById('news-search')?.addEventListener('input', applyArticleFilters);
+            document.getElementById('saved-filter')?.addEventListener('click', () => {
+                savedOnly = !savedOnly;
+                document.getElementById('saved-filter')?.setAttribute('aria-pressed', savedOnly ? 'true' : 'false');
+                applyArticleFilters();
+            });
+            document.getElementById('reset-filter')?.addEventListener('click', resetArticleFilters);
+            document.querySelectorAll('.save-btn').forEach(button => {
+                renderSavedState(button);
+                button.addEventListener('click', () => {
+                    const key = button.dataset.saveKey;
+                    if (!key) return;
+                    if (savedArticles.has(key)) savedArticles.delete(key);
+                    else savedArticles.add(key);
+                    writeSavedArticles();
+                    document.querySelectorAll('.save-btn').forEach(renderSavedState);
+                    renderSavedCount();
+                    applyArticleFilters();
+                });
+            });
+            renderSavedCount();
+        }
+
+        function resetArticleFilters() {
+            const search = document.getElementById('news-search');
+            if (search) search.value = '';
+            savedOnly = false;
+            document.getElementById('saved-filter')?.setAttribute('aria-pressed', 'false');
+            setCategory('All');
+        }
+
+        async function withCounterLock(key, task) {
+            if (navigator.locks && typeof navigator.locks.request === 'function') {
+                return navigator.locks.request(`techmag:${key}`, task);
+            }
+            return task();
+        }
+
+        function validCount(value) {
+            const count = Number(value);
+            return Number.isSafeInteger(count) && count >= 0 ? count : null;
+        }
+
+        function countFormatters() {
+            const locale = { en: 'en-US', ja: 'ja-JP', ko: 'ko-KR' }[document.documentElement.lang] || 'ko-KR';
+            return {
+                compact: new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 }),
+                full: new Intl.NumberFormat(locale)
+            };
+        }
+
+        async function counterRequest(key, action = '', signal = undefined, allowMissing = false) {
+            const suffix = action ? '/' + action : '/';
+            const url = `${COUNTER_API_BASE}/${encodeURIComponent(COUNTER_NAMESPACE)}/${encodeURIComponent(key)}${suffix}`;
+            const response = await fetch(url, {
+                method: 'GET',
+                cache: 'no-store',
+                credentials: 'omit',
+                referrerPolicy: 'no-referrer',
+                signal
+            });
+            if (!response.ok) {
+                let errorPayload = null;
+                if (allowMissing && (response.status === 400 || response.status === 404)) {
+                    try { errorPayload = await response.json(); } catch { /* Ignore invalid error JSON. */ }
+                    if (response.status === 404 ||
+                        String(errorPayload?.message || '').toLowerCase() === 'record not found') {
+                        return { count: 0 };
+                    }
+                }
+                throw new Error(`Counter request failed: ${response.status}`);
+            }
+            const payload = await response.json();
+            if (validCount(payload?.count) === null) throw new Error('Invalid counter response');
+            return payload;
+        }
+
+        function jstDateKey() {
+            const parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'Asia/Tokyo',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).formatToParts(new Date());
+            const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+            return `${values.year}${values.month}${values.day}`;
+        }
+
+        function renderTraffic(payload) {
+            const root = document.getElementById('daily-traffic');
+            const fields = {
+                views: document.getElementById('today-views'),
+                visitors: document.getElementById('today-visitors')
+            };
+            if (!root || !fields.views || !fields.visitors) return;
+
+            const formatters = countFormatters();
+            let rendered = 0;
+            Object.entries(fields).forEach(([key, element]) => {
+                const count = validCount(payload?.[key]);
+                element.textContent = count === null ? '—' : formatters.compact.format(count);
+                element.title = count === null ? '' : formatters.full.format(count);
+                if (count !== null) rendered += 1;
+            });
+            root.dataset.state = rendered === 2 ? 'ready' : rendered === 1 ? 'partial' : 'unavailable';
+            root.setAttribute('aria-busy', 'false');
+        }
+
+        async function recordAndReadTodayTraffic(signal) {
+            const day = jstDateKey();
+            const visitorMarker = `techmag-visitor-${day}`;
+            const viewPromise = counterRequest(`views${day}`, 'up', signal);
+            const visitorPromise = withCounterLock(`visitor${day}`, async () => {
+                if (safeStorageGet(visitorMarker) === '1') {
+                    return counterRequest(`visitors${day}`, '', signal, true);
+                }
+                if (!safeStorageSet(visitorMarker, '1')) {
+                    return counterRequest(`visitors${day}`, '', signal, true);
+                }
+                return counterRequest(`visitors${day}`, 'up', signal);
+            });
+            const [viewResult, visitorResult] = await Promise.allSettled([viewPromise, visitorPromise]);
+
+            const views = viewResult.status === 'fulfilled' ? validCount(viewResult.value.count) : null;
+            const visitors = visitorResult.status === 'fulfilled' ? validCount(visitorResult.value.count) : null;
+            return { views, visitors };
+        }
+
+        async function loadTodayTraffic() {
+            if (!isLiveCounterSite()) {
+                renderTraffic(null);
+                return;
+            }
+            const controller = new AbortController();
+            const timeout = window.setTimeout(() => controller.abort(), 5000);
+            try {
+                lastTrafficPayload = await recordAndReadTodayTraffic(controller.signal);
+                renderTraffic(lastTrafficPayload);
+            } catch {
+                renderTraffic(null);
+            } finally {
+                window.clearTimeout(timeout);
+            }
+        }
+
+        function renderLikeCount(button, count) {
+            const valid = validCount(count);
+            const countElement = button.querySelector('.like-count');
+            if (!countElement) return;
+            if (valid === null) {
+                countElement.textContent = '—';
+                countElement.title = '';
+                delete button.dataset.likeCount;
+                return;
+            }
+            const formatters = countFormatters();
+            countElement.textContent = formatters.compact.format(valid);
+            countElement.title = formatters.full.format(valid);
+            button.dataset.likeCount = String(valid);
+        }
+
+        function setLikedState(button, liked) {
+            button.setAttribute('aria-pressed', liked ? 'true' : 'false');
+            const heart = button.querySelector('.like-heart');
+            if (heart) heart.textContent = liked ? '♥' : '♡';
+        }
+
+        async function loadLikeCount(button) {
+            if (button.dataset.likeLoaded === 'true' || !isLiveCounterSite()) return true;
+            button.dataset.likeLoaded = 'true';
+            const version = button.dataset.likeVersion || '0';
+            const controller = new AbortController();
+            const timeout = window.setTimeout(() => controller.abort(), 5000);
+            try {
+                const payload = await counterRequest(button.dataset.likeKey, '', controller.signal, true);
+                if ((button.dataset.likeVersion || '0') === version) {
+                    renderLikeCount(button, payload.count);
+                }
+                return true;
+            } catch {
+                if ((button.dataset.likeVersion || '0') === version) {
+                    renderLikeCount(button, null);
+                }
+                button.dataset.likeLoaded = 'false';
+                return false;
+            } finally {
+                window.clearTimeout(timeout);
+            }
+        }
+
+        function initLikeButtons() {
+            const buttons = Array.from(document.querySelectorAll('.like-btn'));
+            buttons.forEach(button => {
+                const storageKey = `techmag-${button.dataset.likeKey}`;
+                button.dataset.likeStorageKey = storageKey;
+                setLikedState(button, safeStorageGet(storageKey) === '1');
+                button.addEventListener('click', async () => {
+                    if (!isLiveCounterSite() || button.getAttribute('aria-pressed') === 'true') return;
+                    button.disabled = true;
+                    button.dataset.likeVersion = String(Number(button.dataset.likeVersion || '0') + 1);
+                    try {
+                        const payload = await withCounterLock(button.dataset.likeKey, async () => {
+                            if (safeStorageGet(storageKey) === '1') {
+                                return counterRequest(button.dataset.likeKey, '', undefined, true);
+                            }
+                            const result = await counterRequest(button.dataset.likeKey, 'up');
+                            safeStorageSet(storageKey, '1');
+                            return result;
+                        });
+                        setLikedState(button, true);
+                        renderLikeCount(button, payload.count);
+                    } catch {
+                        renderLikeCount(button, button.dataset.likeCount ?? null);
+                    } finally {
+                        button.disabled = false;
+                    }
+                });
+            });
+
+            if (!isLiveCounterSite()) {
+                buttons.forEach(button => { button.disabled = true; });
+                return;
+            }
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        loadLikeCount(entry.target).then(loaded => {
+                            if (loaded) observer.unobserve(entry.target);
+                        });
+                    });
+                }, { rootMargin: '400px 0px' });
+                buttons.forEach(button => observer.observe(button));
+            } else {
+                buttons.forEach(loadLikeCount);
+            }
+
+            window.addEventListener('storage', event => {
+                if (event.newValue !== '1') return;
+                buttons.forEach(button => {
+                    if (button.dataset.likeStorageKey !== event.key) return;
+                    button.dataset.likeVersion = String(Number(button.dataset.likeVersion || '0') + 1);
+                    setLikedState(button, true);
+                });
+            });
+        }
+
+        function setCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+            const activeBtn = document.getElementById('cat-' + cat);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.setAttribute('aria-pressed', 'true');
+            }
+            safeStorageSet('preferredCat', cat);
+            applyArticleFilters();
         }
 
         function setLanguage(lang) {
@@ -1326,16 +3123,24 @@
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             const activeButton = document.getElementById('btn-' + lang);
             if (activeButton) activeButton.classList.add('active');
-            localStorage.setItem('preferredLang', lang);
+            safeStorageSet('preferredLang', lang);
+            if (lastTrafficPayload) renderTraffic(lastTrafficPayload);
+            document.querySelectorAll('.like-btn[data-like-count]').forEach(button => {
+                renderLikeCount(button, button.dataset.likeCount);
+            });
+            renderResultsCount(visibleArticleCount);
         }
 
         // Init language and category
-        const savedLang = localStorage.getItem('preferredLang') || 'ko';
+        const savedLang = safeStorageGet('preferredLang') || 'ko';
         setLanguage(savedLang);
 
         const supportedCategories = ['All', 'IT/Tech', 'AI', 'Game Engine', 'Game', 'VTuber', 'Anime', 'Cosplay/Event', 'CG/Blender'];
-        const savedCat = localStorage.getItem('preferredCat') || 'All';
+        const savedCat = safeStorageGet('preferredCat') || 'All';
+        initDiscoveryTools();
         setCategory(supportedCategories.includes(savedCat) ? savedCat : 'All');
+        loadTodayTraffic();
+        initLikeButtons();
     </script>
 </body>
 </html>

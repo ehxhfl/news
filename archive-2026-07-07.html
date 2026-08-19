@@ -4,20 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Tech Magazine</title>
+    <title>Chunhyo Brief — Tech, Games & Culture</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500;600&family=Noto+Sans+JP:wght@400;600;700&display=swap');
         @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
         
         :root {
             /* Light Theme */
-            --bg-color: #ffffff;
-            --text-main: #111111;
-            --text-muted: #666666;
-            --border-color: #eaeaea;
-            --nav-bg: rgba(255, 255, 255, 0.95);
-            --accent: #000000;
-            --hover-bg: #f9f9f9;
+            --bg-color: #e9edf2;
+            --text-main: #141a21;
+            --text-muted: #66707b;
+            --border-color: #c6ccd2;
+            --nav-bg: rgba(255, 253, 247, 0.98);
+            --accent: #2448ff;
+            --accent-ink: #1831b5;
+            --orange: #ff5a36;
+            --highlight: #dfe6ff;
+            --hover-bg: #f0f2f4;
+            --surface-color: #fffdf7;
         }
 
         html {
@@ -27,13 +31,17 @@
         @media (prefers-color-scheme: dark) {
             :root {
                 /* Premium Muted Dark Mode */
-                --bg-color: #0d0d0d;
-                --text-main: #f0f0f0;
-                --text-muted: #a0a0a0;
-                --border-color: #222222;
-                --nav-bg: rgba(13, 13, 13, 0.95);
-                --accent: #ffffff;
-                --hover-bg: #161616;
+                --bg-color: #12161d;
+                --text-main: #f5f0e6;
+                --text-muted: #a9b0ba;
+                --border-color: #454c57;
+                --nav-bg: rgba(27, 32, 40, 0.98);
+                --accent: #7390ff;
+                --accent-ink: #a8b9ff;
+                --orange: #ff7757;
+                --highlight: #29345c;
+                --hover-bg: #252b34;
+                --surface-color: #1b2028;
             }
         }
 
@@ -44,7 +52,7 @@
         }
 
         body {
-            font-family: 'Inter', 'Pretendard', 'Noto Sans JP', sans-serif;
+            font-family: 'Pretendard', 'Noto Sans JP', system-ui, sans-serif;
             background-color: var(--bg-color);
             color: var(--text-main);
             line-height: 1.6;
@@ -56,6 +64,19 @@
             text-decoration: none;
         }
 
+        .skip-link {
+            position: fixed;
+            left: 1rem;
+            top: 1rem;
+            z-index: 2000;
+            padding: 0.7rem 1rem;
+            background: var(--text-main);
+            color: var(--bg-color);
+            transform: translateY(-180%);
+        }
+
+        .skip-link:focus { transform: translateY(0); }
+
         /* Top Navigation */
         .navbar {
             position: sticky;
@@ -65,63 +86,89 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--border-color);
-            padding: 1rem 2rem;
+            padding: 0 2rem;
+            display: grid;
+            gap: 0;
+        }
+
+        .nav-topline {
+            min-height: 4.75rem;
             display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            justify-content: space-between;
             align-items: center;
-            z-index: 1000;
+            justify-content: space-between;
+            gap: 1rem;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .brand {
-            font-weight: 700;
-            font-size: 1.25rem;
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.65rem;
+            font-weight: 800;
+            font-size: 1.45rem;
             letter-spacing: -0.02em;
         }
 
+        .brand-domain,
+        .nav-issue-meta {
+            color: var(--text-muted);
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+        }
+
+        .issue-number { color: var(--accent); }
+
         .nav-controls {
             display: flex;
-            gap: 2rem;
+            gap: 1.25rem;
             align-items: center;
-            justify-content: flex-end;
-            flex-wrap: wrap;
+            justify-content: space-between;
+            flex-wrap: nowrap;
             min-width: 0;
-            max-width: 100%;
+            width: 100%;
+            padding: 0.55rem 0;
         }
         
         /* Category Filter */
         .category-toggle {
             display: flex;
-            gap: 1rem;
-            font-size: 0.85rem;
+            gap: 0.35rem;
+            font-size: 0.78rem;
             font-weight: 500;
-            justify-content: center;
-            flex-wrap: wrap;
+            justify-content: flex-start;
+            flex: 1 1 auto;
+            flex-wrap: nowrap;
             min-width: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
         }
+        .category-toggle::-webkit-scrollbar { display: none; }
         .cat-btn {
             flex: 0 0 auto;
             cursor: pointer;
             color: var(--text-muted);
             transition: color 0.2s, border-color 0.2s, background-color 0.2s;
             border: 1px solid transparent;
-            border-radius: 999px;
+            border-radius: 0;
             background: none;
             font-family: inherit;
             font-weight: 600;
-            padding: 0.2rem 0.5rem;
+            min-height: 2.75rem;
+            padding: 0.45rem 0.55rem;
             white-space: nowrap;
         }
         .cat-btn.active, .cat-btn:hover {
             color: var(--text-main);
-            border-color: var(--border-color);
-            background: var(--hover-bg);
+            border-bottom-color: var(--accent);
+            background: transparent;
         }
 
         .lang-toggle {
             display: flex;
-            gap: 1rem;
+            flex: 0 0 auto;
+            gap: 0.25rem;
             font-size: 0.85rem;
             font-weight: 500;
         }
@@ -135,6 +182,8 @@
             font-family: inherit;
             font-weight: inherit;
             font-size: inherit;
+            min-width: 2.75rem;
+            min-height: 2.75rem;
         }
         .lang-btn:hover { color: var(--text-main); }
         .lang-btn.active { color: var(--text-main); font-weight: 700; }
@@ -151,7 +200,7 @@
         .archive-dropdown select {
             background: var(--bg-color);
             border: 1px solid var(--border-color);
-            border-radius: 0.35rem;
+            border-radius: 0;
             color: var(--text-main);
             font-family: inherit;
             font-size: inherit;
@@ -164,16 +213,21 @@
         .archive-dropdown select:focus-visible,
         .issue-link:focus-visible,
         .cat-btn:focus-visible,
-        .lang-btn:focus-visible {
+        .lang-btn:focus-visible,
+        .search-field input:focus-visible,
+        .saved-filter:focus-visible,
+        .interaction-btn:focus-visible,
+        .reset-filter:focus-visible {
             outline: 2px solid var(--accent);
             outline-offset: 2px;
         }
 
         .issue-navigation {
             display: flex;
+            flex: 0 0 auto;
             align-items: center;
             justify-content: center;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
             gap: 0.75rem;
         }
 
@@ -182,7 +236,7 @@
             align-items: center;
             gap: 0.3rem;
             border: 1px solid var(--border-color);
-            border-radius: 999px;
+            border-radius: 0;
             padding: 0.35rem 0.7rem;
             color: var(--text-muted);
             font-size: 0.78rem;
@@ -204,16 +258,238 @@
             padding: 2rem;
         }
 
-        /* Header Date */
-        .header-date {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
+        /* Editorial issue masthead */
+        .editorial-masthead {
             margin-bottom: 2rem;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--text-main);
         }
+
+        .masthead-kicker {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 2.25rem 0 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+        }
+
+        .masthead-kicker::before {
+            content: '';
+            width: 0.45rem;
+            height: 0.45rem;
+            flex: 0 0 auto;
+            background: var(--accent);
+        }
+
+        .masthead-kicker time { margin-left: auto; font-variant-numeric: tabular-nums; }
+
+        .masthead-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 2rem;
+            align-items: end;
+            padding: 1rem 0 1.75rem;
+            border-bottom: 1px solid var(--text-main);
+        }
+
+        .masthead-title {
+            max-width: 13ch;
+            font-size: clamp(3rem, 8vw, 7.5rem);
+            font-weight: 800;
+            line-height: 0.88;
+            letter-spacing: -0.075em;
+            text-wrap: balance;
+        }
+
+        .guide-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-height: 3rem;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid var(--text-main);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            transition: background-color 0.2s, color 0.2s;
+        }
+
+        .guide-link:hover { background: var(--text-main); color: var(--bg-color); }
+
+        .masthead-summary {
+            display: grid;
+            grid-template-columns: minmax(16rem, 0.8fr) minmax(0, 1.2fr);
+            gap: 2rem;
+            align-items: start;
+            padding: 1.75rem 0;
+        }
+
+        .masthead-copy {
+            max-width: 42rem;
+            color: var(--text-muted);
+            font-size: 0.94rem;
+        }
+
+        .masthead-copy strong { color: var(--accent); font-family: 'Newsreader', serif; font-size: 1.35rem; font-style: italic; font-weight: 500; }
+
+        .masthead-metrics {
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(12rem, 2fr);
+            gap: 1.25rem;
+        }
+
+        .digest-stats,
+        .daily-traffic {
+            display: grid;
+            gap: 0.75rem;
+            margin: 0;
+        }
+
+        .digest-stats { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+        .daily-traffic {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .digest-stats > div,
+        .daily-traffic > div {
+            min-inline-size: 0;
+            padding-left: 0.75rem;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .digest-stats dt,
+        .daily-traffic dt {
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            line-height: 1.2;
+            white-space: nowrap;
+        }
+
+        .digest-stats dd,
+        .daily-traffic dd {
+            min-block-size: 1.3em;
+            color: var(--text-main);
+            font-size: 1.4rem;
+            font-weight: 800;
+            line-height: 1.3;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .discovery-panel {
+            display: grid;
+            grid-template-columns: minmax(18rem, 1fr) auto;
+            gap: 0.75rem 1rem;
+            align-items: center;
+            margin: 0 0 1rem;
+            padding: 0.85rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            background: var(--surface-color);
+        }
+
+        .search-field {
+            position: relative;
+            display: block;
+            min-width: 0;
+        }
+
+        .search-field svg {
+            position: absolute;
+            left: 0.9rem;
+            top: 50%;
+            width: 1.1rem;
+            height: 1.1rem;
+            color: var(--text-muted);
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .search-field input {
+            width: 100%;
+            min-height: 3rem;
+            padding: 0.7rem 1rem 0.7rem 2.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            background: var(--surface-color);
+            color: var(--text-main);
+            font: inherit;
+            font-size: 0.92rem;
+        }
+
+        .search-field input::placeholder { color: var(--text-muted); }
+
+        .saved-filter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            min-height: 3rem;
+            padding: 0.65rem 0.9rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0;
+            background: var(--surface-color);
+            color: var(--text-main);
+            cursor: pointer;
+            font: inherit;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .saved-filter svg { width: 1rem; height: 1rem; fill: none; stroke: currentColor; stroke-width: 1.8; }
+        .saved-filter[aria-pressed="true"] { border-color: var(--text-main); background: var(--text-main); color: var(--bg-color); }
+        .saved-filter-count { min-width: 1.5rem; border-radius: 999px; padding: 0.05rem 0.4rem; background: var(--hover-bg); color: var(--text-main); font-variant-numeric: tabular-nums; }
+        .saved-filter[aria-pressed="true"] .saved-filter-count { background: var(--bg-color); }
+
+        .results-status {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 1.25rem;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        .reset-filter {
+            border: 0;
+            background: none;
+            color: var(--text-main);
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+            text-decoration: underline;
+            text-underline-offset: 0.18rem;
+        }
+
+        .field-note {
+            display: grid;
+            grid-template-columns: auto minmax(0, 1fr) auto;
+            gap: 1.25rem;
+            align-items: center;
+            margin: 0 0 2.5rem;
+            padding: 1rem 1.1rem;
+            border: 1px solid var(--border-color);
+            border-left: 0.35rem solid var(--accent);
+            background: var(--surface-color);
+        }
+
+        .field-note-label {
+            color: var(--accent);
+            font-size: 0.67rem;
+            font-weight: 800;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .field-note h2 { margin-bottom: 0.1rem; font-size: 1rem; }
+        .field-note p { color: var(--text-muted); font-size: 0.82rem; }
+        .field-note a { min-height: 2.75rem; display: inline-flex; align-items: center; font-size: 0.78rem; font-weight: 700; text-decoration: underline; text-underline-offset: 0.2rem; }
 
         /* Featured Article */
         .featured {
@@ -281,11 +557,42 @@
             border-bottom: 1px solid var(--border-color);
         }
 
+        .article-card[hidden], .no-results[hidden] { display: none !important; }
+
         .article-img {
             width: 100%;
             height: auto;
             margin-bottom: 1rem;
             background: var(--hover-bg);
+        }
+
+        .article-placeholder {
+            aspect-ratio: 16 / 9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            color: #ffffff;
+            text-align: center;
+            letter-spacing: 0.08em;
+        }
+
+        .article-placeholder[hidden] { display: none; }
+
+        .cosplay-placeholder {
+            background: var(--accent);
+        }
+
+        .placeholder-kicker {
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .placeholder-title {
+            font-size: clamp(1.35rem, 4vw, 2.5rem);
+            font-weight: 700;
+            line-height: 1;
         }
 
         .article-title {
@@ -304,6 +611,65 @@
             font-size: 0.95rem;
             color: var(--text-muted);
             line-height: 1.5;
+            display: -webkit-box;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 5;
+        }
+
+        .article-actions {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .interaction-btn {
+            min-height: 2.1rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            border: 1px solid var(--border-color);
+            border-radius: 999px;
+            background: var(--bg-color);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.78rem;
+            font-weight: 600;
+            padding: 0.35rem 0.7rem;
+            transition: color 0.2s, border-color 0.2s, background-color 0.2s;
+        }
+
+        .interaction-btn:hover {
+            color: var(--text-main);
+            border-color: var(--text-muted);
+            background: var(--hover-bg);
+        }
+
+        .like-btn[aria-pressed="true"] {
+            color: #d13b66;
+            border-color: rgba(209, 59, 102, 0.45);
+            background: rgba(209, 59, 102, 0.08);
+        }
+
+        .save-btn svg { width: 0.95rem; height: 0.95rem; fill: none; stroke: currentColor; stroke-width: 1.8; }
+        .save-btn[aria-pressed="true"] { color: var(--text-main); border-color: var(--text-main); background: var(--hover-bg); }
+        .save-btn[aria-pressed="true"] svg { fill: currentColor; }
+        .save-btn[aria-pressed="false"] .save-active.lang-content { display: none; }
+        .save-btn[aria-pressed="true"] .save-default.lang-content { display: none; }
+
+        .interaction-btn:disabled {
+            cursor: wait;
+            opacity: 0.65;
+        }
+
+        .like-count {
+            min-width: 1.4ch;
+            text-align: right;
+            font-variant-numeric: tabular-nums;
         }
 
         .empty-state {
@@ -322,16 +688,28 @@
             color: var(--text-muted);
         }
 
+        .no-results { margin: 1rem 0 4rem; border: 1px solid var(--border-color); border-radius: 1rem; background: var(--hover-bg); padding: 4rem 2rem; text-align: center; }
+        .no-results svg { width: 2rem; height: 2rem; margin-bottom: 1rem; color: var(--text-muted); fill: none; stroke: currentColor; stroke-width: 1.5; }
+        .no-results h2 { margin-bottom: 0.5rem; font-size: 1.35rem; }
+        .no-results p { margin-bottom: 1rem; color: var(--text-muted); }
+
         @media (max-width: 1024px) {
             .masonry-grid { column-count: 2; }
             .featured { grid-template-columns: 1fr; gap: 2rem; }
             .featured-img { min-height: 300px; }
             .featured-title { font-size: 2.5rem; }
+            .masthead-summary { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 640px) {
             .masonry-grid { column-count: 1; }
-            .navbar { flex-direction: column; gap: 1rem; padding: 1rem; }
+            .navbar { padding: 0 1rem; }
+            .nav-topline { min-height: 4rem; flex-wrap: wrap; gap: 0.5rem; padding: 0.75rem 0; }
+            .brand { width: 100%; font-size: 1.2rem; white-space: nowrap; }
+            .brand-domain { display: none; }
+            .nav-issue-meta { display: none; }
+            .nav-topline .issue-navigation { width: 100%; justify-content: flex-start; }
+            .nav-topline .issue-link:not([aria-current="page"]) { display: none; }
             .nav-controls { width: 100%; justify-content: center; gap: 0.75rem; flex-direction: column; flex-wrap: nowrap; }
             .category-toggle {
                 width: 100%;
@@ -345,9 +723,524 @@
             }
             .category-toggle::-webkit-scrollbar { display: none; }
             .issue-navigation { width: 100%; }
+            .masthead-kicker { align-items: flex-start; padding-top: 1.5rem; letter-spacing: 0.1em; }
+            .masthead-row { grid-template-columns: 1fr; gap: 1.25rem; }
+            .masthead-title { font-size: clamp(3rem, 16vw, 5rem); }
+            .guide-link { width: 100%; justify-content: space-between; }
+            .masthead-summary { grid-template-columns: 1fr; }
+            .masthead-metrics { grid-template-columns: 1fr; }
+            .field-note { grid-template-columns: 1fr; gap: 0.4rem; }
             .featured-img { min-height: 200px; }
             .featured-title { font-size: 2rem; }
             .container { padding: 1rem; }
+            .discovery-panel { grid-template-columns: 1fr; margin-top: 0; }
+            .saved-filter { width: 100%; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+
+        /* Chunhyo Feed — two-colour personal newsboard */
+        body {
+            border-top: 5px solid var(--accent);
+            word-break: keep-all;
+        }
+
+        .navbar {
+            padding: 0 clamp(1rem, 3vw, 2.5rem);
+            background: var(--nav-bg);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+            border-bottom: 2px solid var(--text-main);
+        }
+
+        .nav-topline,
+        .nav-controls {
+            width: min(100%, 1320px);
+            margin-inline: auto;
+        }
+
+        .nav-topline {
+            min-height: 4.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            gap: 0.75rem;
+            font-size: 1rem;
+            letter-spacing: 0;
+        }
+
+        .brand > span:first-child {
+            display: inline-grid;
+            place-items: center;
+            min-height: 2.6rem;
+            padding: 0.2rem 0.65rem;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        .brand-domain,
+        .nav-issue-meta {
+            font-family: 'IBM Plex Mono', monospace;
+            letter-spacing: 0.08em;
+        }
+
+        .brand-domain {
+            max-width: 10rem;
+            line-height: 1.25;
+        }
+
+        .issue-number { color: var(--orange); }
+
+        .nav-controls {
+            min-height: 3.4rem;
+            padding: 0;
+        }
+
+        .category-toggle {
+            align-self: stretch;
+            gap: 0;
+            border-left: 1px solid var(--border-color);
+        }
+
+        .cat-btn {
+            min-height: 3.35rem;
+            padding: 0.45rem 0.7rem;
+            border: 0;
+            border-right: 1px solid var(--border-color);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: -0.02em;
+        }
+
+        .cat-btn.active,
+        .cat-btn:hover {
+            border-bottom-color: transparent;
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .lang-toggle {
+            gap: 0;
+            border: 1px solid var(--text-main);
+        }
+
+        .lang-btn {
+            min-width: 2.6rem;
+            min-height: 2.35rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+        }
+
+        .lang-btn + .lang-btn { border-left: 1px solid var(--text-main); }
+        .lang-btn.active { background: var(--text-main); color: var(--surface-color); }
+
+        .archive-dropdown select,
+        .issue-link {
+            border-color: var(--text-main);
+            background: var(--surface-color);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        .issue-link[aria-current="page"] {
+            background: var(--orange);
+            border-color: var(--orange);
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1320px;
+            padding: 2rem clamp(1rem, 3vw, 2.5rem) 5rem;
+        }
+
+        .editorial-masthead {
+            margin: 0 0 1.5rem;
+            border: 2px solid var(--text-main);
+            background: var(--surface-color);
+        }
+
+        .masthead-kicker {
+            min-height: 2.7rem;
+            justify-content: flex-start;
+            padding: 0.55rem 0.9rem;
+            background: var(--accent);
+            color: #fff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.08em;
+        }
+
+        .masthead-kicker::before {
+            width: 0.55rem;
+            height: 0.55rem;
+            background: var(--orange);
+        }
+
+        .masthead-kicker time { margin-left: auto; }
+
+        .masthead-row {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.4rem;
+            border-bottom: 1px solid var(--text-main);
+        }
+
+        .masthead-title {
+            max-width: 16ch;
+            font-family: 'Pretendard', 'Noto Sans JP', sans-serif;
+            font-size: clamp(2.8rem, 6.5vw, 5.8rem);
+            font-weight: 800;
+            line-height: 0.93;
+            letter-spacing: -0.07em;
+        }
+
+        .guide-link {
+            min-height: 3rem;
+            padding: 0.7rem 0.9rem;
+            border: 2px solid var(--text-main);
+            background: var(--highlight);
+            color: var(--text-main);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.02em;
+        }
+
+        .guide-link:hover { background: var(--orange); color: #fff; }
+
+        .masthead-summary {
+            grid-template-columns: minmax(15rem, 0.75fr) minmax(0, 1.25fr);
+            gap: 1.5rem;
+            padding: 1.4rem;
+        }
+
+        .masthead-copy { font-size: 0.9rem; }
+
+        .masthead-copy strong {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: var(--orange);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .masthead-metrics { gap: 0.5rem; }
+        .digest-stats, .daily-traffic { gap: 0; }
+
+        .digest-stats > div,
+        .daily-traffic > div {
+            padding: 0.65rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-left: 0;
+            background: var(--bg-color);
+        }
+
+        .digest-stats > div:first-child,
+        .daily-traffic > div:first-child { border-left: 1px solid var(--border-color); }
+
+        .digest-stats dt,
+        .daily-traffic dt {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.02em;
+        }
+
+        .digest-stats dd,
+        .daily-traffic dd {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 1.3rem;
+        }
+
+        .discovery-panel {
+            margin: 0 0 1.5rem;
+            padding: 0.7rem 0;
+            border: 0;
+            border-top: 2px solid var(--text-main);
+            border-bottom: 2px solid var(--text-main);
+            background: transparent;
+        }
+
+        .search-field input,
+        .saved-filter {
+            border: 1px solid var(--text-main);
+            background: var(--surface-color);
+            border-radius: 0;
+        }
+
+        .saved-filter {
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.72rem;
+        }
+
+        .saved-filter[aria-pressed="true"] {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .saved-filter-count,
+        .saved-filter[aria-pressed="true"] .saved-filter-count {
+            border-radius: 0;
+            background: var(--highlight);
+            color: var(--text-main);
+        }
+
+        .results-status { font-family: 'IBM Plex Mono', monospace; }
+
+        .field-note {
+            margin-bottom: 2rem;
+            padding: 0.9rem 1rem;
+            border: 1px solid var(--text-main);
+            border-left: 6px solid var(--orange);
+            background: var(--surface-color);
+        }
+
+        .field-note-label {
+            color: var(--orange);
+            font-family: 'IBM Plex Mono', monospace;
+        }
+
+        .featured {
+            position: relative;
+            grid-template-columns: minmax(0, 7fr) minmax(20rem, 5fr);
+            gap: 0;
+            margin: 0 0 2.5rem;
+            padding: 0;
+            border: 2px solid var(--text-main);
+            background: var(--surface-color);
+        }
+
+        .featured::before {
+            content: 'LEAD / 01';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 2;
+            padding: 0.35rem 0.55rem;
+            background: var(--orange);
+            color: #fff;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+        }
+
+        .featured-img {
+            min-height: 430px;
+            aspect-ratio: 5 / 3;
+            border-right: 2px solid var(--text-main);
+            background: var(--highlight);
+        }
+
+        .featured-content {
+            align-items: flex-start;
+            padding: clamp(1.5rem, 3vw, 2.6rem);
+        }
+
+        .meta {
+            align-items: center;
+            gap: 0.55rem;
+            margin-bottom: 0.8rem;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.66rem;
+            letter-spacing: 0.02em;
+        }
+
+        .meta > span:first-child {
+            padding: 0.18rem 0.35rem;
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .featured-title {
+            font-size: clamp(2rem, 3.3vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.06;
+            letter-spacing: -0.045em;
+        }
+
+        .featured-title a:hover,
+        .article-title a:hover {
+            text-decoration-color: var(--orange);
+            text-decoration-thickness: 0.15em;
+            text-underline-offset: 0.12em;
+        }
+
+        .featured-summary { font-size: 1rem; }
+
+        .masonry-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0;
+            width: 100%;
+            border-top: 2px solid var(--text-main);
+            border-left: 2px solid var(--text-main);
+            counter-reset: story 1;
+            column-count: initial;
+        }
+
+        .masonry-grid .article-card {
+            position: relative;
+            display: flex;
+            min-width: 0;
+            min-height: 100%;
+            flex-direction: column;
+            margin: 0;
+            padding: 1.15rem;
+            border: 0;
+            border-right: 2px solid var(--text-main);
+            border-bottom: 2px solid var(--text-main);
+            background: var(--surface-color);
+            counter-increment: story;
+        }
+
+        .masonry-grid .article-card::before {
+            content: counter(story, decimal-leading-zero);
+            align-self: flex-start;
+            margin-bottom: 0.65rem;
+            padding-bottom: 0.2rem;
+            border-bottom: 3px solid var(--orange);
+            color: var(--text-main);
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .masonry-grid .article-card:hover { background: var(--highlight); }
+
+        .article-img {
+            aspect-ratio: 5 / 3;
+            margin-bottom: 0.9rem;
+            border: 1px solid var(--text-main);
+            object-fit: cover;
+        }
+
+        .cosplay-placeholder {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .placeholder-kicker { font-family: 'IBM Plex Mono', monospace; }
+
+        .placeholder-title {
+            max-width: 8ch;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            letter-spacing: -0.04em;
+        }
+
+        .article-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+            letter-spacing: -0.025em;
+        }
+
+        .article-summary {
+            -webkit-line-clamp: 4;
+            font-size: 0.88rem;
+        }
+
+        .article-actions { margin-top: auto; padding-top: 1rem; }
+
+        .interaction-btn {
+            min-height: 2rem;
+            padding: 0.25rem 0;
+            border: 0;
+            border-bottom: 1px solid var(--text-muted);
+            border-radius: 0;
+            background: transparent;
+            font-family: 'IBM Plex Mono', monospace;
+            font-size: 0.68rem;
+        }
+
+        .interaction-btn:hover {
+            border-color: var(--accent);
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .like-btn[aria-pressed="true"] {
+            border-color: var(--orange);
+            background: transparent;
+            color: var(--orange);
+        }
+
+        .save-btn[aria-pressed="true"] {
+            border-color: var(--accent);
+            background: transparent;
+            color: var(--accent);
+        }
+
+        .empty-state,
+        .no-results {
+            border: 2px solid var(--text-main);
+            border-radius: 0;
+            background: var(--surface-color);
+        }
+
+        @media (max-width: 1050px) {
+            .masonry-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .featured { grid-template-columns: 1fr; }
+            .featured-img { min-height: 300px; border-right: 0; border-bottom: 2px solid var(--text-main); }
+            .masthead-summary { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 720px) {
+            body { border-top-width: 4px; }
+            .navbar { padding: 0 0.8rem; }
+            .nav-topline {
+                display: grid;
+                grid-template-columns: minmax(0, 1fr) auto;
+                min-height: 0;
+                gap: 0.65rem;
+                padding: 0.65rem 0;
+            }
+            .brand { width: auto; min-width: 0; }
+            .brand > span:first-child { min-height: 2.3rem; }
+            .brand-domain { display: block; }
+            .nav-issue-meta { display: none; }
+            .nav-topline .issue-navigation { width: auto; min-width: 0; justify-content: flex-end; }
+            .nav-topline .issue-link:not([aria-current="page"]) { display: none; }
+            .archive-dropdown label { display: none; }
+            .archive-dropdown select { width: min(8.5rem, 34vw); }
+            .nav-controls { flex-direction: column; align-items: stretch; gap: 0.35rem; padding: 0.35rem 0 0.55rem; }
+            .category-toggle { width: 100%; min-height: 3rem; }
+            .cat-btn { min-height: 3rem; scroll-snap-align: start; }
+            .lang-toggle { align-self: flex-end; }
+            .container { padding: 1rem 0.8rem 3rem; }
+            .masthead-row { grid-template-columns: 1fr; align-items: start; padding: 1rem; }
+            .masthead-title { font-size: clamp(2.8rem, 14vw, 4.5rem); }
+            .guide-link { width: 100%; justify-content: space-between; }
+            .masthead-summary { padding: 1rem; }
+            .masthead-metrics { grid-template-columns: 1fr; }
+            .field-note { grid-template-columns: 1fr; }
+            .featured-content { padding: 1.25rem; }
+        }
+
+        @media (max-width: 620px) {
+            .masonry-grid { grid-template-columns: 1fr; }
+            .discovery-panel { grid-template-columns: 1fr; }
+            .saved-filter { width: 100%; }
+            .masthead-kicker { align-items: center; padding-top: 0.55rem; }
+            .masthead-title { max-width: 10ch; }
+            .featured-title { font-size: 2rem; }
+            .featured-img { min-height: 230px; }
         }
         
         /* Language System */
@@ -365,20 +1258,18 @@
 </head>
 <body>
 
+    <a class="skip-link" href="#main-content">
+        <span class="lang-content lang-en">Skip to stories</span>
+        <span class="lang-content lang-ja">記事へ移動</span>
+        <span class="lang-content lang-ko">기사로 바로가기</span>
+    </a>
+
     <nav class="navbar">
-        <div class="brand">TECH MAG</div>
-        <div class="nav-controls">
-            <div class="category-toggle">
-                <button class="cat-btn active" onclick="setCategory('All')" id="cat-All">All</button>
-                <button class="cat-btn" onclick="setCategory('IT/Tech')" id="cat-IT/Tech">IT/Tech</button>
-                <button class="cat-btn" onclick="setCategory('AI')" id="cat-AI">AI</button>
-                <button class="cat-btn" onclick="setCategory('Game Engine')" id="cat-Game Engine">Game Engine</button>
-                <button class="cat-btn" onclick="setCategory('Game')" id="cat-Game">Game</button>
-                <button class="cat-btn" onclick="setCategory('VTuber')" id="cat-VTuber">VTuber</button>
-                <button class="cat-btn" onclick="setCategory('Anime')" id="cat-Anime">Anime</button>
-                <button class="cat-btn" onclick="setCategory('Cosplay/Event')" id="cat-Cosplay/Event">Cosplay/Event</button>
-                <button class="cat-btn" onclick="setCategory('CG/Blender')" id="cat-CG/Blender">CG/Blender</button>
-            </div>
+        <div class="nav-topline">
+            <a class="brand" href="index.html">
+                <span>CHUNHYO</span>
+                <span class="brand-domain">DAILY FEED · 10:00</span>
+            </a>
             <div class="issue-navigation" aria-label="Issue navigation">
                 <a class="issue-link" href="index.html" >
                     <span class="lang-content lang-en">Latest</span>
@@ -511,6 +1402,26 @@
                     </select>
                 </div>
             </div>
+            <p class="nav-issue-meta">
+                <span class="issue-number">№ 005</span>
+                <span aria-hidden="true"> · </span>
+                <span>2026-07-07</span>
+                <span aria-hidden="true"> · </span>
+                <span>DAILY ARCHIVE</span>
+            </p>
+        </div>
+        <div class="nav-controls">
+            <div class="category-toggle">
+                <button class="cat-btn active" onclick="setCategory('All')" id="cat-All">All</button>
+                <button class="cat-btn" onclick="setCategory('IT/Tech')" id="cat-IT/Tech">IT/Tech</button>
+                <button class="cat-btn" onclick="setCategory('AI')" id="cat-AI">AI</button>
+                <button class="cat-btn" onclick="setCategory('Game Engine')" id="cat-Game Engine">Game Engine</button>
+                <button class="cat-btn" onclick="setCategory('Game')" id="cat-Game">Game</button>
+                <button class="cat-btn" onclick="setCategory('VTuber')" id="cat-VTuber">VTuber</button>
+                <button class="cat-btn" onclick="setCategory('Anime')" id="cat-Anime">Anime</button>
+                <button class="cat-btn" onclick="setCategory('Cosplay/Event')" id="cat-Cosplay/Event">Cosplay/Event</button>
+                <button class="cat-btn" onclick="setCategory('CG/Blender')" id="cat-CG/Blender">CG/Blender</button>
+            </div>
             <div class="lang-toggle">
                 <button class="lang-btn" onclick="setLanguage('en')" id="btn-en">EN</button>
                 <button class="lang-btn" onclick="setLanguage('ja')" id="btn-ja">JA</button>
@@ -519,13 +1430,96 @@
         </div>
     </nav>
 
-    <div class="container">
-        <div class="header-date">2026-07-07 EDITORIAL ISSUE</div>
+    <main class="container" id="main-content">
+        <header class="editorial-masthead">
+            <div class="masthead-kicker">
+                <span>COLLECTED DAILY · 10:00 JST / KST</span>
+                <time datetime="2026-07-07">2026-07-07</time>
+            </div>
+            <div class="masthead-row">
+                <h1 class="masthead-title" id="digest-title">
+                    <span class="lang-content lang-en">WHAT CAME IN TODAY</span>
+                    <span class="lang-content lang-ja">今日届いたもの</span>
+                    <span class="lang-content lang-ko">오늘 들어온 것들</span>
+                </h1>
+                <a class="guide-link" href="#lead-story">
+                    <span class="lang-content lang-en">Start reading</span>
+                    <span class="lang-content lang-ja">記事を見る</span>
+                    <span class="lang-content lang-ko">첫 기사 보기</span>
+                    <span aria-hidden="true">↓</span>
+                </a>
+            </div>
+            <div class="masthead-summary">
+                <p class="masthead-copy">
+                    <strong>
+                        <span class="lang-content lang-en">Morning edition</span>
+                        <span class="lang-content lang-ja">朝刊</span>
+                        <span class="lang-content lang-ko">아침판</span>
+                    </strong><br>
+                    <span class="lang-content lang-en">Tech, AI, games and digital culture, collected every morning and arranged in three languages.</span>
+                    <span class="lang-content lang-ja">テクノロジー、AI、ゲーム、デジタル文化の話題を毎朝集め、3言語で整理します。</span>
+                    <span class="lang-content lang-ko">테크·AI·게임·디지털 문화 소식을 매일 아침 모아 세 언어로 정리합니다.</span>
+                </p>
+                <div class="masthead-metrics">
+                    <dl class="digest-stats">
+                        <div>
+                            <dt><span class="lang-content lang-en">Stories</span><span class="lang-content lang-ja">記事</span><span class="lang-content lang-ko">기사</span></dt>
+                            <dd>38</dd>
+                        </div>
+                        <div>
+                            <dt><span class="lang-content lang-en">Sources</span><span class="lang-content lang-ja">媒体</span><span class="lang-content lang-ko">출처</span></dt>
+                            <dd>11</dd>
+                        </div>
+                        <div>
+                            <dt><span class="lang-content lang-en">Topics</span><span class="lang-content lang-ja">分野</span><span class="lang-content lang-ko">주제</span></dt>
+                            <dd>5</dd>
+                        </div>
+                    </dl>
+                    <dl id="daily-traffic" class="daily-traffic" aria-live="polite" aria-busy="true" data-state="loading">
+                        <div>
+                            <dt><span class="lang-content lang-en">Views today</span><span class="lang-content lang-ja">今日の閲覧数</span><span class="lang-content lang-ko">오늘 조회수</span></dt>
+                            <dd id="today-views">&mdash;</dd>
+                        </div>
+                        <div>
+                            <dt><span class="lang-content lang-en">Visitors</span><span class="lang-content lang-ja">訪問者</span><span class="lang-content lang-ko">방문자</span></dt>
+                            <dd id="today-visitors">&mdash;</dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </header>
 
         
-        <article class="featured article-card" data-category="IT/Tech">
+        <section class="discovery-panel" aria-label="Article discovery tools">
+            <label class="search-field" for="news-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+                <input id="news-search" type="search" autocomplete="off"
+                    placeholder="기사 제목·요약·출처 검색"
+                    aria-label="기사 검색">
+            </label>
+            <button class="saved-filter" id="saved-filter" type="button" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                <span class="lang-content lang-en">Saved</span>
+                <span class="lang-content lang-ja">保存済み</span>
+                <span class="lang-content lang-ko">읽기 목록</span>
+                <span class="saved-filter-count" id="saved-count">0</span>
+            </button>
+            <div class="results-status">
+                <span id="results-count" aria-live="polite"></span>
+                <button class="reset-filter" id="reset-filter" type="button">
+                    <span class="lang-content lang-en">Reset filters</span>
+                    <span class="lang-content lang-ja">条件をリセット</span>
+                    <span class="lang-content lang-ko">필터 초기화</span>
+                </button>
+            </div>
+        </section>
+        
+
+        
+        <article class="featured article-card" id="lead-story" data-category="IT/Tech" data-article-key="74b206184cde0f75a0b7" data-search="it/tech it/tech techcrunch netflix&#39;s binge-watching legacy faces a new generation challenge ネトフリの連続視聴文化が自らの限界に直面 넷플릭스 연속 시청 문화가 스스로 도태되고 있다 a fresh report reveals declining season 2 retention among netflix viewers. the rise of episodic streaming and shorter attention spans are reshaping content consumption habits, undermining binge-watching’s once-dominant appeal. 最新の調査データによると、視聴者がシーズン2まで見続ける割合が低下しています。エピソード単位の視聴や現代人の注意散漫が浸透し、かつての「連続視聴」の強みは今や脅かされています。 최신 보고서는 넷플릭스 시청자들이 2시즌까지 이어보기 비율이 감소하고 있음을 보여줍니다. 에피소드별 시청과 짧아진 집중력이 콘텐츠 소비 방식을 재정의하며, 과거의 주력이던 연속 시청의 우위가 약화되고 있습니다.">
             
             <img src="https://techcrunch.com/wp-content/uploads/2023/02/GettyImages-1240099721.jpeg?resize=1200,800" alt="Featured Image" class="featured-img" onerror="this.style.display='none'">
+            
             
             
             <div class="featured-content">
@@ -535,18 +1529,33 @@
                     <span>TechCrunch</span>
                 </div>
                 
-                <h1 class="featured-title">
+                <h2 class="featured-title">
                     <a href="https://techcrunch.com/2026/07/06/netflix-invented-binge-watching-now-it-may-have-outgrown-it/" target="_blank" rel="noopener noreferrer">
                         <span class="lang-content lang-en">Netflix&#39;s Binge-Watching Legacy Faces a New Generation Challenge</span>
                         <span class="lang-content lang-ja">ネトフリの連続視聴文化が自らの限界に直面</span>
                         <span class="lang-content lang-ko">넷플릭스 연속 시청 문화가 스스로 도태되고 있다</span>
                     </a>
-                </h1>
+                </h2>
                 
                 <div class="featured-summary">
                     <span class="lang-content lang-en">A fresh report reveals declining Season 2 retention among Netflix viewers. The rise of episodic streaming and shorter attention spans are reshaping content consumption habits, undermining binge-watching’s once-dominant appeal.</span>
                     <span class="lang-content lang-ja">最新の調査データによると、視聴者がシーズン2まで見続ける割合が低下しています。エピソード単位の視聴や現代人の注意散漫が浸透し、かつての「連続視聴」の強みは今や脅かされています。</span>
                     <span class="lang-content lang-ko">최신 보고서는 넷플릭스 시청자들이 2시즌까지 이어보기 비율이 감소하고 있음을 보여줍니다. 에피소드별 시청과 짧아진 집중력이 콘텐츠 소비 방식을 재정의하며, 과거의 주력이던 연속 시청의 우위가 약화되고 있습니다.</span>
+                </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="74b206184cde0f75a0b7" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like74b206184cde0f75a0b7" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
                 </div>
             </div>
         </article>
@@ -555,9 +1564,10 @@
         
         <div class="masonry-grid">
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="ce297b0dfa3ddd526b9a" data-search="it/tech it/tech techcrunch first ai-powered ransomware attack still reliant on human oversight 「世界初」のaiランサムウェア攻撃も人間の介入が必要だった 최초의 ai 기반 랜섬웨어 공격조차 인간 개입 필수인 현실 while an ai autonomously executed a ransomware attack for the first time, critical decision-making—including target selection and infrastructure setup—remained under human control, revealing hybrid threats in cybersecurity’s ai future. aiエージェントがランサムウェアの技術的実行を完了したが、実際には被害者選定やインフラ構築は人間が担当。このハイブリッド型脅威はサイバーセキュリティの未来を問う ai가 랜섬웨어 공격을 실행했지만, 표적선정과 인프라 구축은 인간이 직접 수행했습니다. 사이버 보안에서 ai의 역할을 재정의하는 혼합형 위협으로 주목받고 있습니다.">
                 
                 <img src="https://techcrunch.com/wp-content/uploads/2026/07/Ransomware-attack.png?resize=1200,686" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -579,11 +1589,27 @@
                     <span class="lang-content lang-ja">AIエージェントがランサムウェアの技術的実行を完了したが、実際には被害者選定やインフラ構築は人間が担当。このハイブリッド型脅威はサイバーセキュリティの未来を問う</span>
                     <span class="lang-content lang-ko">AI가 랜섬웨어 공격을 실행했지만, 표적선정과 인프라 구축은 인간이 직접 수행했습니다. 사이버 보안에서 AI의 역할을 재정의하는 혼합형 위협으로 주목받고 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="ce297b0dfa3ddd526b9a" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likece297b0dfa3ddd526b9a" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="394931127984d96d5e53" data-search="it/tech it/tech techcrunch vercel ceo guillermo rauch on decoupling models from agents ベルセルのグイド・ラウフ会長が語る「モデルからエージェントを分離する戦い」 버셀 ceo, 모델과 에이전트 분리 논쟁의 핵심 전략 밝혀 vercel&#39;s ceo argues that optimizing production systems requires prioritizing cost-efficiency and performance, a strategy reshaping ai infrastructure debates. 生産性の最適化では価格と性能のバランスが鍵――ベルセルceoが技術選定における新たな基準を明らかにする。 생산 시스템 최적화는 단가 대비 성능 균형에 달려 있다—버셀 최고 경영 책임자가 인공지능 인프라 혁명의 새로운 패러다임을 제시한다.">
                 
                 <img src="https://techcrunch.com/wp-content/uploads/2026/07/PHB_1846_16507246419711358101.jpeg?resize=1200,800" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -605,11 +1631,27 @@
                     <span class="lang-content lang-ja">生産性の最適化では価格と性能のバランスが鍵――ベルセルCEOが技術選定における新たな基準を明らかにする。</span>
                     <span class="lang-content lang-ko">생산 시스템 최적화는 단가 대비 성능 균형에 달려 있다—버셀 최고 경영 책임자가 인공지능 인프라 혁명의 새로운 패러다임을 제시한다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="394931127984d96d5e53" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like394931127984d96d5e53" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="960c1e075caea8a59094" data-search="it/tech it/tech techcrunch ios 27 beta adds expressive siri customization ios 27 β版でsiriの音声表現と速度をカスタマイズ可能に ios 27 베타, siri의 음성 표현과 속도 맞춤 조절 가능 apple&#39;s latest ios update introduces personalized voice modulation for siri, leveraging generative ai to enhance user interaction and natural language expression. 生成型ai技術を駆使し、siriの会話スタイルを独自にカスタマイズできるよう進化したアップルの新機能。 발생형 ai 기반으로 자연스러운 사용자 맞춤형 대화 경험을 구현한 애플의 혁신적 기술 확장.">
                 
                 <img src="https://techcrunch.com/wp-content/uploads/2024/10/apple-siri-header.jpg?resize=1200,800" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -631,9 +1673,24 @@
                     <span class="lang-content lang-ja">生成型AI技術を駆使し、Siriの会話スタイルを独自にカスタマイズできるよう進化したアップルの新機能。</span>
                     <span class="lang-content lang-ko">발생형 AI 기반으로 자연스러운 사용자 맞춤형 대화 경험을 구현한 애플의 혁신적 기술 확장.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="960c1e075caea8a59094" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like960c1e075caea8a59094" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="90cf464d0499a27595f8" data-search="it/tech it/tech the verge hoto’s pixeldrive hits $60: essential tool for assembled furniture ホトのピクセルドライブドライバーが60ドルに価格最安 호토 픽셀드라이브 드라이버, 60달러 최저가 판매 중 this cordless screwdriver&#39;s precision engineering accelerates furniture assembly tasks, proving indispensable for modern home improvement projects. 家具の組み立て作業を劇的に効率化するワイヤレスドライバーの最適な購入タイミングとその実力を解説。 스마트 홈 구축에 필수적인 무선 드라이버로, 가구 조립 작업을 효율화한 혁신적 도구의 정체.">
                 
                 
                 <div class="meta">
@@ -655,9 +1712,24 @@
                     <span class="lang-content lang-ja">家具の組み立て作業を劇的に効率化するワイヤレスドライバーの最適な購入タイミングとその実力を解説。</span>
                     <span class="lang-content lang-ko">스마트 홈 구축에 필수적인 무선 드라이버로, 가구 조립 작업을 효율화한 혁신적 도구의 정체.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="90cf464d0499a27595f8" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like90cf464d0499a27595f8" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="d99f47951e4733b713ce" data-search="it/tech it/tech the verge xbox studios double fine and compulsion transition to independent game developers – future projects unveiled xboxスタジオ ダブルファインとコンピュランスがインディーゲーム開発へ–今後のプロジェクト発表 xbox 스튜디오 더블파인과 컴피션, 독립 개발사 전환 – 게임 프로젝트 계속 진행 microsoft&#39;s restructuring includes spinning off four xbox studios as independent entities. double fine and compulsion games confirm their commitment to existing game projects despite the transition. マイクロソフトはxboxスタジオの再編構造を発表、4つのスタジオをスピンオフ。ダブルファインとコンピュランスはゲームプロジェクトを継続する方針です。 마이크로소트는 xbox 스튜디오 재편으로 4곳을 독립시켰으며, 더블파인과 컴피션은 기존 게임 개발을 계속 진행할 계획입니다.">
                 
                 
                 <div class="meta">
@@ -679,9 +1751,24 @@
                     <span class="lang-content lang-ja">マイクロソフトはXboxスタジオの再編構造を発表、4つのスタジオをスピンオフ。ダブルファインとコンピュランスはゲームプロジェクトを継続する方針です。</span>
                     <span class="lang-content lang-ko">마이크로소트는 Xbox 스튜디오 재편으로 4곳을 독립시켰으며, 더블파인과 컴피션은 기존 게임 개발을 계속 진행할 계획입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="d99f47951e4733b713ce" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="liked99f47951e4733b713ce" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="25eba88e53a29169e192" data-search="it/tech it/tech the verge how netflix’s ‘a man on the inside’ exposes smart glasses’ privacy dilemma 『スマートグラスのプライバシー問題：netflixの『inside man』が映し出す将来』 “스마트 글라스의 프라이버시 딜레마: 넷플릭스 《인사이드 맨》이 말해주는 미래” hollywood has long shaped our expectations of smart glasses—but netflix’s ‘a man on the inside’ now forces us to confront their unsettling reality. the show’s satirical lens reveals how wearable tech could become both a tool of liberation and a surveillance nightmare. スカーレット・ヨハンソン主演の米ドラマ『インサイド・マン』は、スマートグラスがもたらすプライバシー問題を鋭く描く。人間の監視と自由の限界を、ユーモラスかつ警鐘的な手法で問いかける。 헐리우드는 스마트 글라스에 대한 기대와 한계를 동시에 만들었다. 넷플릭스 《인사이드 맨》은 착용형 기기가 자유의 도구가 되거나 감시의 도구가 되는 이중성을 풍자적으로 드러낸다.">
                 
                 
                 <div class="meta">
@@ -703,11 +1790,27 @@
                     <span class="lang-content lang-ja">スカーレット・ヨハンソン主演の米ドラマ『インサイド・マン』は、スマートグラスがもたらすプライバシー問題を鋭く描く。人間の監視と自由の限界を、ユーモラスかつ警鐘的な手法で問いかける。</span>
                     <span class="lang-content lang-ko">헐리우드는 스마트 글라스에 대한 기대와 한계를 동시에 만들었다. 넷플릭스 《인사이드 맨》은 착용형 기기가 자유의 도구가 되거나 감시의 도구가 되는 이중성을 풍자적으로 드러낸다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="25eba88e53a29169e192" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like25eba88e53a29169e192" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="90820b816ebba9c56698" data-search="it/tech it/tech zdnet korea ascent ai expands into japanese market with bold sales targets アセントai、日本マーケットで年間3億円売上目標 어센트 ai, 일본 시장 공략 본격화... 연 3억엔 매출 목표 ascent ai is accelerating its foray into japan&#39;s marketing sector, aiming to generate over 300 million yen in annual revenue by focusing on healthcare and fintech industries. the company showcased its capabilities at tokyo&#39;s marketing week summer 2026, positioning itself as a strategic partner for japanese businesses. アセントaiは東京ビッグサイトで開催された「マーケティングウィックスサマ2026」に参加し、日本のヘルスケアとファイナンス業界をターゲットに年間3億円（約28億ウォン）以上の売上を目指しています。会社はai技術を活用したマーケティングソリューションで日企業界に本格参入を遂げます。 어센트 ai는 도쿄 빅사이트에서 열린 마케팅 위크 서머 2026에 참가하여 일본의 헬스케어와 금융 산업군을 중심으로 시장을 확대하고 있으며, 연 매출 3억엔(약 28억원) 이상을 목표로 하고 있습니다.">
                 
                 <img src="https://image.zdnet.co.kr/2026/07/07/eca26744d14e270e66d91e2309397591.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -729,11 +1832,27 @@
                     <span class="lang-content lang-ja">アセントAIは東京ビッグサイトで開催された「マーケティングウィックスサマ2026」に参加し、日本のヘルスケアとファイナンス業界をターゲットに年間3億円（約28億ウォン）以上の売上を目指しています。会社はAI技術を活用したマーケティングソリューションで日企業界に本格参入を遂げます。</span>
                     <span class="lang-content lang-ko">어센트 AI는 도쿄 빅사이트에서 열린 마케팅 위크 서머 2026에 참가하여 일본의 헬스케어와 금융 산업군을 중심으로 시장을 확대하고 있으며, 연 매출 3억엔(약 28억원) 이상을 목표로 하고 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="90820b816ebba9c56698" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like90820b816ebba9c56698" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="e6d6882ca0897592710f" data-search="it/tech it/tech itmedia broadcom extends semiconductor deal with apple through 2031, to supply custom asics for multiple generations of apple products broadcom、appleとの半導体協業を2031年まで延長 カスタムasicの供給とaiサーバチップ開発へ 브로드컴, 애플과의 반도체 계약 2031년까지 연장 broadcom and apple have extended their technical collaboration through 2031, with the chipmaker set to supply custom asics to multiple generations of apple devices. the partnership now encompasses apple&#39;s in-house ai server chip development, supporting the cloud infrastructure of upcoming apple intelligence services. broadcomはappleとの技術提携を2031年まで延長し、複数世代にわたるカスタムasicを供給する。同社はaiサーバ向けチップの開発にも関わっており、今後のapple intelligenceのクラウド基盤支援が予想されている。 브로드컴이 애플과의 기술 협력을 2031년까지 연장·확대한다고 발표했습니다. 이번 계약을 통해 복수 세대의 애플 제품에 맞춤형 asic을 공급키로 한 가운데, 애플이 개발 중인 인공지능 서버용 칩 개발까지 협력이 확장될 전망입니다.">
                 
                 <img src="https://image.itmedia.co.jp/news/articles/2607/07/cover_news078.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -755,11 +1874,27 @@
                     <span class="lang-content lang-ja">BroadcomはAppleとの技術提携を2031年まで延長し、複数世代にわたるカスタムASICを供給する。同社はAIサーバ向けチップの開発にも関わっており、今後のApple Intelligenceのクラウド基盤支援が予想されている。</span>
                     <span class="lang-content lang-ko">브로드컴이 애플과의 기술 협력을 2031년까지 연장·확대한다고 발표했습니다. 이번 계약을 통해 복수 세대의 애플 제품에 맞춤형 ASIC을 공급키로 한 가운데, 애플이 개발 중인 인공지능 서버용 칩 개발까지 협력이 확장될 전망입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="e6d6882ca0897592710f" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likee6d6882ca0897592710f" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="f2ac07c0f2cd6048e76c" data-search="it/tech it/tech itmedia hayabusa2 captures high-speed images of elongated asteroid &#39;trifine&#39; – jaxa&#39;s flyby success 「はやぶさ2」が秒速5キロで小惑星「トリフネ」を爆速撮影！ 7月5日フライバイ成功 화이버사2, &#39;트리포네&#39; 협곡 혜성 초고속 촬영 성공 – 초정밀 탐사 기록 jaxa&#39;s hayabusa2 probe successfully executed a flyby of the 500-meter-long asteroid &#39;trifine&#39; on july 5, capturing high-speed images at an impressive 5 km per second to study its irregular shape and composition. jaxaの小惑星探査機「はやぶさ2」が7月5日18時30分ごろ、直径約500mの細長な小惑星「トリフネ」を秒速5kmでフライバイし、高精度の観測データを取得しました。 일본 우주국(jaxa)이 개발한 탐사기 &#39;화이버사2&#39;가 7월 5일 곡괭이 모양 혜성 &#39;트리포네&#39;를 초속 5km 속도로 비행하며 고해상도 탐사 사진을 촬영했습니다.">
                 
                 <img src="https://image.itmedia.co.jp/news/articles/2607/06/cover_news133.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -781,11 +1916,27 @@
                     <span class="lang-content lang-ja">JAXAの小惑星探査機「はやぶさ2」が7月5日18時30分ごろ、直径約500mの細長な小惑星「トリフネ」を秒速5kmでフライバイし、高精度の観測データを取得しました。</span>
                     <span class="lang-content lang-ko">일본 우주국(JAXA)이 개발한 탐사기 &#39;화이버사2&#39;가 7월 5일 곡괭이 모양 혜성 &#39;트리포네&#39;를 초속 5km 속도로 비행하며 고해상도 탐사 사진을 촬영했습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="f2ac07c0f2cd6048e76c" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likef2ac07c0f2cd6048e76c" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="IT/Tech">
+            <article class="article-card" data-category="IT/Tech" data-article-key="f18f1116ffdac1eb4577" data-search="it/tech it/tech itmedia jaxa and idenna partner to create &#39;mission buddy&#39; – conversational interface for space probes inspired by sci-fi films jaxa、sf映画のような「ミッションバディ」を開発 – 宇宙機との対話インタフェース jaxa, sf 영화를 현실로 - &#39;미션 버디&#39; 개발로 탐사기 대화 가능 jaxa partners with voice ai developer idenna to test the &#39;mission buddy&#39; concept, an ai interface allowing human-spacecraft dialogue for mission operations, bringing science fiction closer to reality. jaxaは6月から音声ai企業idennaと共同で、探査機と会話をしながらミッションを遂行する「ミッションバディ」の概念設計を進めていることが7月3日に明らかになりました。 일본 우주항공연구기구(jaxa)가 영화 속 드라마처럼 탐사기를 대화하며 가동할 수 있는 &#39;미션 버디&#39; 기술 개발을 6월부터 진행 중인 것으로 드러났습니다.">
                 
                 <img src="https://image.itmedia.co.jp/news/articles/2607/06/cover_news130.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -807,11 +1958,27 @@
                     <span class="lang-content lang-ja">JAXAは6月から音声AI企業Idennaと共同で、探査機と会話をしながらミッションを遂行する「ミッションバディ」の概念設計を進めていることが7月3日に明らかになりました。</span>
                     <span class="lang-content lang-ko">일본 우주항공연구기구(JAXA)가 영화 속 드라마처럼 탐사기를 대화하며 가동할 수 있는 &#39;미션 버디&#39; 기술 개발을 6월부터 진행 중인 것으로 드러났습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="f18f1116ffdac1eb4577" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likef18f1116ffdac1eb4577" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="AI">
+            <article class="article-card" data-category="AI" data-article-key="c13918d6e68229c98791" data-search="ai ai ai times (kr) ai’s hidden billing: environmental costs escalate beyond data centers aiによる見えない請求書：データセンターを超えた環境コストの拡大 ai 숨은 청구서…데이터센터를 넘어서 급증하는 환경 비용 google and amazon’s latest sustainability reports reveal a 25-16% surge in carbon emissions linked to ai infrastructure expansion—underscoring the growing environmental footprint of ai innovation. グーグルとアマゾンの最新持続可能性報告書がaiインフラ拡大による炭素排出増加（25-16％）を示し、aiの環境負荷が顕在化していることを浮き彫りにしています。 구글과 아마존의 지속가능성 보고서가 지난해 ai 인프라 확대로 탄소 배출량이 최대 25% 증가한 사실을 알려, ai 기반 기술의 환경적 부담을 경고했습니다.">
                 
                 <img src="https://cdn.aitimes.com/news/photo/202607/212455_215717_4132.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -833,11 +2000,27 @@
                     <span class="lang-content lang-ja">グーグルとアマゾンの最新持続可能性報告書がAIインフラ拡大による炭素排出増加（25-16％）を示し、AIの環境負荷が顕在化していることを浮き彫りにしています。</span>
                     <span class="lang-content lang-ko">구글과 아마존의 지속가능성 보고서가 지난해 AI 인프라 확대로 탄소 배출량이 최대 25% 증가한 사실을 알려, AI 기반 기술의 환경적 부담을 경고했습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="c13918d6e68229c98791" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likec13918d6e68229c98791" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="AI">
+            <article class="article-card" data-category="AI" data-article-key="c5576e10c72785ea7600" data-search="ai ai ai times (kr) meta ai preparing &#39;scheduled tasks&#39; — chatbot to autonomous agent evolution メタai、スケジュールタスク機能準備…チャットボットからエージェントへ進化 메타 ai, &#39;예약 작업&#39; 도입 준비…챗봇 넘어 &#39;에이전트&#39;로 진화 meta ai is set to automate repetitive workflows with scheduled tasks, elevating its capabilities from query-based chatbot to proactive ai agent status. メタaiが「予約タスク」機能の導入を確認。単なるチャットボットから仕事の自動化を行えるaiエージェントへ一段ステップアップする動きが進んでいます。 메타 ai가 사용자 반복 작업을 자동 처리하는 &#39;예약 작업&#39; 기능을 추가할 예정입니다. 이로 인해 챗봇에서 비동기 업무를 수행하는 에이전트로 한 단계 진화할 것입니다.">
                 
                 <img src="https://cdn.aitimes.com/news/photo/202607/212456_215720_222.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -859,11 +2042,27 @@
                     <span class="lang-content lang-ja">メタAIが「予約タスク」機能の導入を確認。単なるチャットボットから仕事の自動化を行えるAIエージェントへ一段ステップアップする動きが進んでいます。</span>
                     <span class="lang-content lang-ko">메타 AI가 사용자 반복 작업을 자동 처리하는 &#39;예약 작업&#39; 기능을 추가할 예정입니다. 이로 인해 챗봇에서 비동기 업무를 수행하는 에이전트로 한 단계 진화할 것입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="c5576e10c72785ea7600" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likec5576e10c72785ea7600" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="AI">
+            <article class="article-card" data-category="AI" data-article-key="527964127d16847e1ce2" data-search="ai ai ai times (kr) university students head to san francisco&#39;s &#39;hacker house&#39; over traditional internships 大手テックインターンではなくハッカーハウスへ——米大学生がai起業を選択 일반 인턴 대신 해커 하우스로 직행하는 대학생들..&#34;ai 창업이 대세&#34; as the ai revolution accelerates, top us university students are abandoning big tech internships to pursue startup ventures at san francisco&#39;s hacker house, prioritizing entrepreneurial opportunities over stable careers. ai時代の到来に伴い、米名門大学の学生たちは従来の安定した大手テックインターンよりもサンフランシスコの「ハッカー・ハウス」での起業挑戦を選んでいる。これは『卒業証明書よりもai起業』という新しいキャリア意識を示している。 미국 명문대 학생들이 ai 시대에 맞춰 빅테크 인턴십보다 샌프란시스코 해커 하우스에서 창업에 주목하는 트렌드가 확산되고 있다. 졸업장보다 ai 스타트업을 선택하는 선택지로 자리 잡고 있다.">
                 
                 <img src="https://cdn.aitimes.com/news/photo/202607/212451_215741_288.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -885,11 +2084,27 @@
                     <span class="lang-content lang-ja">AI時代の到来に伴い、米名門大学の学生たちは従来の安定した大手テックインターンよりもサンフランシスコの「ハッカー・ハウス」での起業挑戦を選んでいる。これは『卒業証明書よりもAI起業』という新しいキャリア意識を示している。</span>
                     <span class="lang-content lang-ko">미국 명문대 학생들이 AI 시대에 맞춰 빅테크 인턴십보다 샌프란시스코 해커 하우스에서 창업에 주목하는 트렌드가 확산되고 있다. 졸업장보다 AI 스타트업을 선택하는 선택지로 자리 잡고 있다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="527964127d16847e1ce2" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like527964127d16847e1ce2" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="AI">
+            <article class="article-card" data-category="AI" data-article-key="32a9bd670e376bd2b9d2" data-search="ai ai ai times (kr) bytedance and alibaba halt ai persona services ahead of chinese regulatory crackdown バイトダンスとアリババ、中国政府のai規制に先駆けてaiペルソナサービスを停止 중국 정부 규제 예고에 바이트댄스·알리바바, ai 페르소나 서비스 중단 chinese tech giants are preemptively discontinuing personalized ai agent services to comply with impending regulations on ai personification, signaling growing government scrutiny of generative ai. 中国のaiペルソナ規制が迫る中、バイトダンス（bytedance）とアリババはそれぞれのオーダーメイドaiサービスの提供を中止した。中国政府の新たなai「人格化」規制に備えた先手対応である。 바이트댄스와 알리바바가 중국 정부의 &#39;ai 인격화&#39; 규제 대비로 인해 각각의 사용자 맞춤형 ai 서비스를 철수하고 있다. 규제 시행 2주 전 선제적 조치로 분석된다.">
                 
                 <img src="https://cdn.aitimes.com/news/photo/202607/212452_215714_78.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -911,11 +2126,27 @@
                     <span class="lang-content lang-ja">中国のAIペルソナ規制が迫る中、バイトダンス（ByteDance）とアリババはそれぞれのオーダーメイドAIサービスの提供を中止した。中国政府の新たなAI「人格化」規制に備えた先手対応である。</span>
                     <span class="lang-content lang-ko">바이트댄스와 알리바바가 중국 정부의 &#39;AI 인격화&#39; 규제 대비로 인해 각각의 사용자 맞춤형 AI 서비스를 철수하고 있다. 규제 시행 2주 전 선제적 조치로 분석된다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="32a9bd670e376bd2b9d2" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like32a9bd670e376bd2b9d2" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="AI">
+            <article class="article-card" data-category="AI" data-article-key="bcfbd37d4310c562026c" data-search="ai ai ai times (kr) ai demolishes startup barriers: from stay-at-home mom entrepreneurs to virtual coo assistants aiがスタートアップの敷居を下げる…「一人親でも起業」の新時代 아이 키우며 창업하는 주부들 등장..&#39;가상 전략가&#39; ai가 이끈다 artificial intelligence is reshaping the startup ecosystem by enabling stay-at-home mothers and non-traditional founders to launch businesses with ai-powered strategic advisors and investment pitch tools. aiは専門知識や経験がなくても起業を可能にする画期的なツールとなりつつある。今やaiによる戦略立案・投資交渉の支援がアメリカのスタートアップエコシステムを劇的に変化させている。 ai 기반 &#39;가상 경영 자문역&#39;이 창업 전략부터 투자 유치까지 지원하며 주부 같은 비전통적 창업자들도 스타트업에 진출할 수 있게 도와주고 있다. 기술이 창업 생태계를 재정비하고 있다.">
                 
                 <img src="https://cdn.aitimes.com/news/photo/202607/212458_215722_444.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -937,11 +2168,27 @@
                     <span class="lang-content lang-ja">AIは専門知識や経験がなくても起業を可能にする画期的なツールとなりつつある。今やAIによる戦略立案・投資交渉の支援がアメリカのスタートアップエコシステムを劇的に変化させている。</span>
                     <span class="lang-content lang-ko">AI 기반 &#39;가상 경영 자문역&#39;이 창업 전략부터 투자 유치까지 지원하며 주부 같은 비전통적 창업자들도 스타트업에 진출할 수 있게 도와주고 있다. 기술이 창업 생태계를 재정비하고 있다. </span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="bcfbd37d4310c562026c" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likebcfbd37d4310c562026c" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="CG/Blender">
+            <article class="article-card" data-category="CG/Blender" data-article-key="3870569c173492d7d362" data-search="cg/blender cg/blender blendernation blender 5.2 grease pencil: a game-changer with 16+ revolutionary features unveiled blender 5.2 grease pencil: 3.0以降最大の進化！16以上の新機能を解説 블렌더 5.2 글리스 펜슬: 3.0 이후 최대 업데이트 16+ 신기능 분석 blender 5.2 beta delivers its most significant grease pencil overhaul since 3.0. discover 16+ groundbreaking features, including a delaunay fill solver and optimized rendering for dots and squa... blender 5.2 betaのgrease pencilでは、3.0以来最大級のアップデートが実施されました。新しいドーナン・フィルル・ソルバー、ドットや四角形のマテリアルレンダリングの高速化などが16以上の主な改善内容です。 블렌더 5.2 베타 버전에서 3.0 이후 가장 주요한 글리스 펜슬 업데이트가 발표되었습니다. 델라뉴이 채우기 솔버, 점과 사각형의 재질 렌더링 속도 향상 등 16개 이상의 핵심 기능들이 포함됐습니다.">
                 
                 <img src="https://www.blendernation.com/wp-content/uploads/2026/07/5.2-cover-BN-800x450.jpg.webp" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -963,11 +2210,27 @@
                     <span class="lang-content lang-ja">Blender 5.2 BetaのGrease Pencilでは、3.0以来最大級のアップデートが実施されました。新しいドーナン・フィルル・ソルバー、ドットや四角形のマテリアルレンダリングの高速化などが16以上の主な改善内容です。</span>
                     <span class="lang-content lang-ko">블렌더 5.2 베타 버전에서 3.0 이후 가장 주요한 글리스 펜슬 업데이트가 발표되었습니다. 델라뉴이 채우기 솔버, 점과 사각형의 재질 렌더링 속도 향상 등 16개 이상의 핵심 기능들이 포함됐습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="3870569c173492d7d362" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like3870569c173492d7d362" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="CG/Blender">
+            <article class="article-card" data-category="CG/Blender" data-article-key="540bfbe1f4de5d3afd4b" data-search="cg/blender cg/blender modelinghappy (jp) autoremesher: transform complex models into clean quadrilateral topologies for free! autoremesher: 3dスキャンデータを高品質クアッド_topologyに変換する無料ツール autoremesher: 3d 모델을 깔끔한 사각형 토폴로지로 변환하는 무료 리토폴로지 도구 3dcg developer jeremy hu has released ``autoremesher&#39;&#39;, a standalone tool that automatically converts 3d scan data and sculptural models into high-quality rectangular topology. this tool simplifies the optimization of complex meshes. 3dcg開発者jeremy hu氏が、3dスキャンデータや彫塑モデルを高品質な四角形トポロジーに自動変換するスタンドアロンツール「autoremesher」を公開しました。このツールにより複雑なメッシュの最適化が簡単になります。 3d 모델러 제레미 황(jeremy hu)이 3d 스캔 데이터나 조각 모델을 고해상도 사각형 토폴로지로 변환하는 무료 독립형 소프트웨어 &#39;autoremesher&#39;를 공개했습니다. 복잡한 메시 최적화에 혁신을 일으키는 도구입니다.">
                 
                 <img src="https://modelinghappy.com/wp-content/uploads/2026/07/20260706_autoremesehr_01.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -989,11 +2252,27 @@
                     <span class="lang-content lang-ja">3DCG開発者Jeremy HU氏が、3Dスキャンデータや彫塑モデルを高品質な四角形トポロジーに自動変換するスタンドアロンツール「AutoRemesher」を公開しました。このツールにより複雑なメッシュの最適化が簡単になります。</span>
                     <span class="lang-content lang-ko">3D 모델러 제레미 황(Jeremy HU)이 3D 스캔 데이터나 조각 모델을 고해상도 사각형 토폴로지로 변환하는 무료 독립형 소프트웨어 &#39;AutoRemesher&#39;를 공개했습니다. 복잡한 메시 최적화에 혁신을 일으키는 도구입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="540bfbe1f4de5d3afd4b" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like540bfbe1f4de5d3afd4b" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="0917df8e401b82534aaa" data-search="game game ign games meccha chameleon surpasses 15 million sales, unveils mysterious collaboration teaser 「メッチャカメレオン」が1,500万販売突破、人気スターコラボ企画を謎の公開 맥챠 케ameleon, 1500만 판매 돌파… 주요 스타 콜라보 루머 확산 중 japanese indie phenomenon meccha chameleon shatters the 15 million sales barrier within weeks of its steam launch. the vibrant multiplayer hit now hints at a groundbreaking collaboration with a renowned japanese star, with fans speculating wildly about potential candidates. 人気インディーゲーム「メッチャカメレオン」がsteamリリースわずか1か月半で1,500万本を達成。新作発表に先立って日本の人気スターとコラボするとの噂が絶えず、ファンの間で熱論が繰り広げられている。 일본 인디 게임 떄리기 대작 『맥챠 케ameleon』이 스팀 출시 40일 만에 1500만 판매라는 기록을 세웠습니다. 이와 함께 인기 일본 스타와 협업한다는 소문이 팬들에게 떠돌고 있습니다.">
                 
                 <img src="https://assets-prd.ignimgs.com/2026/07/06/mc-1783371325270.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1015,11 +2294,27 @@
                     <span class="lang-content lang-ja">人気インディーゲーム「メッチャカメレオン」がSteamリリースわずか1か月半で1,500万本を達成。新作発表に先立って日本の人気スターとコラボするとの噂が絶えず、ファンの間で熱論が繰り広げられている。</span>
                     <span class="lang-content lang-ko">일본 인디 게임 떄리기 대작 『맥챠 케ameleon』이 스팀 출시 40일 만에 1500만 판매라는 기록을 세웠습니다. 이와 함께 인기 일본 스타와 협업한다는 소문이 팬들에게 떠돌고 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="0917df8e401b82534aaa" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like0917df8e401b82534aaa" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="f436dcb41c950a10b383" data-search="game game ign games disney lorcana tcg gets a lush expansion with new pixar monsters ディズニーロルカナtcg、最新モンスターアイコンが登場 「ヴィーム攻撃」拡張パック初見解説 디즈니 로르카나 tcg, &#39;몬스틴 공격!&#39; 확장팩 발표 disney lorcana&#39;s upcoming &#34;attack of the vine!&#34; expansion injects fresh energy into the trading card game with an all-new lineup of pixar monsters characters, signaling a vibrant chapter for the franchise. ディズニーロルカナのトレーディングカードゲームが、ピクサーのモンスターズ・インクシリーズ新キャラクターを追加する「ヴィーム攻撃！」拡張セットを披露。コレクターの間で注目が高まっている。 디즈니 로르카나 수집형 카드 게임의 &#39;몬스터 공격!&#39; 신규 확장팩이 발표되었습니다. 이번 팩에는 모나스터즈 유니버스 신규 등장 캐릭터가 포함되어 컬렉터들의 관심이 집중되고 있습니다.">
                 
                 <img src="https://assets-prd.ignimgs.com/2026/07/06/monsteroo-1783366635356.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1041,11 +2336,27 @@
                     <span class="lang-content lang-ja">ディズニーロルカナのトレーディングカードゲームが、ピクサーのモンスターズ・インクシリーズ新キャラクターを追加する「ヴィーム攻撃！」拡張セットを披露。コレクターの間で注目が高まっている。</span>
                     <span class="lang-content lang-ko">디즈니 로르카나 수집형 카드 게임의 &#39;몬스터 공격!&#39; 신규 확장팩이 발표되었습니다. 이번 팩에는 모나스터즈 유니버스 신규 등장 캐릭터가 포함되어 컬렉터들의 관심이 집중되고 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="f436dcb41c950a10b383" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likef436dcb41c950a10b383" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="071a82aa9f9c2211839c" data-search="game game ign games pokémon go preps secret 10th anniversary spectacular ポケモンgo、謎の10周年記念ライブ特典イベント披露 포켓몬 go, 10주년 기념 비밀 방송 돌입… 엄청난 변화 예고 the pokémon go 10th anniversary event takes a mysterious turn as niantic keeps every detail under wraps—expect surprises that could redefine the real-world game&#39;s future. ニーティックが「ポケモンgo」10周年生放送を控え、視聴者を完全に見据えない謎多きアニュヴァーサリーイベントを構築中。プレイヤー全員が注視する未来の展開が期待される。 포켓몬 go는 오는 7월 9일 10주년 기념 생방송을 진행합니다. 방송 내용은 완전한 비밀이지만, 실제 세계 게임의 향방을 완전히 바꿔줄 기념 이벤트가 될 전망입니다.">
                 
                 <img src="https://assets-prd.ignimgs.com/2026/07/03/discover-pokmon-in-the-real-world-with-pokmon-go-00-02-36-1783093287762.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1067,11 +2378,27 @@
                     <span class="lang-content lang-ja">ニーティックが「ポケモンGO」10周年生放送を控え、視聴者を完全に見据えない謎多きアニュヴァーサリーイベントを構築中。プレイヤー全員が注視する未来の展開が期待される。</span>
                     <span class="lang-content lang-ko">포켓몬 GO는 오는 7월 9일 10주년 기념 생방송을 진행합니다. 방송 내용은 완전한 비밀이지만, 실제 세계 게임의 향방을 완전히 바꿔줄 기념 이벤트가 될 전망입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="071a82aa9f9c2211839c" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like071a82aa9f9c2211839c" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="4f8d128a068dfbc45bf2" data-search="game game ign games the elder scrolls online faces major workforce reductions as development roadmap undergoes restructuring 『エルダー・スクロールズオンライン』、開発チームが最大半数解雇されたと報道 『엘더스 스크롤 온라인』, 개발팀 인력 최대 절반 축소 the iconic online rpg has reportedly lost up to half of its development team, sparking concerns over the game&#39;s evolving future and strategic direction. 人気rpg『エルダー・スクロールズオンライン』の開発チームが約半数のスタッフ削減に直面し、ゲームの今後の方向性に懸念が広がっています。 고전 온라인 rpg &#39;엘더스 스크롤 온라인&#39;의 개발 팀이 최대 절반에 달하는 인력 감축을 겪으면서 게임의 미래 전략에 대한 우려가 증폭되고 있습니다.">
                 
                 <img src="https://assets-prd.ignimgs.com/2025/07/09/blogroll-esov2-1752053529913.png" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1093,11 +2420,27 @@
                     <span class="lang-content lang-ja">人気RPG『エルダー・スクロールズオンライン』の開発チームが約半数のスタッフ削減に直面し、ゲームの今後の方向性に懸念が広がっています。</span>
                     <span class="lang-content lang-ko">고전 온라인 RPG &#39;엘더스 스크롤 온라인&#39;의 개발 팀이 최대 절반에 달하는 인력 감축을 겪으면서 게임의 미래 전략에 대한 우려가 증폭되고 있습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="4f8d128a068dfbc45bf2" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like4f8d128a068dfbc45bf2" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="adef89762f1949ffbf6e" data-search="game game ign games bethesda pivots strategy: xbox layoffs force focused approach to &#39;strongest franchises&#39; ベセスダ、xbox大規模レイオフを受けブランド集中戦略を強制 베데서다, 엑스박스 대규모 구조조정에 대응… 핵심 브랜드 집중 전략 발표 amid industry-wide cuts, bethesda&#39;s leadership demands a strategic consolidation to prioritize its most successful game series. xboxの大幅なリストラに直面し、ベセスダは「最強シリーズ」への集中投資という戦略的転換を従業員に通告しました。 엑스박스의 대규모 인력 감축에 맞설 차원에서 베데서다는 주력 게임 브랜드 개발에 집중하는 전략을 발표했습니다.">
                 
                 <img src="https://assets-prd.ignimgs.com/2024/04/15/fallout-new-vegas-season-2-thumb-1713210577643.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1119,11 +2462,27 @@
                     <span class="lang-content lang-ja">Xboxの大幅なリストラに直面し、ベセスダは「最強シリーズ」への集中投資という戦略的転換を従業員に通告しました。</span>
                     <span class="lang-content lang-ko">엑스박스의 대규모 인력 감축에 맞설 차원에서 베데서다는 주력 게임 브랜드 개발에 집중하는 전략을 발표했습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="adef89762f1949ffbf6e" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likeadef89762f1949ffbf6e" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="51d1c6764d0ad1067566" data-search="game game automaton (jp) nintendo adjusts eu device standards: self-replacable batteries for next-gen switch systems 任天堂、eu向けswitch 2シリーズに交換可能なバッテリー新仕様へ。旧世代機は販売終了 닌텐도, 유럽 시장 닌텐도 스위치 2에 사용자 교체 배터리 적용 europe-bound nintendo products will gain user-replaceable battery designs, while first-generation switch systems enter final sales phase. ヨーロッパ市場向けに任天堂が次世代switchに交換式バッテリーを採用する方針を発表。一方、初世代switchシリーズは来年2月をもって販売終了となります。 유럽 시장에 출시되는 닌텐도 스위치 2 시리즈에 사용자가 직접 배터리 교체가 가능한 설계가 도입될 예정이며, 첫 세대 스위치 시스템은 내년 2월 한정 판매를 마지막으로 단종됩니다.">
                 
                 <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260707-453518-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1145,11 +2504,27 @@
                     <span class="lang-content lang-ja">ヨーロッパ市場向けに任天堂が次世代Switchに交換式バッテリーを採用する方針を発表。一方、初世代Switchシリーズは来年2月をもって販売終了となります。</span>
                     <span class="lang-content lang-ko">유럽 시장에 출시되는 닌텐도 스위치 2 시리즈에 사용자가 직접 배터리 교체가 가능한 설계가 도입될 예정이며, 첫 세대 스위치 시스템은 내년 2월 한정 판매를 마지막으로 단종됩니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="51d1c6764d0ad1067566" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like51d1c6764d0ad1067566" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="df19f1af43463bbf04e1" data-search="game game automaton (jp) xbox announces historic workforce reduction: 1600 employees to be laid off in reorganization plan xbox部門が歴史的レイオフ発表 1600人の人材統廃合とスタジオ再編 xbox, 1600명 대규모 희망퇴직 발표… 브랜드 재편속하는 전략 microsoft&#39;s xbox division plans to implement a significant restructuring, cutting 20% of its workforce (1600 employees) this financial year and granting independence to four acquired studios. マイクロソフトxbox部門が会計年度中に3200人規模のレイオフ方針を発表。従業員の20%に当たる1600人の削減に加え、4つの買収スタジオが独立する措置を取る。xboxブランドの再建に向けた大胆な戦略転換が明らかにされた。 마이크로소프트 xbox 부문이 재편 과정에서 1600명 규모의 대규모 희망퇴직을 발표했습니다. 전체 직원의 20%에 해당하며, 4개 인수 스튜디오를 독립시키는 방안도 함께 내놨습니다.">
                 
                 <img src="https://automaton-media.com/wp-content/uploads/2026/07/xbox-20260707-453508-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1171,11 +2546,27 @@
                     <span class="lang-content lang-ja">マイクロソフトXbox部門が会計年度中に3200人規模のレイオフ方針を発表。従業員の20%に当たる1600人の削減に加え、4つの買収スタジオが独立する措置を取る。Xboxブランドの再建に向けた大胆な戦略転換が明らかにされた。</span>
                     <span class="lang-content lang-ko">마이크로소프트 Xbox 부문이 재편 과정에서 1600명 규모의 대규모 희망퇴직을 발표했습니다. 전체 직원의 20%에 해당하며, 4개 인수 스튜디오를 독립시키는 방안도 함께 내놨습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="df19f1af43463bbf04e1" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likedf19f1af43463bbf04e1" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="f05d6e34c58ef15fd575" data-search="game game automaton (jp) echoes: language-deconstruction visual novel with broken android girl debuts on steam 終末世界で壊れゆくアンドロイドとの5日間『エコーズ』steamで配信開始 말이 끊기는 안드로이드와의 만남 &lt;에코즈&gt; 스팀으로 첫 방출 the post-apocalyptic interactive story &#39;echoes&#39; will launch on steam, offering a 5-day emotional journey through dialogue with a deteriorating android companion across multiple timelines. 開発者びご氏の新作adv「エコーズ」がsteamストアで7月4日に掲載。終末世界を舞台に崩壊寸前のアンドロイドとの言語解読を通じた温かい物語が展開される。 폐허 세상을 배경으로 부서지는 안드로이드와 5일간 교감하는 감성 어드벤처 게임 &#39;에코즈&#39;가 스팀에서 공식 출시되었습니다.">
                 
                 <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260706-453491-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1197,11 +2588,27 @@
                     <span class="lang-content lang-ja">開発者びご氏の新作ADV「エコーズ」がSteamストアで7月4日に掲載。終末世界を舞台に崩壊寸前のアンドロイドとの言語解読を通じた温かい物語が展開される。</span>
                     <span class="lang-content lang-ko">폐허 세상을 배경으로 부서지는 안드로이드와 5일간 교감하는 감성 어드벤처 게임 &#39;에코즈&#39;가 스팀에서 공식 출시되었습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="f05d6e34c58ef15fd575" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likef05d6e34c58ef15fd575" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="0f94434f65f33f6ab7e9" data-search="game game automaton (jp) rhythm paradise&#39;s feline fandom takes over: cats steal the spotlight in online game videos 『リズム天国』がリアルネコに襲われた？ 動体視力が暴走するもふもふ乱入 리듬 하늘에 고양이 팬덤 대격변! 예상 못한 네코 방해로 재미 토론 앵글 탄생 viral social media trends show real cats hijacking &#39;rhythm paradise&#39; gaming sessions, adding chaotic charm to rhythm gameplay through unexpected feline interruptions. 『リズム天国 ミラクルスターズ』の動画投稿が猫と共にsnsで広まり、プレイヤーの反応では「猫がプレイを乗っ取った」など意外な楽しみ方が注目を集めている。 『리듬천국』 게임 화면이 고양이에게 장악당한 사례가 sns에서 급격히 확산되며, 예상 밖으로 &#39;고양이 주인공&#39;의 재미 요소로 입소문 나고 있다. 희고 풍성한 꼬리로 플레이를 방해하는 장면이 인기를 끌고 있다.">
                 
                 <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260706-453479-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1223,11 +2630,27 @@
                     <span class="lang-content lang-ja">『リズム天国 ミラクルスターズ』の動画投稿が猫と共にSNSで広まり、プレイヤーの反応では「猫がプレイを乗っ取った」など意外な楽しみ方が注目を集めている。</span>
                     <span class="lang-content lang-ko">『리듬천국』 게임 화면이 고양이에게 장악당한 사례가 SNS에서 급격히 확산되며, 예상 밖으로 &#39;고양이 주인공&#39;의 재미 요소로 입소문 나고 있다. 희고 풍성한 꼬리로 플레이를 방해하는 장면이 인기를 끌고 있다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="0f94434f65f33f6ab7e9" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like0f94434f65f33f6ab7e9" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Game">
+            <article class="article-card" data-category="Game" data-article-key="46eb49df2bc525027328" data-search="game game automaton (jp) mystery game &#39;demon&#39;s timeline&#39; hits 10,000 downloads with real-time social media narrative sns推理adv『観測者-デーモンズ・タイムライン-』が1万本売上を突破 sns 추리 어드벤처 &#39;데몬즈 타임라인&#39; 1만 다운로드 돌파 digitalcats celebrates 10,000 downloads for its sns-themed mystery adventure. the game leverages a hyper-realistic social media interface to deliver an immersive real-time detective experience. digitalcatsは、sns機能を本質的に活用した推理ゲーム『観測者-デーモンズ・タイムライン-』がリリース3日目に1万ダウンロードを達成したと発表。リアルタイム性を特徴とするこのミステリー作品は話題沸騰中です。 digitalcats는 sns 기능을 본질적으로 활용한 추리 게임 &#39;관측자-데몬즈 타임라인-&#39;이 릴리스 3일째에 1만 다운로드를 달성했다고 발표. 실시간성을 특징으로 하는 이 미스터리 작품은 화제 비등 중입니다.">
                 
                 <img src="https://automaton-media.com/wp-content/uploads/2026/07/20260706-453470-header.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1249,11 +2672,27 @@
                     <span class="lang-content lang-ja">DigitalCatsは、SNS機能を本質的に活用した推理ゲーム『観測者-デーモンズ・タイムライン-』がリリース3日目に1万ダウンロードを達成したと発表。リアルタイム性を特徴とするこのミステリー作品は話題沸騰中です。</span>
                     <span class="lang-content lang-ko">DigitalCats는 SNS 기능을 본질적으로 활용한 추리 게임 &#39;관측자-데몬즈 타임라인-&#39;이 릴리스 3일째에 1만 다운로드를 달성했다고 발표. 실시간성을 특징으로 하는 이 미스터리 작품은 화제 비등 중입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="46eb49df2bc525027328" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like46eb49df2bc525027328" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="bb8b7a3bbf71f46a6239" data-search="anime anime anime news network crunchyroll alum kun gao unveils anibiz: a global anime industry hub クラッシュロール共同創設者がアニメライセンス特化型市場『アニビジ』をローンチ 크런치롤 창립자, 글로벌 애니메이션 시장 플랫폼 &#39;애니비즈&#39; 출시 crunchyroll co-founder and former ceo kun gao announces anibiz, the world&#39;s first b2b marketplace tailored for anime licensing, aiming to streamline global content distribution and partnership opportunities. 「グローバルアニメ業界向けに設計された初のb2bマーケットプレイス」でコンテンツ分野の流通とパートナーシップ機会を刷新。 글로벌 애니메이션 콘텐츠 라이선스 거래를 효율화할 첫 b2b 마켓플레이스 &#39;애니비즈&#39;를 론칭하여 산업 활성화에 주목받고 있음.">
                 
                 <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gFN/cms/news.9/239248/screenshot-2026-07-03-151059.png.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1275,11 +2714,27 @@
                     <span class="lang-content lang-ja">「グローバルアニメ業界向けに設計された初のB2Bマーケットプレイス」でコンテンツ分野の流通とパートナーシップ機会を刷新。</span>
                     <span class="lang-content lang-ko">글로벌 애니메이션 콘텐츠 라이선스 거래를 효율화할 첫 B2B 마켓플레이스 &#39;애니비즈&#39;를 론칭하여 산업 활성화에 주목받고 있음.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="bb8b7a3bbf71f46a6239" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likebb8b7a3bbf71f46a6239" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="e45aec196c2cd27e9e2f" data-search="anime anime anime news network sword art online unveils next chapter: 2028 film heralds post-alicization saga ソードアートオンライン、新作映画に「 alicization」後の世界を描く 소드 아트 온라인, 2028년 영화로 &#39;앨리시제이션&#39; 시리즈 이어간다 the new film will explore untapped territories of the sao universe following the pivotal alicization arc, with a star-studded cast and industry veterans leading the production. 人気ゲームの原作に続く「 alicization」以降の世界に踏み込む2028年公開の大作。声優陣やスタッフに注目が集まっている。 &#39;앨리시제이션&#39; 에피소드 이후 새로운 이야기를 전개하는 2028년 개봉 영화가 제작단계부터 기대를 모으고 있음.">
                 
                 <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gHA/cms/news.9/239360/w707.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1301,11 +2756,27 @@
                     <span class="lang-content lang-ja">人気ゲームの原作に続く「 Alicization」以降の世界に踏み込む2028年公開の大作。声優陣やスタッフに注目が集まっている。</span>
                     <span class="lang-content lang-ko">&#39;앨리시제이션&#39; 에피소드 이후 새로운 이야기를 전개하는 2028년 개봉 영화가 제작단계부터 기대를 모으고 있음.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="e45aec196c2cd27e9e2f" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="likee45aec196c2cd27e9e2f" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="5383df029c66137db8ec" data-search="anime anime anime news network star fox remake dethrones rivals in japan&#39;s july game rankings スタークラッシュ：日本週間ゲームランキング第1位を決めるサクセス・リバイバル 스타 폭스 리메이크, 일본 7월 게임 랭킹 1위 차지 a revitalized reimagining of the classic space shooter captures japan&#39;s top sales spot this week, signaling a nostalgic resurgence in gaming&#39;s competitive landscape. クラシックスペースシューティングゲームのリメイクが登場し、日本市場の週間セールスを席巣取って注目を集める。 클래식 슈팅 게임 &#39;스타 폭스&#39;의 리메이크 버전이 일본 주간 판매 순위 1위에 올리며 흥행 재조명에 성공하고 있음.">
                 
                 <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gMF/cms/news.9/239346/star-fox.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1327,11 +2798,27 @@
                     <span class="lang-content lang-ja">クラシックスペースシューティングゲームのリメイクが登場し、日本市場の週間セールスを席巣取って注目を集める。</span>
                     <span class="lang-content lang-ko">클래식 슈팅 게임 &#39;스타 폭스&#39;의 리메이크 버전이 일본 주간 판매 순위 1위에 올리며 흥행 재조명에 성공하고 있음.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="5383df029c66137db8ec" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like5383df029c66137db8ec" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="8b9c7295f7e12f169301" data-search="anime anime anime news network detective conan dominates weekly anime rankings, outpaces longtime rival sazae-san 「名探偵コナン」が40年ぶりに「サザエさん」を抑えてアニメtv人気ランキング1位 『명탐정 코난』, 40년 만에 『사자에 씨』 제치고 애니메 주간 순위 1위 기록 detective conan claimed the top spot in japan&#39;s june 22-28 tv anime rankings, edging out classic staple sazae-san for the first time in decades, signaling a shift in audience preferences. 名探偵コナンが6月22日〜28日の日本アニメtv放送視聴率で30年ぶりにサザエさんを上回り第1位を獲得。伝説的番組の座を危うくした。 명탐정 코난이 6월 22일~28일 방송 애니메 순위에서 40년 만에 사자에 씨를 누르고 1위 자리를 차지했습니다. 오랜 습관을 깬 콘텐츠 트렌드 변화">
                 
                 <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gGY/encyc/A454-1482.jpg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1353,11 +2840,27 @@
                     <span class="lang-content lang-ja">名探偵コナンが6月22日〜28日の日本アニメTV放送視聴率で30年ぶりにサザエさんを上回り第1位を獲得。伝説的番組の座を危うくした。</span>
                     <span class="lang-content lang-ko">명탐정 코난이 6월 22일~28일 방송 애니메 순위에서 40년 만에 사자에 씨를 누르고 1위 자리를 차지했습니다. 오랜 습관을 깬 콘텐츠 트렌드 변화</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="8b9c7295f7e12f169301" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like8b9c7295f7e12f169301" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="0783e5c35ed0fe5d81b6" data-search="anime anime anime news network otakon 2026 unveils star-studded lineup: ayaka fukuhara, maki terashima-furuta, and more to headline オタコン2026、福原香織＆米倉涼子ほか豪華ゲスト発表 7月31日〜8月2日にワシントンd.c.開催 오타콘 2026, 후쿠하라 카오리 &amp; 요네쿠라 료코 외 호화 게스트 발표 7월 31일~8월 2일에 워싱턴 d.c. 개최 july 31-august 2&#39;s otakon 2026 in washington d.c. will feature voice acting legends ayaka fukuhara, ryotaro okiayu, and industry executive maki terashima-furuta leading key events. オタコン2026は7月31日から8月2日にかけて、福原香織や米倉涼子など声優・業界人を招いて行われる。ワシントンd.c.でのアニソンイベントが注目 오는 7월31일~8월2일 워싱턴 d.c.에서 진행되는 2026 오타콘에 후쿠하라 아야카, 테라시마 품 쿄코 등 주요 인물이 대거 출연한다고 발표했습니다.">
                 
                 <img src="https://www.animenewsnetwork.com/thumbnails/crop600x315gL6/cms/news.9/239335/ayaka-fukuhara.jpeg" alt="Thumbnail" class="article-img" loading="lazy" onerror="this.style.display='none'">
+                
                 
                 
                 <div class="meta">
@@ -1379,9 +2882,24 @@
                     <span class="lang-content lang-ja">オタコン2026は7月31日から8月2日にかけて、福原香織や米倉涼子など声優・業界人を招いて行われる。ワシントンD.C.でのアニソンイベントが注目</span>
                     <span class="lang-content lang-ko">오는 7월31일~8월2일 워싱턴 D.C.에서 진행되는 2026 오타콘에 후쿠하라 아야카, 테라시마 품 쿄코 등 주요 인물이 대거 출연한다고 발표했습니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="0783e5c35ed0fe5d81b6" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like0783e5c35ed0fe5d81b6" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="5fe3500e6f1e6c1faf3a" data-search="anime anime crunchyroll news 4k upgrade revives classic: kiki&#39;s delivery service rebounds to no. 8 in japan cinema ジブリ4kリマスターが劇場復活「魔女の宅急便」3週目で8位に復上 지브리 4k 리마스터가 극장 부활 &#39;마녀의 택배&#39; 3주차로 8위로 복상 studio ghibli&#39;s kiki&#39;s delivery service 4k re-release climbed to eighth in its third weekend, while detective conan: fallen angel of the highway entered japan&#39;s all-time box office top 100 at 27th. スタジオジブリ制作「魔女の宅急便」4kリマスターが3週目で興行収入8位に復上。一方「名探偵コナン 遠走った広域同心」が歴代27位にランクイン 지브리 4k 리마스터 &#39;마녀의 성&#39;이 개봉 3주차에 일본 박스오피스 8위로 치고 올라. 쿄오 코난 &#39;고향 이별의 천재&#39; 27위 기록">
                 
                 
                 <div class="meta">
@@ -1403,9 +2921,24 @@
                     <span class="lang-content lang-ja">スタジオジブリ制作「魔女の宅急便」4Kリマスターが3週目で興行収入8位に復上。一方「名探偵コナン 遠走った広域同心」が歴代27位にランクイン</span>
                     <span class="lang-content lang-ko">지브리 4K 리마스터 &#39;마녀의 성&#39;이 개봉 3주차에 일본 박스오피스 8위로 치고 올라. 쿄오 코난 &#39;고향 이별의 천재&#39; 27위 기록</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="5fe3500e6f1e6c1faf3a" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like5fe3500e6f1e6c1faf3a" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="8f28fa1a5b2b6d6ce962" data-search="anime anime crunchyroll news integral domain: sword art online returns to the big screen with 2028 anime movie 『ソードアートオンライン インテグラルドメイン』映画、2028年公開が発表 소드 아트 온라인, 2028년 애니메어 영화 &lt;인테그럴 도메인&gt; 공개 the sci-fi light novel adaptation reveals main staff, a teaser trailer, and concept art for its upcoming anime film slated for 2028. サイエンスフィクションのライトノベルシリーズを基にした新作映画の主要スタッフ、ティーザートレーラーおよびアートが公開されました。 과학 소설 원작의 애니메 영화 주요 제작진과 예고편, 예술 스타일 공개. 2028년 개봉 예정.">
                 
                 
                 <div class="meta">
@@ -1427,9 +2960,24 @@
                     <span class="lang-content lang-ja">サイエンスフィクションのライトノベルシリーズを基にした新作映画の主要スタッフ、ティーザートレーラーおよびアートが公開されました。</span>
                     <span class="lang-content lang-ko">과학 소설 원작의 애니메 영화 주요 제작진과 예고편, 예술 스타일 공개. 2028년 개봉 예정.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="8f28fa1a5b2b6d6ce962" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like8f28fa1a5b2b6d6ce962" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="d9d8b3eefff903449881" data-search="anime anime crunchyroll news daemons of the shadow realm anime reboots with teaser trailers for second season 『影の国に還る -デーモンズ・オブ・ザ・シャドウ・レーム-』アニメ2クール目開始 다이몬즈 오브 더 쇼어드 레임, 2쿨 개방 영상 발표 the action-packed return of hiromu arakawa&#39;s manga adaption hits crunchyroll with creditless opening and ending videos for its second cour. 人気作『影の国に還る』の第2クールが再び始動。クラシカルなオープニング・エンディング映像が解禁されました。 히로무 아라카와의 인기 만화 애니메이션이 두 번째 쿠어로 복귀. 크레딧 없는 오프닝/엔딩 영상 공개.">
                 
                 
                 <div class="meta">
@@ -1451,9 +2999,24 @@
                     <span class="lang-content lang-ja">人気作『影の国に還る』の第2クールが再び始動。クラシカルなオープニング・エンディング映像が解禁されました。</span>
                     <span class="lang-content lang-ko">히로무 아라카와의 인기 만화 애니메이션이 두 번째 쿠어로 복귀. 크레딧 없는 오프닝/엔딩 영상 공개.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="d9d8b3eefff903449881" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="liked9d8b3eefff903449881" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="0eaec0947a9e2be7ccd0" data-search="anime anime crunchyroll news solo leveling: karma unveils gaming world with new original story trailer 『ソロレベルイング: カーマ』、ゲーム公式ストーリートレーラーを公開 솔로 레벨링: 카르마, 새로운 오리지널 스토리 트레일러 공개 this innovative roguelike action-rpg from the popular solo leveling universe debuts its mobile and pc release plans alongside a gripping teaser. 人気アニメの新作ゲーム『カーマ』ティーザートレーラー解禁。ローグライクアクションrpgは年末にpc・モバイル向けでリリース予定。 인기 애니 &#39;솔로 레벨링&#39; 우주의 카르마 게임이 pc와 모바일로 출시 예정이며, 새로운 트레일러 공개.">
                 
                 
                 <div class="meta">
@@ -1475,9 +3038,24 @@
                     <span class="lang-content lang-ja">人気アニメの新作ゲーム『カーマ』ティーザートレーラー解禁。ローグライクアクションRPGは年末にPC・モバイル向けでリリース予定。</span>
                     <span class="lang-content lang-ko">인기 애니 &#39;솔로 레벨링&#39; 우주의 카르마 게임이 PC와 모바일로 출시 예정이며, 새로운 트레일러 공개.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="0eaec0947a9e2be7ccd0" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like0eaec0947a9e2be7ccd0" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
-            <article class="article-card" data-category="Anime">
+            <article class="article-card" data-category="Anime" data-article-key="2c65161dfed7dcf20341" data-search="anime anime crunchyroll news jaadugar: a witch in mongolia anime unveils official opening and ending themes without credits モンゴルの魔女「ジャドガー」が公式オープニングとエンディングテーマを紳士的に配信 몽골의 악녀 &#39;자드가&#39; 공식 오프닝 및 엔딩 영상 공개 the animated series &#39;jaadugar: a witch in mongolia&#39; has released uncredited versions of its opening and ending theme videos, now streaming exclusively on crunchyroll. アニメ『ジャドガー：モンゴルの魔女』は、オープニングとエンディングテーマのクレジットなしバージョンを公開し、現在クランチロールで独占配信中。 애니메이션 &#39;자드가: 몽골의 마녀&#39;가 개막 및 종영 테마 영상의 실버 버전을 발표하며 현재 크런치롤에서 독점 스트리밍 중입니다.">
                 
                 
                 <div class="meta">
@@ -1499,26 +3077,366 @@
                     <span class="lang-content lang-ja">アニメ『ジャドガー：モンゴルの魔女』は、オープニングとエンディングテーマのクレジットなしバージョンを公開し、現在クランチロールで独占配信中。</span>
                     <span class="lang-content lang-ko">애니메이션 &#39;자드가: 몽골의 마녀&#39;가 개막 및 종영 테마 영상의 실버 버전을 발표하며 현재 크런치롤에서 독점 스트리밍 중입니다.</span>
                 </div>
+                <div class="article-actions">
+                    <button class="interaction-btn save-btn" type="button" data-save-key="2c65161dfed7dcf20341" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 4.5h11v15l-5.5-3-5.5 3z"></path></svg>
+                        <span class="save-default lang-content lang-en">Save</span><span class="save-active lang-content lang-en">Saved</span>
+                        <span class="save-default lang-content lang-ja">保存</span><span class="save-active lang-content lang-ja">保存済み</span>
+                        <span class="save-default lang-content lang-ko">저장</span><span class="save-active lang-content lang-ko">저장됨</span>
+                    </button>
+                    <button class="interaction-btn like-btn" type="button" data-like-key="like2c65161dfed7dcf20341" data-like-loaded="false" aria-pressed="false">
+                        <span class="like-heart" aria-hidden="true">♡</span>
+                        <span class="lang-content lang-en">Like</span>
+                        <span class="lang-content lang-ja">いいね</span>
+                        <span class="lang-content lang-ko">좋아요</span>
+                        <span class="like-count" aria-live="polite">&mdash;</span>
+                    </button>
+                </div>
             </article>
             
         </div>
+        <section class="no-results" id="no-results" hidden role="status">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
+            <h2><span class="lang-content lang-en">No matching articles</span><span class="lang-content lang-ja">条件に合う記事がありません</span><span class="lang-content lang-ko">조건에 맞는 기사가 없어요</span></h2>
+            <p><span class="lang-content lang-en">Try another keyword or reset the filters.</span><span class="lang-content lang-ja">別のキーワードか条件のリセットをお試しください。</span><span class="lang-content lang-ko">다른 검색어를 입력하거나 필터를 초기화해 보세요.</span></p>
+            <button class="interaction-btn" type="button" onclick="resetArticleFilters()"><span class="lang-content lang-en">Show all</span><span class="lang-content lang-ja">すべて表示</span><span class="lang-content lang-ko">전체 보기</span></button>
+        </section>
         
-    </div>
+    </main>
 
     <script>
-        function setCategory(cat) {
-            document.querySelectorAll('.cat-btn').forEach(btn => btn.classList.remove('active'));
-            const activeBtn = document.getElementById('cat-' + cat);
-            if (activeBtn) activeBtn.classList.add('active');
-            
+        const COUNTER_API_BASE = 'https://api.counterapi.dev/v1';
+        const COUNTER_NAMESPACE = 'techmagehxhflnews7f4c2d91';
+        const LIVE_COUNTER_HOSTS = new Set(['ehxhfl.github.io']);
+        const SAVED_ARTICLES_KEY = 'techmag-saved-articles';
+        let lastTrafficPayload = null;
+        let activeCategory = 'All';
+        let savedOnly = false;
+        let savedArticles = readSavedArticles();
+        let visibleArticleCount = 0;
+
+        function isLiveCounterSite() {
+            return location.protocol === 'https:' && LIVE_COUNTER_HOSTS.has(location.hostname);
+        }
+
+        function safeStorageGet(key) {
+            try { return localStorage.getItem(key); } catch { return null; }
+        }
+
+        function safeStorageSet(key, value) {
+            try { localStorage.setItem(key, value); return true; } catch { return false; }
+        }
+
+        function readSavedArticles() {
+            try {
+                const value = JSON.parse(localStorage.getItem(SAVED_ARTICLES_KEY) || '[]');
+                return new Set(Array.isArray(value) ? value.filter(key => typeof key === 'string') : []);
+            } catch {
+                return new Set();
+            }
+        }
+
+        function writeSavedArticles() {
+            safeStorageSet(SAVED_ARTICLES_KEY, JSON.stringify(Array.from(savedArticles)));
+        }
+
+        function renderSavedState(button) {
+            const saved = savedArticles.has(button.dataset.saveKey);
+            button.setAttribute('aria-pressed', saved ? 'true' : 'false');
+        }
+
+        function renderSavedCount() {
+            const count = document.getElementById('saved-count');
+            if (count) count.textContent = String(savedArticles.size);
+        }
+
+        function renderResultsCount(count) {
+            visibleArticleCount = count;
+            const target = document.getElementById('results-count');
+            if (!target) return;
+            const language = document.documentElement.lang;
+            target.textContent = language === 'en'
+                ? `${count} article${count === 1 ? '' : 's'} shown`
+                : language === 'ja' ? `${count}件の記事を表示` : `${count}개 기사 표시`;
+        }
+
+        function applyArticleFilters() {
+            const search = document.getElementById('news-search');
+            const query = String(search?.value || '').trim().toLocaleLowerCase();
+            let visible = 0;
             document.querySelectorAll('.article-card').forEach(card => {
-                if (cat === 'All' || card.getAttribute('data-category') === cat) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
+                const categoryMatches = activeCategory === 'All' || card.dataset.category === activeCategory;
+                const searchMatches = !query || String(card.dataset.search || '').includes(query);
+                const savedMatches = !savedOnly || savedArticles.has(card.dataset.articleKey);
+                card.hidden = !(categoryMatches && searchMatches && savedMatches);
+                if (!card.hidden) visible += 1;
             });
-            localStorage.setItem('preferredCat', cat);
+            const empty = document.getElementById('no-results');
+            if (empty) empty.hidden = visible !== 0;
+            renderResultsCount(visible);
+        }
+
+        function initDiscoveryTools() {
+            document.getElementById('news-search')?.addEventListener('input', applyArticleFilters);
+            document.getElementById('saved-filter')?.addEventListener('click', () => {
+                savedOnly = !savedOnly;
+                document.getElementById('saved-filter')?.setAttribute('aria-pressed', savedOnly ? 'true' : 'false');
+                applyArticleFilters();
+            });
+            document.getElementById('reset-filter')?.addEventListener('click', resetArticleFilters);
+            document.querySelectorAll('.save-btn').forEach(button => {
+                renderSavedState(button);
+                button.addEventListener('click', () => {
+                    const key = button.dataset.saveKey;
+                    if (!key) return;
+                    if (savedArticles.has(key)) savedArticles.delete(key);
+                    else savedArticles.add(key);
+                    writeSavedArticles();
+                    document.querySelectorAll('.save-btn').forEach(renderSavedState);
+                    renderSavedCount();
+                    applyArticleFilters();
+                });
+            });
+            renderSavedCount();
+        }
+
+        function resetArticleFilters() {
+            const search = document.getElementById('news-search');
+            if (search) search.value = '';
+            savedOnly = false;
+            document.getElementById('saved-filter')?.setAttribute('aria-pressed', 'false');
+            setCategory('All');
+        }
+
+        async function withCounterLock(key, task) {
+            if (navigator.locks && typeof navigator.locks.request === 'function') {
+                return navigator.locks.request(`techmag:${key}`, task);
+            }
+            return task();
+        }
+
+        function validCount(value) {
+            const count = Number(value);
+            return Number.isSafeInteger(count) && count >= 0 ? count : null;
+        }
+
+        function countFormatters() {
+            const locale = { en: 'en-US', ja: 'ja-JP', ko: 'ko-KR' }[document.documentElement.lang] || 'ko-KR';
+            return {
+                compact: new Intl.NumberFormat(locale, { notation: 'compact', maximumFractionDigits: 1 }),
+                full: new Intl.NumberFormat(locale)
+            };
+        }
+
+        async function counterRequest(key, action = '', signal = undefined, allowMissing = false) {
+            const suffix = action ? '/' + action : '/';
+            const url = `${COUNTER_API_BASE}/${encodeURIComponent(COUNTER_NAMESPACE)}/${encodeURIComponent(key)}${suffix}`;
+            const response = await fetch(url, {
+                method: 'GET',
+                cache: 'no-store',
+                credentials: 'omit',
+                referrerPolicy: 'no-referrer',
+                signal
+            });
+            if (!response.ok) {
+                let errorPayload = null;
+                if (allowMissing && (response.status === 400 || response.status === 404)) {
+                    try { errorPayload = await response.json(); } catch { /* Ignore invalid error JSON. */ }
+                    if (response.status === 404 ||
+                        String(errorPayload?.message || '').toLowerCase() === 'record not found') {
+                        return { count: 0 };
+                    }
+                }
+                throw new Error(`Counter request failed: ${response.status}`);
+            }
+            const payload = await response.json();
+            if (validCount(payload?.count) === null) throw new Error('Invalid counter response');
+            return payload;
+        }
+
+        function jstDateKey() {
+            const parts = new Intl.DateTimeFormat('en-US', {
+                timeZone: 'Asia/Tokyo',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).formatToParts(new Date());
+            const values = Object.fromEntries(parts.map(part => [part.type, part.value]));
+            return `${values.year}${values.month}${values.day}`;
+        }
+
+        function renderTraffic(payload) {
+            const root = document.getElementById('daily-traffic');
+            const fields = {
+                views: document.getElementById('today-views'),
+                visitors: document.getElementById('today-visitors')
+            };
+            if (!root || !fields.views || !fields.visitors) return;
+
+            const formatters = countFormatters();
+            let rendered = 0;
+            Object.entries(fields).forEach(([key, element]) => {
+                const count = validCount(payload?.[key]);
+                element.textContent = count === null ? '—' : formatters.compact.format(count);
+                element.title = count === null ? '' : formatters.full.format(count);
+                if (count !== null) rendered += 1;
+            });
+            root.dataset.state = rendered === 2 ? 'ready' : rendered === 1 ? 'partial' : 'unavailable';
+            root.setAttribute('aria-busy', 'false');
+        }
+
+        async function recordAndReadTodayTraffic(signal) {
+            const day = jstDateKey();
+            const visitorMarker = `techmag-visitor-${day}`;
+            const viewPromise = counterRequest(`views${day}`, 'up', signal);
+            const visitorPromise = withCounterLock(`visitor${day}`, async () => {
+                if (safeStorageGet(visitorMarker) === '1') {
+                    return counterRequest(`visitors${day}`, '', signal, true);
+                }
+                if (!safeStorageSet(visitorMarker, '1')) {
+                    return counterRequest(`visitors${day}`, '', signal, true);
+                }
+                return counterRequest(`visitors${day}`, 'up', signal);
+            });
+            const [viewResult, visitorResult] = await Promise.allSettled([viewPromise, visitorPromise]);
+
+            const views = viewResult.status === 'fulfilled' ? validCount(viewResult.value.count) : null;
+            const visitors = visitorResult.status === 'fulfilled' ? validCount(visitorResult.value.count) : null;
+            return { views, visitors };
+        }
+
+        async function loadTodayTraffic() {
+            if (!isLiveCounterSite()) {
+                renderTraffic(null);
+                return;
+            }
+            const controller = new AbortController();
+            const timeout = window.setTimeout(() => controller.abort(), 5000);
+            try {
+                lastTrafficPayload = await recordAndReadTodayTraffic(controller.signal);
+                renderTraffic(lastTrafficPayload);
+            } catch {
+                renderTraffic(null);
+            } finally {
+                window.clearTimeout(timeout);
+            }
+        }
+
+        function renderLikeCount(button, count) {
+            const valid = validCount(count);
+            const countElement = button.querySelector('.like-count');
+            if (!countElement) return;
+            if (valid === null) {
+                countElement.textContent = '—';
+                countElement.title = '';
+                delete button.dataset.likeCount;
+                return;
+            }
+            const formatters = countFormatters();
+            countElement.textContent = formatters.compact.format(valid);
+            countElement.title = formatters.full.format(valid);
+            button.dataset.likeCount = String(valid);
+        }
+
+        function setLikedState(button, liked) {
+            button.setAttribute('aria-pressed', liked ? 'true' : 'false');
+            const heart = button.querySelector('.like-heart');
+            if (heart) heart.textContent = liked ? '♥' : '♡';
+        }
+
+        async function loadLikeCount(button) {
+            if (button.dataset.likeLoaded === 'true' || !isLiveCounterSite()) return true;
+            button.dataset.likeLoaded = 'true';
+            const version = button.dataset.likeVersion || '0';
+            const controller = new AbortController();
+            const timeout = window.setTimeout(() => controller.abort(), 5000);
+            try {
+                const payload = await counterRequest(button.dataset.likeKey, '', controller.signal, true);
+                if ((button.dataset.likeVersion || '0') === version) {
+                    renderLikeCount(button, payload.count);
+                }
+                return true;
+            } catch {
+                if ((button.dataset.likeVersion || '0') === version) {
+                    renderLikeCount(button, null);
+                }
+                button.dataset.likeLoaded = 'false';
+                return false;
+            } finally {
+                window.clearTimeout(timeout);
+            }
+        }
+
+        function initLikeButtons() {
+            const buttons = Array.from(document.querySelectorAll('.like-btn'));
+            buttons.forEach(button => {
+                const storageKey = `techmag-${button.dataset.likeKey}`;
+                button.dataset.likeStorageKey = storageKey;
+                setLikedState(button, safeStorageGet(storageKey) === '1');
+                button.addEventListener('click', async () => {
+                    if (!isLiveCounterSite() || button.getAttribute('aria-pressed') === 'true') return;
+                    button.disabled = true;
+                    button.dataset.likeVersion = String(Number(button.dataset.likeVersion || '0') + 1);
+                    try {
+                        const payload = await withCounterLock(button.dataset.likeKey, async () => {
+                            if (safeStorageGet(storageKey) === '1') {
+                                return counterRequest(button.dataset.likeKey, '', undefined, true);
+                            }
+                            const result = await counterRequest(button.dataset.likeKey, 'up');
+                            safeStorageSet(storageKey, '1');
+                            return result;
+                        });
+                        setLikedState(button, true);
+                        renderLikeCount(button, payload.count);
+                    } catch {
+                        renderLikeCount(button, button.dataset.likeCount ?? null);
+                    } finally {
+                        button.disabled = false;
+                    }
+                });
+            });
+
+            if (!isLiveCounterSite()) {
+                buttons.forEach(button => { button.disabled = true; });
+                return;
+            }
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver(entries => {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) return;
+                        loadLikeCount(entry.target).then(loaded => {
+                            if (loaded) observer.unobserve(entry.target);
+                        });
+                    });
+                }, { rootMargin: '400px 0px' });
+                buttons.forEach(button => observer.observe(button));
+            } else {
+                buttons.forEach(loadLikeCount);
+            }
+
+            window.addEventListener('storage', event => {
+                if (event.newValue !== '1') return;
+                buttons.forEach(button => {
+                    if (button.dataset.likeStorageKey !== event.key) return;
+                    button.dataset.likeVersion = String(Number(button.dataset.likeVersion || '0') + 1);
+                    setLikedState(button, true);
+                });
+            });
+        }
+
+        function setCategory(cat) {
+            activeCategory = cat;
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+            });
+            const activeBtn = document.getElementById('cat-' + cat);
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.setAttribute('aria-pressed', 'true');
+            }
+            safeStorageSet('preferredCat', cat);
+            applyArticleFilters();
         }
 
         function setLanguage(lang) {
@@ -1528,16 +3446,24 @@
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
             const activeButton = document.getElementById('btn-' + lang);
             if (activeButton) activeButton.classList.add('active');
-            localStorage.setItem('preferredLang', lang);
+            safeStorageSet('preferredLang', lang);
+            if (lastTrafficPayload) renderTraffic(lastTrafficPayload);
+            document.querySelectorAll('.like-btn[data-like-count]').forEach(button => {
+                renderLikeCount(button, button.dataset.likeCount);
+            });
+            renderResultsCount(visibleArticleCount);
         }
 
         // Init language and category
-        const savedLang = localStorage.getItem('preferredLang') || 'ko';
+        const savedLang = safeStorageGet('preferredLang') || 'ko';
         setLanguage(savedLang);
 
         const supportedCategories = ['All', 'IT/Tech', 'AI', 'Game Engine', 'Game', 'VTuber', 'Anime', 'Cosplay/Event', 'CG/Blender'];
-        const savedCat = localStorage.getItem('preferredCat') || 'All';
+        const savedCat = safeStorageGet('preferredCat') || 'All';
+        initDiscoveryTools();
         setCategory(supportedCategories.includes(savedCat) ? savedCat : 'All');
+        loadTodayTraffic();
+        initLikeButtons();
     </script>
 </body>
 </html>

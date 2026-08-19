@@ -2,6 +2,7 @@ import calendar
 import html
 import json
 import logging
+import re
 from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
 
 import feedparser
@@ -18,6 +19,28 @@ FEED_TIMEOUT = (5, 20)
 PAGE_TIMEOUT = (5, 10)
 RETRYABLE_STATUS_CODES = (429, 500, 502, 503, 504)
 TRACKING_QUERY_KEYS = {"fbclid", "gclid", "mc_cid", "mc_eid"}
+CONTENT_IMAGE_SELECTORS = (
+    '[itemprop="articleBody"]',
+    ".repoat_content",
+    ".entry-content",
+    ".post-content",
+    ".article-content",
+    ".single-content",
+    "article",
+)
+NON_CONTENT_IMAGE_MARKERS = (
+    "avatar",
+    "favicon",
+    "icon",
+    "loading",
+    "logo",
+    "pixel",
+    "skip_link",
+    "spacer",
+    "spinner",
+    "sprite",
+    "tracking",
+)
 
 
 def clean_html(raw_html, max_length=600):
@@ -120,6 +143,107 @@ def _feed_image(entry, article_url):
     return None
 
 
+def _largest_srcset_url(srcset):
+    candidates = []
+    for item in str(srcset or "").split(","):
+        parts = item.strip().split()
+        if not parts:
+            continue
+        width = 0
+        if len(parts) > 1 and parts[-1].lower().endswith("w"):
+            try:
+                width = int(parts[-1][:-1])
+            except ValueError:
+                width = 0
+        candidates.append((width, parts[0]))
+    return max(candidates, default=(0, ""))[1]
+
+
+def _content_image(soup, article_url):
+    """Find the first meaningful image inside the article body."""
+    seen_containers = set()
+    for selector in CONTENT_IMAGE_SELECTORS:
+        for container in soup.select(selector):
+            if id(container) in seen_containers:
+                continue
+            seen_containers.add(id(container))
+
+            for image in container.find_all("img"):
+                excluded_ancestor = False
+                parent = image.parent
+                while parent is not None:
+                    if getattr(parent, "name", None) in {"nav", "header", "footer", "aside"}:
+                        excluded_ancestor = True
+                        break
+                    if getattr(parent, "attrs", None) is not None:
+                        ancestor_markers = " ".join(
+                            [str(parent.get("id") or ""), *(parent.get("class") or [])]
+                        ).casefold()
+                        ancestor_tokens = set(re.split(r"[^a-z0-9]+", ancestor_markers))
+                        if ancestor_tokens.intersection(
+                            {"share", "social", "related", "author", "advertisement"}
+                        ) or "post-nav" in ancestor_markers:
+                            excluded_ancestor = True
+                            break
+                    if parent is container:
+                        break
+                    parent = parent.parent
+                if excluded_ancestor:
+                    continue
+
+                image_url = (
+                    image.get("data-src")
+                    or image.get("data-lazy-src")
+                    or image.get("data-original")
+                    or _largest_srcset_url(image.get("data-srcset"))
+                    or _largest_srcset_url(image.get("srcset"))
+                    or image.get("src")
+                )
+                if not image_url:
+                    continue
+
+                absolute_url = urljoin(article_url, str(image_url).strip())
+                try:
+                    parts = urlsplit(absolute_url)
+                except ValueError:
+                    continue
+                if parts.scheme not in {"http", "https"} or not parts.netloc:
+                    continue
+
+                marker_text = " ".join(
+                    (
+                        parts.path,
+                        str(image.get("class") or ""),
+                        str(image.get("id") or ""),
+                        str(image.get("alt") or ""),
+                    )
+                ).casefold()
+                marker_tokens = set(re.split(r"[^a-z0-9]+", marker_text))
+                if any(marker in marker_tokens for marker in NON_CONTENT_IMAGE_MARKERS):
+                    continue
+                if "line_add_friends" in absolute_url.casefold() or "skip_link" in marker_text:
+                    continue
+                if "/themes/" in parts.path.casefold():
+                    continue
+
+                try:
+                    width = int(str(image.get("width") or "0").replace("px", ""))
+                    height = int(str(image.get("height") or "0").replace("px", ""))
+                except ValueError:
+                    width = height = 0
+                if (width and width < 160) or (height and height < 90):
+                    continue
+
+                if parts.scheme == "http" and parts.netloc.casefold() == "jpcctestwp.com":
+                    absolute_url = urlunsplit(
+                        ("https", parts.netloc, parts.path, parts.query, parts.fragment)
+                    )
+
+                return absolute_url
+
+    return None
+
+
 def extract_image(entry, session, timeout=PAGE_TIMEOUT):
     article_url = str(entry.get("link", "")).strip()
     feed_image = _feed_image(entry, article_url)
@@ -140,6 +264,14 @@ def extract_image(entry, session, timeout=PAGE_TIMEOUT):
 
         if image_meta and image_meta.get("content"):
             return urljoin(article_url, image_meta["content"])
+
+        image_link = soup.select_one('link[rel~="image_src"][href]')
+        if image_link:
+            return urljoin(article_url, image_link["href"])
+
+        content_image = _content_image(soup, article_url)
+        if content_image:
+            return content_image
     except requests.RequestException as exc:
         logging.debug("Could not fetch og:image for %s: %s", article_url, exc)
     except Exception as exc:
