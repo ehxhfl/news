@@ -1,7 +1,14 @@
 [
   {
-    "date": "2026-10-12",
+    "date": "2026-10-13",
     "page": "index.html",
+    "archive_page": "archive-2026-10-13.html",
+    "data": "data-2026-10-13.json",
+    "count": 55
+  },
+  {
+    "date": "2026-10-12",
+    "page": "archive-2026-10-12.html",
     "archive_page": "archive-2026-10-12.html",
     "data": "data-2026-10-12.json",
     "count": 50
